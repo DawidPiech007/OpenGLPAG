@@ -1,7 +1,12 @@
-#version 330 core  
-layout (location = 0) in vec3 position;
+#version 440
+
+layout (location = 0) in vec3 vertexPosition;
+
+out vec3 pos;
 
 void main()  
 {  
-    gl_Position = vec4(position.x, position.y, position.z, 1.0);  
-}
+    pos = vertexPosition;
+
+    gl_Position = vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z, 1.0f);  
+} 

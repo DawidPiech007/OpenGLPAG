@@ -6,6 +6,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -30,13 +31,9 @@
 GLFWwindow* window;
 
 /* Initialize vertices of our triangle */
-glm::vec3 vertices[] = { glm::vec3(-1.0f,  1.0f, 0.0f),
+glm::vec3 vertices[] = { glm::vec3(0.0f,  1.0f, 0.0f),
                          glm::vec3(1.0f, -1.0f, 0.0f),
-                         glm::vec3(-1.0f, -1.0f, 0.0f),
-                         glm::vec3(-1.0f,  1.0f, 0.0f),
-                         glm::vec3(1.0f, -1.0f, 0.0f),
-                         glm::vec3(1.0f, 1.0f, 0.0f)
-};
+                         glm::vec3(-1.0f, -1.0f, 0.0f) };
 
 /* Initialize Vertex Buffer Object */
 GLuint VBO = NULL;
@@ -48,9 +45,12 @@ std::string loadShader(std::string fileName)
     std::string line;
     std::ifstream inFile(fileName);
 
+    
+
     if (!inFile)
     {
         fprintf(stderr, "Could not open file %s", fileName.c_str());
+        std::cout << "Could not open file" << std::endl;
         inFile.close();
 
         return NULL;
@@ -156,7 +156,7 @@ int init(int width, int height)
     return true;
 
     /* Set clear color */                                   // Kolor
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);                   // Kolor
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);                   // Kolor
 
 
     /* Shader init */
@@ -166,9 +166,6 @@ int init(int width, int height)
     {
         fprintf(stderr, "Error creating program object.\n");
     }
-
-    //GLuint vertexShader;                                   // tworzymy obiekt vertex shadera
-    //vertexShader = glCreateShader(GL_VERTEX_SHADER);       // tworzymy obiekt vertex shadera
 
     /* Shader load from file and compile */
     loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "vertexShader_1.vert", programHandle);
@@ -227,10 +224,10 @@ void render(float tpf)
     /* Clear the color buffer */                  // Kolor (odœwierzenie bufora)
     glClear(GL_COLOR_BUFFER_BIT);                 // Kolor 
 
-    glViewport(640/4, 480/4, 640/2, 480/2); // Trójk¹t 2 razy mniejszy na œrodku ekranu
+    //glViewport(640/4, 480/4, 640/2, 480/2); // Trójk¹t 2 razy mniejszy na œrodku ekranu
 
     /* Draw our triangle */
-    glDrawArrays(GL_TRIANGLES, 0, 6);           // Rysuje 2 trójk¹ty 
+    glDrawArrays(GL_TRIANGLES, 0, 3);           // Rysuje 2 trójk¹ty 
 }
 
 void update()
