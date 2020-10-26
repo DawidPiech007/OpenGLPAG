@@ -6,6 +6,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
+#include <fstream>
+#include <string>
 
 // About OpenGL function loaders: modern OpenGL doesn't have a standard header file and requires individual function pointers to be loaded manually. 
 // Helper libraries are often used for this purpose! Here we are supporting a few common ones: gl3w, glew, glad.
@@ -38,6 +40,87 @@ glm::vec3 vertices[] = { glm::vec3(-1.0f,  1.0f, 0.0f),
 
 /* Initialize Vertex Buffer Object */
 GLuint VBO = NULL;
+
+/* Load sharder code from external file */
+std::string loadShader(std::string fileName)
+{
+    std::string filetext;
+    std::string line;
+    std::ifstream inFile(fileName);
+
+    if (!inFile)
+    {
+        fprintf(stderr, "Could not open file %s", fileName.c_str());
+        inFile.close();
+
+        return NULL;
+    }
+    else
+    {
+        while (inFile.good())
+        {
+            getline(inFile, line);
+            filetext.append(line + "\n");
+        }
+
+        inFile.close();
+
+        return filetext;
+    }
+}
+
+/* Load and compile shader from the external file (uses loadShader(std::string) function) */
+void loadAndCompileShaderFromFile(GLint shaderType, std::string fileName, GLuint& programHandle)
+{
+    GLuint shaderObject = glCreateShader(shaderType);
+
+    if (shaderObject == 0)
+    {
+        fprintf(stderr, "Error creating %s.\n", fileName.c_str());
+        return;
+    }
+
+    std::string shaderCodeString = loadShader(fileName);
+
+    if (shaderCodeString.empty())
+    {
+        printf("Shader code is empty! Shader name %s\n", fileName.c_str());
+        return;
+    }
+
+    const char* shaderCode = shaderCodeString.c_str();
+    const GLint codeSize = shaderCodeString.size();
+
+    glShaderSource(shaderObject, 1, &shaderCode, &codeSize);
+    glCompileShader(shaderObject);
+
+    GLint result;
+    glGetShaderiv(shaderObject, GL_COMPILE_STATUS, &result);
+
+    if (result == GL_FALSE)
+    {
+        fprintf(stderr, "%s compilation failed!\n", fileName.c_str());
+
+        GLint logLen;
+        glGetShaderiv(shaderObject, GL_INFO_LOG_LENGTH, &logLen);
+
+        if (logLen > 0)
+        {
+            char* log = (char*)malloc(logLen);
+
+            GLsizei written;
+            glGetShaderInfoLog(shaderObject, logLen, &written, log);
+
+            fprintf(stderr, "Shader log: \n%s", log);
+            free(log);
+        }
+
+        return;
+    }
+
+    glAttachShader(programHandle, shaderObject);
+    glDeleteShader(shaderObject);
+}
 
 int init(int width, int height)
 {
@@ -74,6 +157,49 @@ int init(int width, int height)
 
     /* Set clear color */                                   // Kolor
     glClearColor(0.0f, 1.0f, 1.0f, 1.0f);                   // Kolor
+
+
+    /* Shader init */
+    GLuint programHandle = glCreateProgram();
+
+    if (programHandle == 0)
+    {
+        fprintf(stderr, "Error creating program object.\n");
+    }
+
+    //GLuint vertexShader;                                   // tworzymy obiekt vertex shadera
+    //vertexShader = glCreateShader(GL_VERTEX_SHADER);       // tworzymy obiekt vertex shadera
+
+    /* Shader load from file and compile */
+    loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "vertexShader_1.vert", programHandle);
+    loadAndCompileShaderFromFile(GL_FRAGMENT_SHADER, "fragmentShader_1.frag", programHandle);
+
+    /* Link */
+    glLinkProgram(programHandle);
+
+    GLint status;
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &status);
+
+    if (status == GL_FALSE)
+    {
+        fprintf(stderr, "Failed to link shader program!\n");
+
+        GLint logLen;
+        glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &logLen);
+
+        if (logLen > 0)
+        {
+            char* log = (char*)malloc(logLen);
+            GLsizei written;
+            glGetProgramInfoLog(programHandle, logLen, &written, log);
+
+            fprintf(stderr, "Program log: \n%s", log);
+            free(log);
+        }
+    }
+
+    /* Apply shader */
+    glUseProgram(programHandle);
 }
 
 int loadContent()
@@ -99,7 +225,7 @@ int loadContent()
 void render(float tpf)
 {
     /* Clear the color buffer */                  // Kolor (odœwierzenie bufora)
-    //glClear(GL_COLOR_BUFFER_BIT);                 // Kolor 
+    glClear(GL_COLOR_BUFFER_BIT);                 // Kolor 
 
     glViewport(640/4, 480/4, 640/2, 480/2); // Trójk¹t 2 razy mniejszy na œrodku ekranu
 
