@@ -124,19 +124,21 @@ void loadAndCompileShaderFromFile(GLint shaderType, std::string fileName, GLuint
 
 int init(int width, int height)
 {
+    //std::cout << "132" << std::endl;
+
     /* Initialize the library */
     if (!glfwInit())
         return -1;
-
+    //std::cout << "137" << std::endl;
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "Hello Triangle", NULL, NULL);
-
+    //std::cout << "140" << std::endl;
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
-
+    //std::cout << "146" << std::endl;
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
@@ -146,14 +148,12 @@ int init(int width, int height)
     if (glewInit() != GLEW_OK)                                  TAK BY£O
         return -1;                                              TAK BY£O
     */  
-
+    //std::cout << "156" << std::endl;
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))//  TAK JEST
         return -1;                                          //  TAK JEST
-
+    //std::cout << "159" << std::endl;
     /* Set the viewport */
     glViewport(0, 0, width, height);
-
-    return true;
 
     /* Set clear color */                                   // Kolor
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);                   // Kolor
@@ -168,8 +168,8 @@ int init(int width, int height)
     }
 
     /* Shader load from file and compile */
-    loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "vertexShader_1.vert", programHandle);
-    loadAndCompileShaderFromFile(GL_FRAGMENT_SHADER, "fragmentShader_1.frag", programHandle);
+    loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "res/shaders/basic.vert", programHandle);
+    loadAndCompileShaderFromFile(GL_FRAGMENT_SHADER, "res/shaders/basic.frag", programHandle);
 
     /* Link */
     glLinkProgram(programHandle);
@@ -194,9 +194,12 @@ int init(int width, int height)
             free(log);
         }
     }
-
+    //std::cout << "197" << std::endl;
     /* Apply shader */
     glUseProgram(programHandle);
+    //std::cout << "200" << std::endl;
+
+    return true;
 }
 
 int loadContent()
