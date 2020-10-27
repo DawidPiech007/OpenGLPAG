@@ -27,13 +27,36 @@
 
 //==================================== [ TUTORIAL START ] ===========================================//
 #include <glm/glm.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm\gtx\transform.hpp>
 
 GLFWwindow* window;
+GLuint programHandle = NULL;
 
-/* Initialize vertices of our triangle */
-glm::vec3 vertices[] = { glm::vec3(0.0f,  1.0f, 0.0f),
-                         glm::vec3(1.0f, -1.0f, 0.0f),
-                         glm::vec3(-1.0f, -1.0f, 0.0f) };
+/* Initialize vertices of our pyramid */
+glm::vec3 vertices[] = { glm::vec3(-0.5f, -0.5f,  0.5f), //basis
+                         glm::vec3(0.5f, -0.5f,  0.5f),
+                         glm::vec3(0.5f, -0.5f, -0.5f),
+                         glm::vec3(-0.5f, -0.5f,  0.5f),
+                         glm::vec3(0.5f, -0.5f, -0.5f),
+                         glm::vec3(-0.5f, -0.5f, -0.5f),
+
+                         glm::vec3(-0.5f, -0.5f, -0.5f), //left side
+                         glm::vec3(-0.5f, -0.5f,  0.5f),
+                         glm::vec3(0.0f,  0.5f,  0.0f),
+
+                         glm::vec3(0.5f, -0.5f,  0.5f), //right side
+                         glm::vec3(0.5f, -0.5f, -0.5f),
+                         glm::vec3(0.0f,  0.5f,  0.0f),
+
+                         glm::vec3(-0.5f, -0.5f,  0.5f), //front side
+                         glm::vec3(0.5f, -0.5f,  0.5f),
+                         glm::vec3(0.0f,  0.5f,  0.0f),
+
+                         glm::vec3(0.5f, -0.5f, -0.5f), //back side
+                         glm::vec3(-0.5f, -0.5f, -0.5f),
+                         glm::vec3(0.0f,  0.5f,  0.0f) };
+
 
 /* Initialize Vertex Buffer Object */
 GLuint VBO = NULL;
@@ -70,7 +93,7 @@ std::string loadShader(std::string fileName)
 }
 
 /* Load and compile shader from the external file (uses loadShader(std::string) function) */
-void loadAndCompileShaderFromFile(GLint shaderType, std::string fileName, GLuint& programHandle)
+void loadAndCompileShaderFromFile(GLint shaderType, std::string fileName)
 {
     GLuint shaderObject = glCreateShader(shaderType);
 
@@ -124,21 +147,19 @@ void loadAndCompileShaderFromFile(GLint shaderType, std::string fileName, GLuint
 
 int init(int width, int height)
 {
-    //std::cout << "132" << std::endl;
-
     /* Initialize the library */
     if (!glfwInit())
         return -1;
-    //std::cout << "137" << std::endl;
+    
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(width, height, "Hello Triangle", NULL, NULL);
-    //std::cout << "140" << std::endl;
+    
     if (!window)
     {
         glfwTerminate();
         return -1;
     }
-    //std::cout << "146" << std::endl;
+    
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
@@ -148,19 +169,21 @@ int init(int width, int height)
     if (glewInit() != GLEW_OK)                                  TAK BY£O
         return -1;                                              TAK BY£O
     */  
-    //std::cout << "156" << std::endl;
+    
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))//  TAK JEST
         return -1;                                          //  TAK JEST
-    //std::cout << "159" << std::endl;
+    
     /* Set the viewport */
     glViewport(0, 0, width, height);
 
     /* Set clear color */                                   // Kolor
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);                   // Kolor
 
+    /* Enable depth test */
+    glEnable(GL_DEPTH_TEST);
 
     /* Shader init */
-    GLuint programHandle = glCreateProgram();
+    programHandle = glCreateProgram();
 
     if (programHandle == 0)
     {
@@ -168,8 +191,8 @@ int init(int width, int height)
     }
 
     /* Shader load from file and compile */
-    loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "res/shaders/basic.vert", programHandle);
-    loadAndCompileShaderFromFile(GL_FRAGMENT_SHADER, "res/shaders/basic.frag", programHandle);
+    loadAndCompileShaderFromFile(GL_VERTEX_SHADER,   "res/shaders/basic.vert");
+    loadAndCompileShaderFromFile(GL_FRAGMENT_SHADER, "res/shaders/basic.frag");
 
     /* Link */
     glLinkProgram(programHandle);
@@ -194,10 +217,10 @@ int init(int width, int height)
             free(log);
         }
     }
-    //std::cout << "197" << std::endl;
+    
     /* Apply shader */
     glUseProgram(programHandle);
-    //std::cout << "200" << std::endl;
+    
 
     return true;
 }
@@ -219,18 +242,41 @@ int loadContent()
     /* Tell OpenGL how to interpret the data in the buffer */
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+    /* Set world matrix to identity matrix */
+    glm::mat4 world = glm::mat4(1.0f);
+
+    /* Set view matrix */
+    glm::mat4 view = glm::lookAt(glm::vec3(1.5f, 0.0f, 1.5f),  // camera position in world space
+        glm::vec3(0.0f, 0.0f, 0.0f),  // at this point camera is looking
+        glm::vec3(0.0f, 1.0f, 0.0f)); // head is up
+
+    /* Set projection matrix */
+    int w;
+    int h;
+    glfwGetWindowSize(window, &w, &h);
+
+    glm::mat4 projection = glm::perspective(45.0f, (float)w / (float)h, 0.001f, 50.0f);
+
+    /* Set MVP matrix */
+    glm::mat4 WVP = projection * view * world;
+
+    /* Get uniform location and send MVP matrix there */
+    GLuint wvpLoc = glGetUniformLocation(programHandle, "wvp");
+    glUniformMatrix4fv(wvpLoc, 1, GL_FALSE, &WVP[0][0]);
+
+
     return true;
 }
 
 void render(float tpf)
 {
-    /* Clear the color buffer */                  // Kolor (odœwierzenie bufora)
-    glClear(GL_COLOR_BUFFER_BIT);                 // Kolor 
+    /* Clear the color buffer & depth buffer*/
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //glViewport(640/4, 480/4, 640/2, 480/2); // Trójk¹t 2 razy mniejszy na œrodku ekranu
 
-    /* Draw our triangle */
-    glDrawArrays(GL_TRIANGLES, 0, 3);           // Rysuje 2 trójk¹ty 
+    /* Draw our object */
+    glDrawArrays(GL_TRIANGLES, 0, 3 * 6);
 }
 
 void update()
