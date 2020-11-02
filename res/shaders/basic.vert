@@ -1,14 +1,13 @@
 #version 440
 
-layout (location = 0) in vec3 vertexPosition;
+out vec4 FragColor;
+  
+in vec3 ourColor;
+in vec2 TexCoord;
 
-out vec3 pos;
+uniform sampler2D ourTexture;
 
-uniform mat4 wvp;
-
-void main()  
-{  
-    pos = vertexPosition;
-
-    gl_Position = wvp * vec4(vertexPosition, 1.0f);  
-}  
+void main()
+{
+    FragColor = texture(ourTexture, TexCoord);
+}
