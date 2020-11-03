@@ -46,12 +46,42 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+float a;
+float h;
+float H;
+
+void RenderPyramid(int n, float scale, glm::vec3 pos, Shader ourShader)
+{
+    if (n <= 0)
+    {
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, pos);
+        model = glm::scale(model, glm::vec3(scale, scale, scale));
+        ourShader.setMat4("model", model);
+
+        glDrawArrays(GL_TRIANGLES, 0, 12);
+        return;
+    }
+    else
+    {
+        n--;
+        scale = scale / 2;
+        RenderPyramid(n, scale, pos, ourShader);
+        //RenderPyramid(n, scale, pos + glm::vec3(0, 0, a) * scale * 1.0f, ourShader);
+        //RenderPyramid(n, scale, pos + glm::vec3(-h, 0, a / 2) * scale * 1.0f, ourShader);
+        //RenderPyramid(n, scale, pos + glm::vec3(-h / 3, H, a / 2) * scale * 1.0f, ourShader);
+        RenderPyramid(n, scale, pos + glm::vec3(a, 0, 0) * scale * 1.0f, ourShader);
+        RenderPyramid(n, scale, pos + glm::vec3(a/2, 0, -h) * scale * 1.0f, ourShader);
+        RenderPyramid(n, scale, pos + glm::vec3(a/2, H, -h/3) * scale * 1.0f, ourShader);
+        return;
+    }
+}
+
 int main()
 {
-    float a = 1;
-    float h = (a * sqrt(3)) / 2;
-    float H = (a * sqrt(2)) / sqrt(3);
-
+    a = 1;
+    h = (a * sqrt(3)) / 2;
+    H = (a * sqrt(2)) / sqrt(3);
 
 
     // glfw: initialize and configure
@@ -121,15 +151,15 @@ int main()
     // world space positions of our cubes
     glm::vec3 cubePositions[] = {
     glm::vec3(0.0f,  0.0f,  0.0f),
-    glm::vec3(2.0f,  5.0f, -15.0f),
-    glm::vec3(-1.5f, -2.2f, -2.5f),
-    glm::vec3(-3.8f, -2.0f, -12.3f),
-    glm::vec3(2.4f, -0.4f, -3.5f),
-    glm::vec3(-1.7f,  3.0f, -7.5f),
-    glm::vec3(1.3f, -2.0f, -2.5f),
-    glm::vec3(1.5f,  2.0f, -2.5f),
-    glm::vec3(1.5f,  0.2f, -1.5f),
-    glm::vec3(-1.3f,  1.0f, -1.5f)
+    glm::vec3(a,  0.0f, 0.0f),
+    glm::vec3(a/2, 0.0f, -h),
+    glm::vec3(a/2, H, -h/3),
+    //glm::vec3(2.4f, -0.4f, -3.5f),
+    //glm::vec3(-1.7f,  3.0f, -7.5f),
+    //glm::vec3(1.3f, -2.0f, -2.5f),
+    //glm::vec3(1.5f,  2.0f, -2.5f),
+    //glm::vec3(1.5f,  0.2f, -1.5f),
+    //glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
     //unsigned int VBO, VAO, EBO;
@@ -246,25 +276,15 @@ int main()
         glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, glm::vec3(-0.3f, -0.5f, -1.3f));
+        view = glm::rotate(view, glm::radians(50.0f), glm::vec3(0.5f, 0.9f, 0.0f));
         // pass transformation matrices to the shader
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
         ourShader.setMat4("view", view);
 
         // render container
         glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);  // rysowanie plana
-        //glDrawArrays(GL_TRIANGLES, 0, 36);                    // rysowanie kostki
-        for (unsigned int i = 0; i < 10; i++)                   // render boxes
-        {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            ourShader.setMat4("model", model);
-
-            glDrawArrays(GL_TRIANGLES, 0, 12);
-        }
+        RenderPyramid(3, 1, glm::vec3(0.0f), ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
