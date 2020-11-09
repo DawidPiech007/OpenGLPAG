@@ -297,7 +297,7 @@ int main()
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     float yRotation = 30;
     float xRotation = 20;
-    int depth = 4;
+    int depth = 2;
 
     // render loop
     // -----------
