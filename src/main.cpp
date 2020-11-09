@@ -262,7 +262,7 @@ int main()
     // -------------------------------------------------------------------------------------------
     ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
     ourShader.setInt("texture1", 0);
-    ourShader.setInt("texture2", 1);
+    //ourShader.setInt("texture2", 1);   // teraz jest 1 tekstura
 
     // Initialize OpenGL loader
     #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -295,6 +295,7 @@ int main()
     //bool show_demo_window = true;
     //bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    glm::vec4 texture_color = glm::vec4(0.6f, 0.0f, 0.0f, 1.00f);
     float yRotation = 30;
     float xRotation = 20;
     int depth = 2;
@@ -333,7 +334,7 @@ int main()
             ImGui::SliderInt("recursion depth", &depth, 0, 6);                // moje
             ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             //    counter++;
@@ -378,6 +379,8 @@ int main()
         // pass transformation matrices to the shader
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
         ourShader.setMat4("view", view);
+        
+        ourShader.setVec4("color", texture_color);
 
         // render container
         glBindVertexArray(VAO);
