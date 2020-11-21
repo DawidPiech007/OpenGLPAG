@@ -168,18 +168,18 @@ int main()
     //};
 
     // world space positions of our cubes
-    glm::vec3 cubePositions[] = {
-    glm::vec3(0.0f,  0.0f,  0.0f),
-    glm::vec3(a,  0.0f, 0.0f),
-    glm::vec3(a/2, 0.0f, -h),
-    glm::vec3(a/2, H, -h/3),
+    //glm::vec3 cubePositions[] = {
+    //glm::vec3(0.0f,  0.0f,  0.0f),
+    //glm::vec3(a,  0.0f, 0.0f),
+    //glm::vec3(a/2, 0.0f, -h),
+    //glm::vec3(a/2, H, -h/3),
     //glm::vec3(2.4f, -0.4f, -3.5f),
     //glm::vec3(-1.7f,  3.0f, -7.5f),
     //glm::vec3(1.3f, -2.0f, -2.5f),
     //glm::vec3(1.5f,  2.0f, -2.5f),
     //glm::vec3(1.5f,  0.2f, -1.5f),
     //glm::vec3(-1.3f,  1.0f, -1.5f)
-    };
+    //};
 
     //unsigned int VBO, VAO, EBO;
     unsigned int VBO, VAO; // new
@@ -234,6 +234,7 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    /*
     // texture 2
     // ---------
     glGenTextures(1, &texture2);
@@ -257,6 +258,7 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    */
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
@@ -357,8 +359,8 @@ int main()
         // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        //glActiveTexture(GL_TEXTURE1);                    // wy³¹czenie 2 tekstury
+        //glBindTexture(GL_TEXTURE_2D, texture2);          // wy³¹czenie 2 tekstury
 
         // create transformations
         //glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
