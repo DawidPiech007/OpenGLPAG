@@ -10,8 +10,12 @@
 #include <fstream>
 #include <string>
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 #include <math.h>
+//#include "stb_image.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 
 // About OpenGL function loaders: modern OpenGL doesn't have a standard header file and requires individual function pointers to be loaded manually. 
@@ -36,6 +40,8 @@
 #include <glm\gtx\transform.hpp>
 
 #include <shader_s.h>
+#include "model_s.h"
+#include "mesh_s.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -266,6 +272,15 @@ int main()
     ourShader.setInt("texture1", 0);
     //ourShader.setInt("texture2", 1);   // teraz jest 1 tekstura
 
+    //Assimp::Importer importer;
+    //const aiScene* scene = importer.ReadFile("", aiProcess_Triangulate | aiProcess_FlipUVs);
+
+
+    Model* plecak = new Model("res/models/backpack/backpack.obj");
+
+    
+
+
     // Initialize OpenGL loader
     #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
         bool err = gl3wInit() != 0;
@@ -387,6 +402,7 @@ int main()
         // render container
         glBindVertexArray(VAO);
         RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
+        plecak->Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
