@@ -278,10 +278,10 @@ int main()
     //const aiScene* scene = importer.ReadFile("", aiProcess_Triangulate | aiProcess_FlipUVs);
 
 
-    //Model* plecak = new Model("res/models/backpack/backpack.obj");
+    Model* plecak = new Model("res/models/backpack/backpack.obj");
 
     SceneRoot* sceneRoot = new SceneRoot();
-
+    Model* kostka = new Model("res/models/kostkaReady/kostka.obj");
 
 
 
@@ -395,14 +395,19 @@ int main()
         // create transformations
         glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 projection = glm::mat4(1.0f);
+        glm::mat4 model = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.6f));
         view = glm::rotate(view, glm::radians(yRotation), glm::vec3(0.0f, 1.0f, 0.0f));
         view = glm::rotate(view, glm::radians(xRotation), glm::vec3(1.0f, 0.0f, 0.0f));
         view = glm::translate(view, glm::vec3(-a/2, -H/3, h/3));
+        //view = glm::scale(view, glm::vec3(10, 10, 10));
+        //view = glm::scale(view, glm::vec3(xRotation, xRotation, xRotation));
+
         // pass transformation matrices to the shader
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
         ourShader.setMat4("view", view);
+        ourShader.setMat4("model", model);
         
         ourShader.setVec4("color", texture_color);
 
@@ -410,7 +415,8 @@ int main()
         glBindVertexArray(VAO);
         //RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
         //plecak->Draw(ourShader);
-        sceneRoot->Draw(ourShader);
+        //sceneRoot->Draw(ourShader);
+        kostka->Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
