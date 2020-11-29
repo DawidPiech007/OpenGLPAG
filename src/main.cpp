@@ -40,8 +40,9 @@
 #include <glm\gtx\transform.hpp>
 
 #include <shader_s.h>
-#include "model_s.h"
-#include "mesh_s.h"
+//#include "model_s.hpp"
+//#include "mesh_s.h"
+#include <SceneRoot.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -211,10 +212,10 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-
+    /*
     // load and create a texture 
     // -------------------------
-    unsigned int texture1, texture2;
+    unsigned int texture1;//, texture2;
     // texture 1
     // ---------
     glGenTextures(1, &texture1);
@@ -240,6 +241,7 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    */
     /*
     // texture 2
     // ---------
@@ -268,17 +270,23 @@ int main()
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
-    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
-    ourShader.setInt("texture1", 0);
+    //ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    //ourShader.setInt("texture1", 0);
     //ourShader.setInt("texture2", 1);   // teraz jest 1 tekstura
 
     //Assimp::Importer importer;
     //const aiScene* scene = importer.ReadFile("", aiProcess_Triangulate | aiProcess_FlipUVs);
 
 
-    Model* plecak = new Model("res/models/backpack/backpack.obj");
+    //Model* plecak = new Model("res/models/backpack/backpack.obj");
 
-    
+    //SceneRoot* sceneRoot = new SceneRoot();
+
+
+
+
+
+
 
 
     // Initialize OpenGL loader
@@ -372,8 +380,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
 
         // bind textures on corresponding texture units
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, texture1);
         //glActiveTexture(GL_TEXTURE1);                    // wy³¹czenie 2 tekstury
         //glBindTexture(GL_TEXTURE_2D, texture2);          // wy³¹czenie 2 tekstury
 
@@ -401,8 +409,9 @@ int main()
 
         // render container
         glBindVertexArray(VAO);
-        RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
-        plecak->Draw(ourShader);
+        //RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
+        //plecak->Draw(ourShader);
+        //sceneRoot->Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

@@ -1,10 +1,10 @@
-#include "GraphNode.h"
-
+#include "GraphNode.hpp"
+/*
 GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
-	:position(position), rotation(rotation), scale(scale)
+	:position(position), rotation(rotation), scale(scale), model(nullptr), isDirty(false)
 {
 	isDirty = false;
-	nodeTransform = glm::mat4x4(1.0f);
+	nodeTransform = glm::mat4(1.0f);
 	//children = std::vector< std::shared_ptr<GraphNode>>();
 }
 
@@ -28,7 +28,7 @@ void GraphNode::SetScale(float x, float y, float z)
 	isDirty = true;
 }
 
-void GraphNode::AddChild(std::shared_ptr<GraphNode> child)
+void GraphNode::AddChild(const std::shared_ptr<GraphNode>& child)
 {
 	children.push_back(child);
 }
@@ -48,7 +48,7 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 		isDirty = false;
 	}
 
-	glm::mat4 transform = nodeTransform * parentTransform;
+	transform = nodeTransform * parentTransform;
 
 	for (auto& child : children)
 	{
@@ -58,5 +58,18 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 
 void GraphNode::Draw(Shader& shader)
 {
-	model->Draw(shader);
+	if (model != nullptr)
+	{
+		model->Draw(shader);
+		for (auto& child : children)
+		{
+			child->Draw(shader);
+		}
+	}
 }
+
+void GraphNode::SetModel(const std::shared_ptr<Model>& newModel)
+{
+	//model = std::make_shared<Model>(newModel);
+}
+*/
