@@ -1,10 +1,13 @@
 #include "GraphNode.hpp"
-/*
+
 GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
-	:position(position), rotation(rotation), scale(scale), model(nullptr), isDirty(false)
+	:position(position), scale(scale), isDirty(false)
 {
 	isDirty = false;
 	nodeTransform = glm::mat4(1.0f);
+	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 	//children = std::vector< std::shared_ptr<GraphNode>>();
 }
 
@@ -60,6 +63,7 @@ void GraphNode::Draw(Shader& shader)
 {
 	if (model != nullptr)
 	{
+
 		model->Draw(shader);
 		for (auto& child : children)
 		{
@@ -72,4 +76,3 @@ void GraphNode::SetModel(const std::shared_ptr<Model>& newModel)
 {
 	//model = std::make_shared<Model>(newModel);
 }
-*/

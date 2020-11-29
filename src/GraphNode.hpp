@@ -4,18 +4,21 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-//#include "model_s.hpp"
+#include "model_s.hpp"
 
 #include <memory>
 #include <vector>
 
 class GraphNode
 {
-	/*
 public:
-	GraphNode(const glm::vec3& position = glm::vec3(0.0f),
-		const glm::vec3& rotation = glm::vec3(0.0f),
-		const glm::vec3& scale = glm::vec3(1.0f));
+	//GraphNode(const glm::vec3& position = glm::vec3(0.0f),
+	//	const glm::vec3& rotation = glm::vec3(0.0f),
+	//	const glm::vec3& scale = glm::vec3(1.0f));
+
+	GraphNode(const glm::vec3& position,
+		const glm::vec3& rotation,
+		const glm::vec3& scale);
 
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
@@ -40,7 +43,6 @@ private:
 	std::vector<std::shared_ptr<GraphNode>> children;
 
 	std::shared_ptr<Model> model;
-	*/
 };
 
 #endif

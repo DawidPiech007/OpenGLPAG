@@ -280,8 +280,7 @@ int main()
 
     //Model* plecak = new Model("res/models/backpack/backpack.obj");
 
-    //SceneRoot* sceneRoot = new SceneRoot();
-
+    SceneRoot* sceneRoot = new SceneRoot();
 
 
 
@@ -411,7 +410,7 @@ int main()
         glBindVertexArray(VAO);
         //RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
         //plecak->Draw(ourShader);
-        //sceneRoot->Draw(ourShader);
+        sceneRoot->Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------

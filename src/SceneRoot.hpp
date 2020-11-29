@@ -5,14 +5,13 @@
 //#include <glm/gtc/quaternion.hpp>
 
 #include <model_s.hpp>
-//#include "GraphNode.hpp"
+#include "GraphNode.hpp"
 
 //#include <memory>
 //#include <vector>
 
 class SceneRoot
 {
-	/*
 public:
 	SceneRoot(const glm::vec3& position = glm::vec3(0.0f),
 		const glm::vec3& rotation = glm::vec3(0.0f),
@@ -43,7 +42,6 @@ private:
 	std::vector<std::shared_ptr<GraphNode>> graphNodes;
 
 	std::vector<std::shared_ptr<Model>> models;
-	*/
 };
 
 #endif

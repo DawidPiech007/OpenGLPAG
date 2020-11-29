@@ -1,6 +1,6 @@
 
-//#include <SceneRoot.hpp>
-/*
+#include <SceneRoot.hpp>
+
 SceneRoot::SceneRoot(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
 	:position(position), rotation(rotation), scale(scale)
 {
@@ -45,7 +45,7 @@ void SceneRoot::Update()
 
 	for (auto& child : children)
 	{
-		//child->Update(isDirty, nodeTransform);
+		child->Update(isDirty, nodeTransform);
 	}
 }
 
@@ -53,29 +53,28 @@ void SceneRoot::Draw(Shader& shader)
 {
 	for (auto& child : children)
 	{
-		//child->Draw(shader);
+		child->Draw(shader);
 	}
 }
 
 void SceneRoot::CreateSolarSystem()
 {
 	// Tworzenie danych
-	//std::shared_ptr<GraphNode> kostkaNode = std::make_shared<GraphNode>(new GraphNode());								// wskaünik na obiekt
-	//std::shared_ptr<Model> kostkaModel =  std::make_shared<Model>(new Model("res/models/kostkaReady/kostka.obj"));	// wskaünik na model
-	//kostkaNode->SetModel(kostkaModel);	// przypisanie obiektowi modelu
-	//
-	//graphNodes.push_back(kostkaNode);	// zapisanie obiektu w wektorze
-	//models.push_back(kostkaModel);		// zapisanie modelu w wektorze
-
-
-
-
+	std::shared_ptr<GraphNode> kostkaNode = std::make_shared<GraphNode>(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f));								// wskaünik na obiekt
+	std::shared_ptr<Model> kostkaModel =  std::make_shared<Model>("res/models/kostkaReady/kostka.obj");	// wskaünik na model
+	kostkaNode->SetModel(kostkaModel);	// przypisanie obiektowi modelu
+	
+	graphNodes.push_back(kostkaNode);	// zapisanie obiektu w wektorze
+	models.push_back(kostkaModel);		// zapisanie modelu w wektorze
+	
+	
+	
+	
 	// Uk≥adanie grafu sceny
-	//AddChild(kostkaNode);
+	AddChild(kostkaNode);
 }
 
 void SceneRoot::UpdateSolarSystem()
 {
 
 }
-*/
