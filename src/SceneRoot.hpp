@@ -6,7 +6,7 @@
 
 #include <model_s.hpp>
 #include "GraphNode.hpp"
-
+#include <GLFW/glfw3.h>
 //#include <memory>
 //#include <vector>
 
@@ -23,13 +23,17 @@ public:
 
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
-	void Update();
+	void Update(float time);
 
 	void Draw(Shader& shader);
 
 private:
 	void CreateSolarSystem();
-	void UpdateSolarSystem();
+	void UpdateSolarSystem(float time);
+	shared_ptr<GraphNode> NewObject(const glm::vec3& position,
+		const glm::vec3& rotation,
+		const glm::vec3& scale, 
+		const std::string& path);
 
 	glm::vec3 position;
 	glm::quat rotation;

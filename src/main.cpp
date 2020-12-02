@@ -276,7 +276,8 @@ int main()
         //RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
         //plecak->Draw(ourShader);
         //kostka->Draw(ourShader);
-        sceneRoot->Update();
+        sceneRoot->Update((float)glfwGetTime());
+        //sceneRoot->Update(1.0f);
         sceneRoot->Draw(ourShader);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

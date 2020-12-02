@@ -31,14 +31,14 @@ public:
 	void Draw(Shader& shader);
 	void SetModel(const std::shared_ptr<Model>& newModel);
 
-private:
 	void PrintMatrix(glm::mat4 M);
+	glm::mat4 transform;
+private:
 
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 scale;
 	glm::mat4 nodeTransform;
-	glm::mat4 transform;
 
 	bool isDirty;
 
