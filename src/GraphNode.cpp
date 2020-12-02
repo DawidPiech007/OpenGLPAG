@@ -63,16 +63,29 @@ void GraphNode::Draw(Shader& shader)
 {
 	if (model != nullptr)
 	{
+		shader.use();
+		//PrintMatrix(transform);
+		shader.setMat4("model", transform);
+		GraphNode::model->Draw(shader);
+	}
 
-		model->Draw(shader);
-		for (auto& child : children)
-		{
-			child->Draw(shader);
-		}
+	for (auto& child : children)
+	{
+		child->Draw(shader);
 	}
 }
 
 void GraphNode::SetModel(const std::shared_ptr<Model>& newModel)
 {
 	//model = std::make_shared<Model>(newModel);
+	model = newModel;
+}
+
+void GraphNode::PrintMatrix(glm::mat4 M)
+{
+	cout << "================================" << endl;
+	cout << M[0][0] << "  " << M[0][1] << "  " << M[0][2] << "  " << M[0][3] << endl;
+	cout << M[1][0] << "  " << M[1][1] << "  " << M[1][2] << "  " << M[1][3] << endl;
+	cout << M[2][0] << "  " << M[2][1] << "  " << M[2][2] << "  " << M[2][3] << endl;
+	cout << M[3][0] << "  " << M[3][1] << "  " << M[3][2] << "  " << M[3][3] << endl;
 }

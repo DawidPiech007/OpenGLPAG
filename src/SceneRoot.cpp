@@ -68,13 +68,11 @@ void SceneRoot::CreateSolarSystem()
 	models.push_back(kostkaModel);		// zapisanie modelu w wektorze
 	
 	
-	
-	
 	// Uk³adanie grafu sceny
 	AddChild(kostkaNode);
 }
 
 void SceneRoot::UpdateSolarSystem()
 {
-
+	children[0]->SetPosition(0, 0, 0);
 }

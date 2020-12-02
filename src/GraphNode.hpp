@@ -32,6 +32,8 @@ public:
 	void SetModel(const std::shared_ptr<Model>& newModel);
 
 private:
+	void PrintMatrix(glm::mat4 M);
+
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 scale;
