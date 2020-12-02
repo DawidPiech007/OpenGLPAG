@@ -190,11 +190,11 @@ int main()
 
     //bool show_demo_window = true;
     //bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.1f, 1.00f);
     glm::vec4 texture_color = glm::vec4(0.6f, 0.0f, 0.0f, 1.00f);
     float yRotation = 30;
     float xRotation = 20;
-    int depth = 2;
+    float zoom = 20;
 
     // render loop
     // -----------
@@ -227,10 +227,10 @@ int main()
             //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
             //ImGui::Checkbox("Another Window", &show_another_window);
 
-            ImGui::SliderInt("recursion depth", &depth, 0, 6);                // moje
+            ImGui::SliderFloat("zoom", &zoom, 5, 50);                // moje
             ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
+            //ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             //    counter++;
@@ -257,7 +257,7 @@ int main()
         glm::mat4 projection = glm::mat4(1.0f);
         glm::mat4 model = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -10.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
         view = glm::rotate(view, glm::radians(yRotation), glm::vec3(0.0f, 1.0f, 0.0f));
         view = glm::rotate(view, glm::radians(xRotation), glm::vec3(1.0f, 0.0f, 0.0f));
         //view = glm::translate(view, glm::vec3(-a/2, -H/3, h/3));

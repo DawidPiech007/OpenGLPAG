@@ -4,10 +4,14 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	:position(position), scale(scale), isDirty(false)
 {
 	isDirty = false;
-	nodeTransform = glm::mat4(1.0f);
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 P = glm::translate(glm::mat4(1.0f), position);
+	glm::mat4 R = glm::mat4_cast(this->rotation);
+	glm::mat4 S = glm::scale(glm::mat4(1.0f), scale);
+
+	nodeTransform = P * R * S;
 	//children = std::vector< std::shared_ptr<GraphNode>>();
 }
 
@@ -51,7 +55,7 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 		isDirty = false;
 	}
 
-	transform = nodeTransform * parentTransform;
+	transform = parentTransform * nodeTransform;
 
 	for (auto& child : children)
 	{
