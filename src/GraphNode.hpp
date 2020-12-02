@@ -29,12 +29,14 @@ public:
 	void Update(bool parentIsDirty, glm::mat4 parentTransform);
 
 	void Draw(Shader& shader);
+	void DrawOrbit(Shader& orbitShader);
+
 	void SetModel(const std::shared_ptr<Model>& newModel);
 
-	void PrintMatrix(glm::mat4 M);
-	glm::mat4 transform;
 private:
+	void PrintMatrix(glm::mat4 M);
 
+	glm::mat4 transform;
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 scale;

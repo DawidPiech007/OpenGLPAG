@@ -148,6 +148,8 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
+    //Shader sphereShader();
 
     // Tworzenie grafu sceny
     // ---------------------
@@ -155,6 +157,9 @@ int main()
 
     //Model* plecak = new Model("res/models/backpack/backpack.obj");
     Model* kostka = new Model("res/models/kostkaReady/kostka.obj");
+
+    GraphNode* orbit = new GraphNode(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f));
+
 
 
 
@@ -227,7 +232,7 @@ int main()
             //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
             //ImGui::Checkbox("Another Window", &show_another_window);
 
-            ImGui::SliderFloat("zoom", &zoom, 5, 50);                // moje
+            ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
@@ -279,6 +284,10 @@ int main()
         sceneRoot->Update((float)glfwGetTime());
         //sceneRoot->Update(1.0f);
         sceneRoot->Draw(ourShader);
+        
+        orbit->DrawOrbit(orbitShader);
+        
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
