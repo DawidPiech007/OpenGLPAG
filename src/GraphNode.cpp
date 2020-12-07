@@ -4,6 +4,8 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	:position(position), scale(scale), isDirty(false)
 {
 	isDirty = false;
+	orbit = false;
+	sphere = false;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -79,7 +81,33 @@ void GraphNode::Draw(Shader& shader)
 	}
 }
 
-void GraphNode::DrawOrbit(Shader& orbitShader)
+void GraphNode::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader)
+{
+	if (model != nullptr)
+	{
+		shader.use();
+		//PrintMatrix(transform);
+
+
+		shader.setMat4("model", transform);
+		GraphNode::model->Draw(shader);
+	}
+	if (orbit)
+	{
+		DrawByGeometryShader(orbitShader);
+	}
+	if (sphere)
+	{
+		DrawByGeometryShader(sphereShader);
+	}
+
+	for (auto& child : children)
+	{
+		child->Draw(shader,orbitShader, sphereShader);
+	}
+}
+
+void GraphNode::DrawByGeometryShader(Shader& geometryShader)
 {
 	float point[] = { 0.0f, 0.0f, 0.0f };
 
@@ -95,7 +123,13 @@ void GraphNode::DrawOrbit(Shader& orbitShader)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	orbitShader.use();
+
+
+
+	geometryShader.use();
+	geometryShader.setFloat("r", r);
+	geometryShader.setFloat("vertexN", vertexN); 
+	geometryShader.setMat4("model", transform);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_POINTS, 0, 1);
@@ -106,6 +140,20 @@ void GraphNode::SetModel(const std::shared_ptr<Model>& newModel)
 {
 	//model = std::make_shared<Model>(newModel);
 	model = newModel;
+}
+
+void GraphNode::SrtOrbit(float r, float vertexN)
+{
+	orbit = true;
+	this->r = r;
+	this->vertexN = vertexN;
+}
+
+void GraphNode::SetSphere(float r, float vertexN)
+{
+	sphere = true;
+	this->r = r;
+	this->vertexN = vertexN;
 }
 
 void GraphNode::PrintMatrix(glm::mat4 M)

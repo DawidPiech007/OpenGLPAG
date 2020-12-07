@@ -25,6 +25,8 @@ public:
 
 	void Update(float time);
 
+	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader);
+
 	void Draw(Shader& shader);
 
 private:

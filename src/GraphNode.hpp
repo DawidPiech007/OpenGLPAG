@@ -29,9 +29,12 @@ public:
 	void Update(bool parentIsDirty, glm::mat4 parentTransform);
 
 	void Draw(Shader& shader);
-	void DrawOrbit(Shader& orbitShader);
+	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader);
+	void DrawByGeometryShader(Shader& geometryShader);
 
 	void SetModel(const std::shared_ptr<Model>& newModel);
+	void SrtOrbit(float r, float vertexN);
+	void SetSphere(float r, float vertexN);
 
 private:
 	void PrintMatrix(glm::mat4 M);
@@ -43,6 +46,11 @@ private:
 	glm::mat4 nodeTransform;
 
 	bool isDirty;
+	bool orbit;
+	bool sphere;
+
+	float r;
+	float vertexN;
 
 	std::vector<std::shared_ptr<GraphNode>> children;
 

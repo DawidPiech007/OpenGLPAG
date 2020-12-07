@@ -149,6 +149,7 @@ int main()
     // ------------------------------------
     Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
+    Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader();
 
     // Tworzenie grafu sceny
@@ -261,7 +262,7 @@ int main()
         glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
         glm::mat4 projection = glm::mat4(1.0f);
         glm::mat4 model = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
         view = glm::rotate(view, glm::radians(yRotation), glm::vec3(0.0f, 1.0f, 0.0f));
         view = glm::rotate(view, glm::radians(xRotation), glm::vec3(1.0f, 0.0f, 0.0f));
@@ -272,8 +273,12 @@ int main()
         // pass transformation matrices to the shader
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
         ourShader.setMat4("view", view);
-        ourShader.setMat4("model", model);
-        
+        //ourShader.setMat4("model", model);
+
+        orbitShader.setMat4("projection", projection);
+        orbitShader.setMat4("view", view);
+        //orbitShader.setMat4("model", model);
+
         //ourShader.setVec4("color", texture_color);
 
         // render container
@@ -282,10 +287,10 @@ int main()
         //plecak->Draw(ourShader);
         //kostka->Draw(ourShader);
         sceneRoot->Update((float)glfwGetTime());
-        //sceneRoot->Update(1.0f);
-        sceneRoot->Draw(ourShader);
+        //sceneRoot->Draw(ourShader);
+        sceneRoot->Draw(ourShader, orbitShader, sphereShader);
         
-        orbit->DrawOrbit(orbitShader);
+        //orbit->DrawByGeometryShader(orbitShader);
         
 
 
