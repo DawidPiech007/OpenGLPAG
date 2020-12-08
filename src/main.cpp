@@ -287,8 +287,8 @@ int main()
         //plecak->Draw(ourShader);
         //kostka->Draw(ourShader);
         sceneRoot->Update((float)glfwGetTime());
-        sceneRoot->Draw(ourShader);
-        //sceneRoot->Draw(ourShader, orbitShader, sphereShader);
+        //sceneRoot->Draw(ourShader);
+        sceneRoot->Draw(ourShader, orbitShader, sphereShader);
         
         //orbit->DrawByGeometryShader(orbitShader);
         
