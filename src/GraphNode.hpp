@@ -38,6 +38,7 @@ public:
 
 private:
 	void PrintMatrix(glm::mat4 M);
+	void PrintVector(glm::vec4 V);
 
 	glm::mat4 transform;
 	glm::vec3 position;

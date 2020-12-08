@@ -19,15 +19,15 @@ void main()
     float x = r * cos(angle);
     float y = r * sin(angle);
     //gl_Position = projection * view * model * (gl_in[0].gl_Position + vec4(0.0, r, 0.0, 0.0));
-    gl_Position = (vec4(0.0, r, -1.0, 1.0));
-    EmitVertex();
+    //gl_Position = (vec4(0.0, r, -1.0, 1.0));
+    //EmitVertex();
 
     angle = 1 * angleSteps;
     x = r * cos(angle);
     y = r * sin(angle);
     //gl_Position = projection * view * model * (gl_in[0].gl_Position + vec4(r, 0.0, 0.0, 0.0));
-    gl_Position = (vec4(r, 0.0, -1.0, 1.0));
-    EmitVertex();
+    //gl_Position = (vec4(r, 0.0, -1.0, 1.0));
+    //EmitVertex();
 
     angle = 2 * angleSteps;
     x = r * cos(angle);

@@ -103,10 +103,10 @@ void SceneRoot::CreateSolarSystem()
 	graphNodes[22]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [29] Planeta4_Orbita3
 	graphNodes[29]->AddChild(NewObject(glm::vec3(5, 0, 0), glm::vec3(0.0f), glm::vec3(0.3f), "res/models/kostkaReady/kostka.obj"));	// [30] Planeta4_Ksiê¿yc3
 
-	graphNodes[7]->SrtOrbit(0.5f, 5.0f);
-	graphNodes[10]->SrtOrbit(1.0f, 5.0f);
-	graphNodes[15]->SrtOrbit(3.0f, 5.0f);
-	graphNodes[24]->SrtOrbit(10.0f, 5.0f);
+	//graphNodes[7]->SrtOrbit(0.5f, 5.0f);
+	//graphNodes[10]->SrtOrbit(1.0f, 5.0f);
+	//graphNodes[15]->SrtOrbit(3.0f, 5.0f);
+	//graphNodes[24]->SrtOrbit(10.0f, 5.0f);
 }
 
 

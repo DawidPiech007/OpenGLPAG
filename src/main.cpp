@@ -277,7 +277,7 @@ int main()
 
         orbitShader.setMat4("projection", projection);
         orbitShader.setMat4("view", view);
-        //orbitShader.setMat4("model", model);
+        orbitShader.setMat4("model", model);
 
         //ourShader.setVec4("color", texture_color);
 
@@ -287,8 +287,8 @@ int main()
         //plecak->Draw(ourShader);
         //kostka->Draw(ourShader);
         sceneRoot->Update((float)glfwGetTime());
-        //sceneRoot->Draw(ourShader);
-        sceneRoot->Draw(ourShader, orbitShader, sphereShader);
+        sceneRoot->Draw(ourShader);
+        //sceneRoot->Draw(ourShader, orbitShader, sphereShader);
         
         //orbit->DrawByGeometryShader(orbitShader);
         
