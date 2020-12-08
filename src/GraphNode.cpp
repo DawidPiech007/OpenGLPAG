@@ -128,6 +128,7 @@ void GraphNode::DrawByGeometryShader(Shader& geometryShader)
 	geometryShader.setFloat("r", r);
 	geometryShader.setFloat("vertexN", vertexN); 
 	geometryShader.setMat4("model", transform);
+	geometryShader.setVec4("color", color);
 	
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_POINTS, 0, 1);
@@ -140,18 +141,20 @@ void GraphNode::SetModel(const std::shared_ptr<Model>& newModel)
 	model = newModel;
 }
 
-void GraphNode::SrtOrbit(float r, float vertexN)
+void GraphNode::SrtOrbit(float r, float vertexN, glm::vec4 color)
 {
 	orbit = true;
 	this->r = r;
 	this->vertexN = vertexN;
+	this->color = color;
 }
 
-void GraphNode::SetSphere(float r, float vertexN)
+void GraphNode::SetSphere(float r, float vertexN, glm::vec4 color)
 {
 	sphere = true;
 	this->r = r;
 	this->vertexN = vertexN;
+	this->color = color;
 }
 
 void GraphNode::PrintMatrix(glm::mat4 M)

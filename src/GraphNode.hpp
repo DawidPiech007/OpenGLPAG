@@ -33,8 +33,8 @@ public:
 	void DrawByGeometryShader(Shader& geometryShader);
 
 	void SetModel(const std::shared_ptr<Model>& newModel);
-	void SrtOrbit(float r, float vertexN);
-	void SetSphere(float r, float vertexN);
+	void SrtOrbit(float r, float vertexN, glm::vec4 color);
+	void SetSphere(float r, float vertexN, glm::vec4 color);
 
 private:
 	void PrintMatrix(glm::mat4 M);
@@ -52,6 +52,7 @@ private:
 
 	float r;
 	float vertexN;
+	glm::vec4 color;
 
 	std::vector<std::shared_ptr<GraphNode>> children;
 
