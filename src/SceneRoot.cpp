@@ -104,24 +104,36 @@ void SceneRoot::CreateSolarSystem()
 	graphNodes[29]->AddChild(NewObject(glm::vec3(5, 0, 0), glm::vec3(0.0f), glm::vec3(0.3f), "res/models/kostkaReady/kostka.obj"));	// [30] Planeta4_Ksiê¿yc3
 
 
-	graphNodes[1]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	graphNodes[2]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	graphNodes[3]->SrtOrbit(14.141f, 15.0f,	glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	graphNodes[4]->SrtOrbit(36.055f, 15.0f,	glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	graphNodes[1]->SrtOrbit(2.0f, 15.0f,	glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
+	graphNodes[2]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	graphNodes[3]->SrtOrbit(14.141f, 15.0f,	glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+	graphNodes[4]->SrtOrbit(36.055f, 15.0f,	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
-	graphNodes[11]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	graphNodes[16]->SrtOrbit(2.0f, 15.0f,	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	graphNodes[18]->SrtOrbit(3.0f, 15.0f,	glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	graphNodes[20]->SrtOrbit(5.0f, 15.0f,	glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	graphNodes[25]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	graphNodes[27]->SrtOrbit(3.0f, 15.0f,	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	graphNodes[29]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	graphNodes[11]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	graphNodes[16]->SrtOrbit(2.0f, 15.0f,	glm::vec4(0.5f, 0.0f, 1.0f, 1.0f));
+	graphNodes[18]->SrtOrbit(3.0f, 15.0f,	glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	graphNodes[20]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.5f, 1.0f, 0.0f, 1.0f));
+	graphNodes[25]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+	graphNodes[27]->SrtOrbit(3.0f, 15.0f,	glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	graphNodes[29]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
 
 	//	Kolory
 	//	1. gwiazda		- ¿ó³ty		1.0f, 1.0f, 0.0f
-	//	2. planeta 1	- b³êkitny  0.0f, 1.0f, 1.0f
 	//
-
+	//	2. planeta 1	- b³êkitny  0.0f, 1.0f, 1.0f
+	//	3. planeta 2	- niebieski 0.0f, 0.0f, 1.0f
+	//	4. planeta 3	- czerwony  1.0f, 0.0f, 0.0f
+	//	5. planeta 4	- zielony	0.0f, 1.0f, 0.0f
+	//
+	//	6. ksiê¿yc 2.1	- ró¿owy	1.0f, 0.0f, 1.0f
+	//
+	//	7. ksiê¿yc 3.1	- fioletowy	0.5f, 0.0f, 1.0f
+	//	8. ksiê¿yc 3.2	- bia³y		1.0f, 1.0f, 1.0f
+	//	9. ksiê¿yc 3.3	- zielonkawy0.5f, 1.0f, 0.0f
+	//
+	//	10.ksiê¿yc 4.1	- pomarañczo1.0f, 0.5f, 0.0f
+	//	11.ksiê¿yc 4.2	- szary		0.5f, 0.5f, 0.5f
+	//	12.ksiê¿yc 4.3	- ciem.zielo0.0f, 0.5f, 0.0f
 }
 
 
