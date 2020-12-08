@@ -149,7 +149,8 @@ int main()
     // ------------------------------------
     Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
-    Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
+    //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
+    Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
     //Shader sphereShader();
 
     // Tworzenie grafu sceny
@@ -196,11 +197,13 @@ int main()
 
     //bool show_demo_window = true;
     //bool show_another_window = false;
+    bool lineVisible = false;
     ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.1f, 1.00f);
     glm::vec4 texture_color = glm::vec4(0.6f, 0.0f, 0.0f, 1.00f);
     float yRotation = 30;
     float xRotation = 20;
     float zoom = 20;
+
 
     // render loop
     // -----------
@@ -231,8 +234,17 @@ int main()
 
             //ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            //ImGui::Checkbox("Another Window", &show_another_window);
+            ImGui::Checkbox("line Visible", &lineVisible);
 
+            if (lineVisible == true)
+            {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            }
+            else
+            {
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            }
+            
             ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
@@ -280,20 +292,14 @@ int main()
         orbitShader.setMat4("view", view);
         orbitShader.setMat4("model", model);
 
-        //ourShader.setVec4("color", texture_color);
+        sphereShader.use();
+        sphereShader.setMat4("projection", projection);
+        sphereShader.setMat4("view", view);
+        sphereShader.setMat4("model", model);
 
-        // render container
-        //glBindVertexArray(VAO);
-        //RenderPyramid(depth, 1, glm::vec3(0.0f), ourShader);
-        //plecak->Draw(ourShader);
-        //kostka->Draw(ourShader);
         sceneRoot->Update((float)glfwGetTime());
-        //sceneRoot->Draw(ourShader);
         sceneRoot->Draw(ourShader, orbitShader, sphereShader);
         
-        //orbit->DrawByGeometryShader(orbitShader);
-        
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -313,7 +319,6 @@ int main()
         glfwMakeContextCurrent(window); // kopiowane z UI
         glfwSwapBuffers(window);
     }
-
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
