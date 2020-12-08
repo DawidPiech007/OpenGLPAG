@@ -109,45 +109,28 @@ void GraphNode::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader)
 
 void GraphNode::DrawByGeometryShader(Shader& geometryShader)
 {
-	//glm::mat4 view = glm::mat4(1.0f);
-	//glm::mat4 projection = glm::mat4(1.0f);
-	//projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 200.0f);
-	//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -20.0f));
-	//view = glm::rotate(view, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	//view = glm::rotate(view, glm::radians(20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	//
-	//glm::vec4 v1 (0.5f, 0.5f, 0.5f, 1.0f);
-	//glm::vec4 v2 (0.0f, 0.0f, 0.0f, 1.0f);
-	//
-	//
-	//cout << "================================" << endl;
-	//cout << "v1 = ";
-	//PrintVector(transform * view * projection * v1);
-	//cout << "v2 = ";
-	//PrintVector(transform * view * projection * v2);
-
-	//float point[] = { 0.0f, 0.0f, 0.0f };
-	//
-	//
-	//unsigned int VBO, VAO; 
-	//glGenVertexArrays(1, &VAO);
-	//glGenBuffers(1, &VBO);
-	//
-	//glBindVertexArray(VAO);
-	//
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-	//
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
-	//
-	//geometryShader.use();
-	//geometryShader.setFloat("r", r);
-	//geometryShader.setFloat("vertexN", vertexN); 
-	//geometryShader.setMat4("model", transform);
-	//
-	//glBindVertexArray(VAO);
-	//glDrawArrays(GL_POINTS, 0, 1);
+	float point[] = { 0.0f, 0.0f, 0.0f };
+	
+	
+	unsigned int VBO, VAO; 
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	
+	glBindVertexArray(VAO);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
+	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	
+	geometryShader.use();
+	geometryShader.setFloat("r", r);
+	geometryShader.setFloat("vertexN", vertexN); 
+	geometryShader.setMat4("model", transform);
+	
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_POINTS, 0, 1);
 
 }
 

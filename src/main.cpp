@@ -273,8 +273,9 @@ int main()
         // pass transformation matrices to the shader
         ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
         ourShader.setMat4("view", view);
-        //ourShader.setMat4("model", model);
+        ourShader.setMat4("model", model);
 
+        orbitShader.use();
         orbitShader.setMat4("projection", projection);
         orbitShader.setMat4("view", view);
         orbitShader.setMat4("model", model);
