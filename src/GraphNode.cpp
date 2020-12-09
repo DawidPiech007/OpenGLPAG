@@ -124,10 +124,12 @@ void GraphNode::DrawByGeometryShader(Shader& geometryShader, int resolution)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	
+
+
 	geometryShader.use();
 	geometryShader.setFloat("r", r);
-	vertexN = resolution;
-	geometryShader.setFloat("vertexN", vertexN); 
+	//vertexN = resolution;
+	geometryShader.setInt("vertexN", resolution); 
 	geometryShader.setMat4("model", transform);
 	geometryShader.setVec4("color", color);
 	

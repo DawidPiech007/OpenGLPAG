@@ -5,7 +5,7 @@ layout (line_strip, max_vertices = 100) out;
 
 
 uniform float r;
-uniform float vertexN;
+uniform int vertexN;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -13,7 +13,7 @@ uniform mat4 projection;
 
 void main()
 {
-    float vertexNNew = vertexN*4;
+    float vertexNNew = float(vertexN)*7;
     float angleSteps = 6.28 / vertexNNew;
 
     for(float i = 0.0; i < vertexNNew; i = i+1)

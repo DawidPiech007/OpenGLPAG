@@ -4,7 +4,7 @@ layout (points) in;
 layout (triangle_strip, max_vertices = 256) out;
 
 uniform float r;
-uniform float vertexN;
+uniform int vertexN;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -13,12 +13,17 @@ uniform mat4 projection;
 void main() {    
     float PI = 3.14159f;
 
-    //const int sectorCount = int(vertexN) * 2;
-    //const int stackCount  = int(vertexN) * 2;
-    const int sectorCount = 7;  
-    const int stackCount  = 7; 
+    const int sectorCount = vertexN + 2;
+    const int stackCount  = vertexN + 1;
+    vec3 vertices[256];
+
+    //const int araySize = (stackCount+1) * (sectorCount+1);
+    
+    //vec3 vertices[araySize];
+    //const int sectorCount = 7;  
+    //const int stackCount  = 7; 
     //vec3 vertices[stackCount][sectorCount]; 
-    vec3 vertices[(stackCount+1) * (sectorCount+1)];
+
 
     float x, y, z, xy;
 
