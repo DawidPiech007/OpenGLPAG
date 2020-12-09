@@ -86,7 +86,7 @@ void SceneRoot::CreateSolarSystem()
 
 	graphNodes[3]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [13] Planeta3_Œcierzka
 	graphNodes[13]->AddChild(NewObject(glm::vec3(10, 0, 10), glm::vec3(0.0f), glm::vec3(1.0f), "none"));							// [14] Planeta3_Grupa
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.4f), "res/models/kostkaReady/kostka.obj"));	// [15] Planeta3
+	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.4f), "res/models/KrzywaReady/krzywa.obj"));	// [15] Planeta3
 	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [16] Planeta3_Orbita1
 	graphNodes[16]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "res/models/kostkaReady/kostka.obj"));	// [17] Planeta3_Ksiê¿yc1
 	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [18] Planeta3_Orbita2
@@ -96,7 +96,7 @@ void SceneRoot::CreateSolarSystem()
 
 	graphNodes[4]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [22] Planeta4_Œcierzka
 	graphNodes[22]->AddChild(NewObject(glm::vec3(20, 0, 30), glm::vec3(0.0f), glm::vec3(1.0f), "none"));							// [23] Planeta4_Grupa
-	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.1f), "res/models/kostkaReady/kostka.obj"));	// [24] Planeta4
+	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(3.1f), "res/models/KulaWcieta/KulaWcietaReady.obj"));	// [24] Planeta4
 	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [25] Planeta4_Orbita1
 	graphNodes[25]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "res/models/kostkaReady/kostka.obj"));	// [26] Planeta4_Ksiê¿yc1
 	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [27] Planeta4_Orbita2
