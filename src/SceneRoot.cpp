@@ -86,7 +86,7 @@ void SceneRoot::CreateSolarSystem()
 
 	graphNodes[3]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [13] Planeta3_Œcierzka
 	graphNodes[13]->AddChild(NewObject(glm::vec3(10, 0, 10), glm::vec3(0.0f), glm::vec3(1.0f), "none"));							// [14] Planeta3_Grupa
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.4f), "res/models/KrzywaReady/krzywa.obj"));	// [15] Planeta3
+	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.4f), "res/models/Krzywa2/krzywa.obj"));		// [15] Planeta3
 	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [16] Planeta3_Orbita1
 	graphNodes[16]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "res/models/kostkaReady/kostka.obj"));	// [17] Planeta3_Ksiê¿yc1
 	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [18] Planeta3_Orbita2
