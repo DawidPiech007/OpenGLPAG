@@ -204,7 +204,6 @@ int main()
     float xRotation = 20;
     float zoom = 20;
 
-
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))

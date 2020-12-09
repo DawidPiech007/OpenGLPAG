@@ -41,7 +41,7 @@ void main() {
             y = xy * sin(sectorAngle);             // r * cos(u) * sin(v)
             
             //vertices[i][j] = vec3(x, y, z);
-            vertices[i * sectorCount + j] = vec3(x, y, z);
+            vertices[i * (sectorCount + 1) + j] = vec3(x, y, z);
 
             //vertices.push_back(x);
             //vertices.push_back(y);
