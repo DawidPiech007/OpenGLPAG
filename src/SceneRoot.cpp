@@ -49,11 +49,11 @@ void SceneRoot::Update(float time)
 	}
 }
 
-void SceneRoot::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader)
+void SceneRoot::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution)
 {
 	for (auto& child : children)
 	{
-		child->Draw(shader, orbitShader, sphereShader);
+		child->Draw(shader, orbitShader, sphereShader, resolution);
 	}
 }
 

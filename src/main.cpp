@@ -203,6 +203,7 @@ int main()
     float yRotation = 30;
     float xRotation = 20;
     float zoom = 20;
+    int resolution = 3;
 
     // render loop
     // -----------
@@ -244,6 +245,7 @@ int main()
                 glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
             }
             
+            ImGui::SliderInt("resolution", &resolution, 1, 7);
             ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
@@ -297,7 +299,7 @@ int main()
         sphereShader.setMat4("model", model);
 
         sceneRoot->Update((float)glfwGetTime());
-        sceneRoot->Draw(ourShader, orbitShader, sphereShader);
+        sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

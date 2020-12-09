@@ -29,8 +29,8 @@ public:
 	void Update(bool parentIsDirty, glm::mat4 parentTransform);
 
 	void Draw(Shader& shader);
-	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader);
-	void DrawByGeometryShader(Shader& geometryShader);
+	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
+	void DrawByGeometryShader(Shader& geometryShader, int resolution);
 
 	void SetModel(const std::shared_ptr<Model>& newModel);
 	void SrtOrbit(float r, float vertexN, glm::vec4 color);

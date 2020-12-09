@@ -81,33 +81,33 @@ void GraphNode::Draw(Shader& shader)
 	}
 }
 
-void GraphNode::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader)
+void GraphNode::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution)
 {
 	if (model != nullptr)
 	{
 		shader.use();
 		//PrintMatrix(transform);
 
-
 		shader.setMat4("model", transform);
 		GraphNode::model->Draw(shader);
 	}
 	if (orbit)
 	{
-		DrawByGeometryShader(orbitShader);
+		DrawByGeometryShader(orbitShader, resolution);
 	}
 	if (sphere)
 	{
-		DrawByGeometryShader(sphereShader);
+		DrawByGeometryShader(sphereShader, resolution);
 	}
+
 
 	for (auto& child : children)
 	{
-		child->Draw(shader,orbitShader, sphereShader);
+		child->Draw(shader,orbitShader, sphereShader, resolution);
 	}
 }
 
-void GraphNode::DrawByGeometryShader(Shader& geometryShader)
+void GraphNode::DrawByGeometryShader(Shader& geometryShader, int resolution)
 {
 	float point[] = { 0.0f, 0.0f, 0.0f };
 	
@@ -126,6 +126,7 @@ void GraphNode::DrawByGeometryShader(Shader& geometryShader)
 	
 	geometryShader.use();
 	geometryShader.setFloat("r", r);
+	vertexN = resolution;
 	geometryShader.setFloat("vertexN", vertexN); 
 	geometryShader.setMat4("model", transform);
 	geometryShader.setVec4("color", color);

@@ -1,7 +1,7 @@
 #version 440
 
 layout (points) in;
-layout (line_strip, max_vertices = 20) out;
+layout (line_strip, max_vertices = 100) out;
 
 
 uniform float r;
@@ -13,9 +13,10 @@ uniform mat4 projection;
 
 void main()
 {
-    float angleSteps = 6.28 / vertexN;
+    float vertexNNew = vertexN*4;
+    float angleSteps = 6.28 / vertexNNew;
 
-    for(float i = 0.0; i < vertexN; i = i+1)
+    for(float i = 0.0; i < vertexNNew; i = i+1)
     {
         float angle = i * angleSteps;
         float x = r * cos(angle);

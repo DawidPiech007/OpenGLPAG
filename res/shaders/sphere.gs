@@ -13,8 +13,10 @@ uniform mat4 projection;
 void main() {    
     float PI = 3.14159f;
 
-    const int sectorCount = 7;  //int(vertexN) * 3;
-    const int stackCount  = 7;  //int(vertexN) * 2;
+    //const int sectorCount = int(vertexN) * 2;
+    //const int stackCount  = int(vertexN) * 2;
+    const int sectorCount = 7;  
+    const int stackCount  = 7; 
     //vec3 vertices[stackCount][sectorCount]; 
     vec3 vertices[(stackCount+1) * (sectorCount+1)];
 
