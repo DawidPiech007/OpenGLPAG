@@ -43,56 +43,28 @@
 //#include "model_s.hpp"
 //#include "mesh_s.h"
 #include <SceneRoot.hpp>
+#include <MyCamera.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow* window);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // settings
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
 
-float a;
-float h;
-float H;
+GLfloat deltaTime = 0.0f; // Czas pomiêdzy obecn¹ i poprzedni¹ klatk¹  
+GLfloat lastFrame = 0.0f; // Czas ostatniej ramki
 
-void RenderPyramid(int n, float scale, glm::vec3 pos, Shader ourShader)
-{
-    if (n <= 0)
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, pos);
-        model = glm::scale(model, glm::vec3(scale, scale, scale));
-        ourShader.setMat4("model", model);
-
-        glDrawArrays(GL_TRIANGLES, 0, 12);
-        return;
-    }
-    else
-    {
-        n--;
-        scale = scale / 2;
-        RenderPyramid(n, scale, pos, ourShader);
-        //RenderPyramid(n, scale, pos + glm::vec3(0, 0, a) * scale * 1.0f, ourShader);
-        //RenderPyramid(n, scale, pos + glm::vec3(-h, 0, a / 2) * scale * 1.0f, ourShader);
-        //RenderPyramid(n, scale, pos + glm::vec3(-h / 3, H, a / 2) * scale * 1.0f, ourShader);
-        RenderPyramid(n, scale, pos + glm::vec3(a, 0, 0) * scale * 1.0f, ourShader);
-        RenderPyramid(n, scale, pos + glm::vec3(a/2, 0, -h) * scale * 1.0f, ourShader);
-        RenderPyramid(n, scale, pos + glm::vec3(a/2, H, -h/3) * scale * 1.0f, ourShader);
-        return;
-    }
-}
+MyCamera* myCamera;
 
 
 int main()
 {
-    a = 1;
-    h = (a * sqrt(3)) / 2;
-    H = (a * sqrt(2)) / sqrt(3);
-
-
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -149,18 +121,14 @@ int main()
     // ------------------------------------
     Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
-    //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
-    //Shader sphereShader();
 
     // Tworzenie grafu sceny
     // ---------------------
     SceneRoot* sceneRoot = new SceneRoot();
 
-    //Model* plecak = new Model("res/models/backpack/backpack.obj");
-    Model* kostka = new Model("res/models/kostkaReady/kostka.obj");
-
-    GraphNode* orbit = new GraphNode(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f));
+    myCamera = new MyCamera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
 
 
@@ -199,16 +167,18 @@ int main()
     //bool show_another_window = false;
     bool lineVisible = false;
     ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.1f, 1.00f);
-    glm::vec4 texture_color = glm::vec4(0.6f, 0.0f, 0.0f, 1.00f);
-    float yRotation = 30;
-    float xRotation = 20;
-    float zoom = 20;
+    //glm::vec4 texture_color = glm::vec4(0.6f, 0.0f, 0.0f, 1.00f);
+    //float yRotation = 30;
+    //float xRotation = 20;
+    //float zoom = 20;
     int resolution = 4;
 
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+
+
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
@@ -247,9 +217,9 @@ int main()
             
 
             ImGui::SliderInt("resolution", &resolution, 1, 5);
-            ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
-            ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
+            //ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
+            //ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
+            //ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
@@ -264,6 +234,9 @@ int main()
         // input
         // -----
         processInput(window);
+        myCamera->InputKey(window, deltaTime);
+        glfwSetCursorPosCallback(window, mouse_callback);
+        glfwSetScrollCallback(window, scroll_callback);
 
         // render
         // ------
@@ -271,21 +244,14 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // also clear the depth buffer now!
 
         // get matrix's uniform location and set matrix
-        ourShader.use();
         // create transformations
-        glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        glm::mat4 projection = glm::mat4(1.0f);
+        glm::mat4 view = myCamera->GetView(); 
+        glm::mat4 projection = myCamera->GetProjection();
         glm::mat4 model = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -zoom));
-        view = glm::rotate(view, glm::radians(yRotation), glm::vec3(0.0f, 1.0f, 0.0f));
-        view = glm::rotate(view, glm::radians(xRotation), glm::vec3(1.0f, 0.0f, 0.0f));
-        //view = glm::translate(view, glm::vec3(-a/2, -H/3, h/3));
-        //view = glm::scale(view, glm::vec3(10, 10, 10));
-        //view = glm::scale(view, glm::vec3(xRotation, xRotation, xRotation));
 
         // pass transformation matrices to the shader
-        ourShader.setMat4("projection", projection); // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
+        ourShader.use();
+        ourShader.setMat4("projection", projection); 
         ourShader.setMat4("view", view);
         ourShader.setMat4("model", model);
 
@@ -310,27 +276,20 @@ int main()
 
         // Rendering  // kopiowane z UI
         ImGui::Render();
-        //int display_w, display_h;
-        //glfwMakeContextCurrent(window);
-        //glfwGetFramebufferSize(window, &display_w, &display_h);
-        //glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-        //glClear(GL_COLOR_BUFFER_BIT); // nie potrzebne
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwMakeContextCurrent(window); // kopiowane z UI
         glfwSwapBuffers(window);
+
+        GLfloat currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
     }
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-    // optional: de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    //glDeleteVertexArrays(1, &VAO);
-    //glDeleteBuffers(1, &VBO);
-    //glDeleteBuffers(1, &EBO);
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
@@ -344,6 +303,16 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    myCamera->InputMouse(xpos, ypos);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    myCamera->InputScroll(yoffset);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
