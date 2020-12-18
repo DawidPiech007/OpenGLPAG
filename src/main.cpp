@@ -133,8 +133,52 @@ int main()
 
     Model* house = new Model("res/models/Domek/kostka.obj");
 
+
+
+
+
+    unsigned int amount = 400;                                                                    
+    glm::mat4* modelMatrices;                                                                    
+    modelMatrices = new glm::mat4[amount];                                                       
+    float offset = 2.0f;       
+    unsigned int index = 0;
+    for (unsigned int i = 0; i < 20; i++)                                                    
+    {
+        for (unsigned int j = 0; j < 20; j++)
+        {
+            glm::mat4 model = glm::mat4(1.0f);                                                       
+            model = glm::translate(model, glm::vec3(offset*i, -5.0f, -offset*j));                          
+                                                                                                 
+            modelMatrices[index] = model;
+            index++;
+        }
+    }                                                                                            
+    unsigned int buffer;                                                                         
+    glGenBuffers(1, &buffer);                                                                    
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);                                                       
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+
+    // set transformation matrices as an instance vertex attribute (with divisor 1)
+    // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
+    // normally you'd want to do this in a more organized fashion, but for learning purposes this will do.
+    // -----------------------------------------------------------------------------------------------------------------------------------
     unsigned int VAO = house->meshes[0].VAO;
     glBindVertexArray(VAO);
+    // set attribute pointers for matrix (4 times vec4)
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    glEnableVertexAttribArray(5);
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    glEnableVertexAttribArray(6);
+    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+    glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
+    glVertexAttribDivisor(5, 1);
+    glVertexAttribDivisor(6, 1);
+
     glBindVertexArray(0);
 
 
@@ -256,35 +300,35 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
 
         // pass transformation matrices to the shader
-        ourShader.use();
-        ourShader.setMat4("projection", projection); 
-        ourShader.setMat4("view", view);
-        ourShader.setMat4("model", model);
-
-        orbitShader.use();
-        orbitShader.setMat4("projection", projection);
-        orbitShader.setMat4("view", view);
-        orbitShader.setMat4("model", model);
-
-        sphereShader.use();
-        sphereShader.setMat4("projection", projection);
-        sphereShader.setMat4("view", view);
-        sphereShader.setMat4("model", model);
-
-        sceneRoot->Update((float)glfwGetTime());
-        sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
+        //ourShader.use();
+        //ourShader.setMat4("projection", projection); 
+        //ourShader.setMat4("view", view);
+        //ourShader.setMat4("model", model);
+        //
+        //orbitShader.use();
+        //orbitShader.setMat4("projection", projection);
+        //orbitShader.setMat4("view", view);
+        //orbitShader.setMat4("model", model);
+        //
+        //sphereShader.use();
+        //sphereShader.setMat4("projection", projection);
+        //sphereShader.setMat4("view", view);
+        //sphereShader.setMat4("model", model);
+        //
+        //sceneRoot->Update((float)glfwGetTime());
+        //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
         houseShader.use();
         houseShader.setMat4("projection", projection);
         houseShader.setMat4("view", view);
-        houseShader.setMat4("model", model);
 
         houseShader.setInt("texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
         glBindVertexArray(0);
 
         glBindVertexArray(house->meshes[0].VAO);
