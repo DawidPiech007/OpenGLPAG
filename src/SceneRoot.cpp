@@ -105,7 +105,7 @@ void SceneRoot::CreateSolarSystem()
 	graphNodes[29]->AddChild(NewObject(glm::vec3(5, 0, 0), glm::vec3(0.0f), glm::vec3(0.3f), "none"));								// [30] Planeta4_Ksiê¿yc3
 
 	// Model Gwiazdy 
-	graphNodes[0]->SetSphere(1.0f, 2.0f, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	//graphNodes[0]->SetSphere(1.0f, 2.0f, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// Model Planey
 	graphNodes[10]->SetSphere(0.7f, 2.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));

@@ -120,6 +120,7 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
     Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
 
@@ -130,6 +131,11 @@ int main()
     myCamera = new MyCamera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
+    Model* house = new Model("res/models/Domek/kostka.obj");
+
+    unsigned int VAO = house->meshes[0].VAO;
+    glBindVertexArray(VAO);
+    glBindVertexArray(0);
 
 
 
@@ -268,6 +274,20 @@ int main()
         sceneRoot->Update((float)glfwGetTime());
         sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
+        houseShader.use();
+        houseShader.setMat4("projection", projection);
+        houseShader.setMat4("view", view);
+        houseShader.setMat4("model", model);
+
+        houseShader.setInt("texture_diffuse1", 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        glBindVertexArray(house->meshes[0].VAO);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
