@@ -6,6 +6,7 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	isDirty = false;
 	orbit = false;
 	sphere = false;
+	light = false;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -78,6 +79,30 @@ void GraphNode::Draw(Shader& shader)
 	for (auto& child : children)
 	{
 		child->Draw(shader);
+	}
+}
+
+void GraphNode::Draw(Shader& shader, Shader& lightShader)
+{
+	if (model != nullptr)
+	{
+		if (light == true)
+		{
+			// sejder do rysowania krzta³tów Ÿróde³ œwiat³a
+			lightShader.use();
+			lightShader.setMat4("model", transform);
+			lightShader.setVec3("lightColor", lightColor);
+			GraphNode::model->Draw(lightShader);
+		}
+		else
+		{
+			// TODO rysowanie szejderem z oœwietleniem
+		}
+	}
+
+	for (auto& child : children)
+	{
+		child->Draw(shader,lightShader);
 	}
 }
 
@@ -158,6 +183,12 @@ void GraphNode::SetSphere(float r, float vertexN, glm::vec4 color)
 	this->r = r;
 	this->vertexN = vertexN;
 	this->color = color;
+}
+
+void GraphNode::SetLight(glm::vec3 lightColor)
+{
+	light = true;
+	this->lightColor = lightColor;
 }
 
 void GraphNode::PrintMatrix(glm::mat4 M)

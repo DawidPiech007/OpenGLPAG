@@ -120,6 +120,7 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     //Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    Shader lightShader("res/shaders/source.vert", "res/shaders/source.frag");
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
@@ -225,7 +226,8 @@ int main()
 
     glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
     glm::vec3 lightColor = glm::vec3(0.1f, 0.6f, 0.9f);
-    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 5.0f);
+    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, -15.0f);
+
 
     // render loop
     // -----------
@@ -323,8 +325,15 @@ int main()
         //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
         
+        ///////////////////////////////////////////////////////////// shader dla Ÿróde³ œwiat³a
+        lightShader.use();
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
 
+        sceneRoot->Update((float)glfwGetTime());
+        sceneRoot->Draw(houseShader, lightShader);
 
+        //////////////////////////////////////////////////////////// shader dla domków
         houseShader.use();
         houseShader.setMat4("projection", projection);
         houseShader.setMat4("view", view);
@@ -340,6 +349,7 @@ int main()
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
 
+        
 
 
         glBindVertexArray(VAO);

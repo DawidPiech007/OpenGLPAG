@@ -30,7 +30,7 @@ void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
 
 void SceneRoot::Update(float time)
 {
-	UpdateSolarSystem(time);
+	//UpdateSolarSystem(time);
 
 	if (isDirty)
 	{
@@ -57,6 +57,14 @@ void SceneRoot::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, 
 	}
 }
 
+void SceneRoot::Draw(Shader& shader, Shader& lightShader)
+{
+	for (auto& child : children)
+	{
+		child->Draw(shader, lightShader);
+	}
+}
+
 void SceneRoot::Draw(Shader& shader)
 {
 	for (auto& child : children)
@@ -68,90 +76,20 @@ void SceneRoot::Draw(Shader& shader)
 
 void SceneRoot::CreateSolarSystem()
 {
-	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));													// [00] S³oñce   
-	AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(45.0f, 0.0f, -10.0f), glm::vec3(1.0f), "none"));								// [01] Orbita1  
-	AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));									// [02] Orbita2  
-	AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(30.0f, 0.0f, 10.0f), glm::vec3(1.0f), "none"));								// [03] Orbita3  
-	AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f, 0.0f, 20.0f), glm::vec3(1.0f), "none"));									// [04] Orbita4  
-																																	  	
-	graphNodes[1]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [05] Planeta1_Œcierzka
-	graphNodes[5]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));					// [06] Planeta1_Grupa
-	graphNodes[6]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));	// [07] Planeta1 
-																																		
-	graphNodes[2]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [08] Planeta2_Œcierzka
-	graphNodes[8]->AddChild(NewObject(glm::vec3(0, 0, 5), glm::vec3(20.0f, 0.0f, -10.0f), glm::vec3(1.0f), "none"));								// [09] Planeta2_Grupa
-	graphNodes[9]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [10] Planeta2
-	graphNodes[9]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [11] Planeta2_Orbita1
-	graphNodes[11]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "none"));								// [12] Planeta2_Ksiê¿yc1
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));												// [00] wszystkie Domki
+	AddChild(NewObject(glm::vec3(5.0f, 5.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));	// [01] kr¹¿¹ce punktowe œwiat³o
 
-	graphNodes[3]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [13] Planeta3_Œcierzka
-	graphNodes[13]->AddChild(NewObject(glm::vec3(10, 0, 10), glm::vec3(-20.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));				// [14] Planeta3_Grupa
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.4f), "res/models/Krzywa2/krzywa.obj"));		// [15] Planeta3
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [16] Planeta3_Orbita1
-	graphNodes[16]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "none"));								// [17] Planeta3_Ksiê¿yc1
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [18] Planeta3_Orbita2
-	graphNodes[18]->AddChild(NewObject(glm::vec3(3, 0, 0), glm::vec3(0.0f), glm::vec3(0.5f), "none"));								// [19] Planeta3_Ksiê¿yc2
-	graphNodes[14]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [20] Planeta3_Orbita3
-	graphNodes[20]->AddChild(NewObject(glm::vec3(5, 0, 0), glm::vec3(0.0f), glm::vec3(0.3f), "none"));								// [21] Planeta3_Ksiê¿yc3
+	graphNodes[1]->SetLight(glm::vec3(0.1f, 0.6f, 0.9f));
 
-	graphNodes[4]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [22] Planeta4_Œcierzka
-	graphNodes[22]->AddChild(NewObject(glm::vec3(20, 0, 30), glm::vec3(10.0f, 0.0f, 20.0f), glm::vec3(1.0f), "none"));				// [23] Planeta4_Grupa
-	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(3.1f), "res/models/KulaWcieta/KulaWcietaReady.obj"));	// [24] Planeta4
-	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [25] Planeta4_Orbita1
-	graphNodes[25]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(0.0f), glm::vec3(0.4f), "none"));								// [26] Planeta4_Ksiê¿yc1
-	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [27] Planeta4_Orbita2
-	graphNodes[27]->AddChild(NewObject(glm::vec3(3, 0, 0), glm::vec3(0.0f), glm::vec3(0.5f), "none"));								// [28] Planeta4_Ksiê¿yc2
-	graphNodes[23]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [29] Planeta4_Orbita3
-	graphNodes[29]->AddChild(NewObject(glm::vec3(5, 0, 0), glm::vec3(0.0f), glm::vec3(0.3f), "none"));								// [30] Planeta4_Ksiê¿yc3
-
-	// Model Gwiazdy 
-	//graphNodes[0]->SetSphere(1.0f, 2.0f, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-
-	// Model Planey
-	graphNodes[10]->SetSphere(0.7f, 2.0f, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-	// Model Ksiê¿yców
-	graphNodes[12]->SetSphere(0.7f, 2.0f, glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
-	graphNodes[17]->SetSphere(0.7f, 2.0f, glm::vec4(0.5f, 0.0f, 1.0f, 1.0f));
-	graphNodes[19]->SetSphere(0.7f, 2.0f, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	graphNodes[21]->SetSphere(0.7f, 2.0f, glm::vec4(0.5f, 1.0f, 0.0f, 1.0f));
-	graphNodes[26]->SetSphere(0.7f, 2.0f, glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
-	graphNodes[28]->SetSphere(0.7f, 2.0f, glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	graphNodes[30]->SetSphere(0.7f, 2.0f, glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
-
-
-	// Orbity planet
-	graphNodes[1]->SrtOrbit(2.0f, 15.0f,	glm::vec4(0.0f, 1.0f, 1.0f, 1.0f));
-	graphNodes[2]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	graphNodes[3]->SrtOrbit(14.141f, 15.0f,	glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	graphNodes[4]->SrtOrbit(36.055f, 15.0f,	glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
-	// Orbity ksiê¿ycy 
-	graphNodes[11]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
-	graphNodes[16]->SrtOrbit(2.0f, 15.0f,	glm::vec4(0.5f, 0.0f, 1.0f, 1.0f));
-	graphNodes[18]->SrtOrbit(3.0f, 15.0f,	glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	graphNodes[20]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.5f, 1.0f, 0.0f, 1.0f));
-	graphNodes[25]->SrtOrbit(2.0f, 15.0f,	glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
-	graphNodes[27]->SrtOrbit(3.0f, 15.0f,	glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	graphNodes[29]->SrtOrbit(5.0f, 15.0f,	glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
-
-	//	Kolory
-	//	1. gwiazda		- ¿ó³ty		1.0f, 1.0f, 0.0f
-	//
-	//	2. planeta 1	- b³êkitny  0.0f, 1.0f, 1.0f
-	//	3. planeta 2	- niebieski 0.0f, 0.0f, 1.0f
-	//	4. planeta 3	- czerwony  1.0f, 0.0f, 0.0f
-	//	5. planeta 4	- zielony	0.0f, 1.0f, 0.0f
-	//
-	//	6. ksiê¿yc 2.1	- ró¿owy	1.0f, 0.0f, 1.0f
-	//
-	//	7. ksiê¿yc 3.1	- fioletowy	0.5f, 0.0f, 1.0f
-	//	8. ksiê¿yc 3.2	- bia³y		1.0f, 1.0f, 1.0f
-	//	9. ksiê¿yc 3.3	- zielonkawy0.5f, 1.0f, 0.0f
-	//
-	//	10.ksiê¿yc 4.1	- pomarañczo1.0f, 0.5f, 0.0f
-	//	11.ksiê¿yc 4.2	- szary		0.5f, 0.5f, 0.5f
-	//	12.ksiê¿yc 4.3	- ciem.zielo0.0f, 0.5f, 0.0f
+	//AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));													// [00] S³oñce   
+	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(45.0f, 0.0f, -10.0f), glm::vec3(1.0f), "none"));								// [01] Orbita1  
+	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));									// [02] Orbita2  
+	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(30.0f, 0.0f, 10.0f), glm::vec3(1.0f), "none"));								// [03] Orbita3  
+	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f, 0.0f, 20.0f), glm::vec3(1.0f), "none"));									// [04] Orbita4  
+	//																																  	
+	//graphNodes[1]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [05] Planeta1_Œcierzka
+	//graphNodes[5]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));					// [06] Planeta1_Grupa
+	//graphNodes[6]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));	// [07] Planeta1 
 }
 
 

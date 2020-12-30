@@ -26,7 +26,7 @@ public:
 	void Update(float time);
 
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
-
+	void Draw(Shader& shader, Shader& lightShader);
 	void Draw(Shader& shader);
 
 private:
