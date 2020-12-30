@@ -119,10 +119,10 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    //Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
-    Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
-    Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
+    //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
+    //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
 
     // Tworzenie grafu sceny
     // ---------------------
@@ -318,6 +318,11 @@ int main()
         //sceneRoot->Update((float)glfwGetTime());
         //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
+        glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
+        glm::vec3 lightColor = glm::vec3(0.1f, 0.6f, 0.9f);
+        glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 5.0f);
+
+
         houseShader.use();
         houseShader.setMat4("projection", projection);
         houseShader.setMat4("view", view);
@@ -325,6 +330,10 @@ int main()
         houseShader.setInt("texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
+
+        houseShader.setVec3("ambientColor", ambientColor);
+        houseShader.setVec3("lightColor", lightColor);
+        houseShader.setVec3("lightPos", lightPos);
 
         glBindVertexArray(VAO);
         //glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
