@@ -133,14 +133,15 @@ int main()
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
     Model* house = new Model("res/models/Domek/kostka.obj");
-
-
+    Model* roof = new Model("res/models/DachReady/Dach5Ready.obj");
 
 
 
     unsigned int amount = 40000;                                                                    
-    glm::mat4* modelMatrices;                                                                    
-    modelMatrices = new glm::mat4[amount];                                                       
+    glm::mat4* modelMatrices;     
+    glm::mat4* modelMatricesRoof;
+    modelMatrices = new glm::mat4[amount]; 
+    modelMatricesRoof = new glm::mat4[amount];
     float offset = 2.0f;       
     unsigned int index = 0;
     for (unsigned int i = 0; i < 200; i++)                                                    
@@ -151,6 +152,7 @@ int main()
             model = glm::translate(model, glm::vec3(offset*i -200, -5.0f, offset*j -200));                          
                                                                                                  
             modelMatrices[index] = model;
+            modelMatricesRoof[index] = model;
             index++;
         }
     }                                                                                            
@@ -183,7 +185,30 @@ int main()
     glBindVertexArray(0);
 
 
+    // Teraz Dach 
+    unsigned int bufferRoof;
+    glGenBuffers(1, &bufferRoof);
+    glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_STATIC_DRAW);
 
+    unsigned int VAO2 = roof->meshes[0].VAO;
+    glBindVertexArray(VAO2);
+    // set attribute pointers for matrix (4 times vec4)
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    glEnableVertexAttribArray(5);
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    glEnableVertexAttribArray(6);
+    glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+    glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
+    glVertexAttribDivisor(5, 1);
+    glVertexAttribDivisor(6, 1);
+
+    glBindVertexArray(0);
 
 
     // Initialize OpenGL loader
@@ -225,7 +250,7 @@ int main()
     //int resolution = 4;
 
     glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
-    glm::vec3 lightColor = glm::vec3(0.1f, 0.6f, 0.9f);
+    glm::vec3 lightColor = glm::vec3(0.7f, 0.9f, 0.2f);
     glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, -15.0f);
 
 
@@ -342,7 +367,7 @@ int main()
 
         houseShader.setInt("texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
+        glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
         //houseShader.setVec3("ambientColor", ambientColor);
         houseShader.setVec3("ambientColor", lightColor);
@@ -355,12 +380,26 @@ int main()
         
 
 
+
+        glBindVertexArray(VAO2);
+        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
+        glBindVertexArray(0);
+
+        glBindVertexArray(roof->meshes[0].VAO);
+
+        // Teraz rysujemy dachy
+        // Tekstura dachu
+        houseShader.use();
+        houseShader.setInt("texture_diffuse1", 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
+
         glBindVertexArray(VAO);
-        //glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
         glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
         glBindVertexArray(0);
 
         glBindVertexArray(house->meshes[0].VAO);
+
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
