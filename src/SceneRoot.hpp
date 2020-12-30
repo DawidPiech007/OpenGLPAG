@@ -29,6 +29,13 @@ public:
 	void Draw(Shader& shader, Shader& lightShader);
 	void Draw(Shader& shader);
 
+	glm::vec3 GetPosition(int index);
+
+	void SetLight(int index, glm::vec3 lightColor);
+
+	// teraz publiczne ¿eby da³o siê pobieraæ dane z œwiate³ w scenie i wysy³aæ dane z maina do œwiate³ w scenie
+	std::vector<std::shared_ptr<GraphNode>> children;
+
 private:
 	void CreateSolarSystem();
 	void UpdateSolarSystem(float time);
@@ -44,7 +51,6 @@ private:
 
 	bool isDirty;
 
-	std::vector<std::shared_ptr<GraphNode>> children;
 	std::vector<std::shared_ptr<GraphNode>> graphNodes;
 
 	std::vector<std::shared_ptr<Model>> models;

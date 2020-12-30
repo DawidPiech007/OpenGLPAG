@@ -38,6 +38,15 @@ void GraphNode::SetScale(float x, float y, float z)
 	isDirty = true;
 }
 
+void GraphNode::SetPositionOnCircle(float angle, float radius)
+{
+	float x = std::cos(angle) * radius;
+	float z = std::sin(angle) * radius;
+
+	position = glm::vec3(x, position.y, z);
+	isDirty = true;
+}
+
 void GraphNode::AddChild(const std::shared_ptr<GraphNode>& child)
 {
 	children.push_back(child);
@@ -189,6 +198,11 @@ void GraphNode::SetLight(glm::vec3 lightColor)
 {
 	light = true;
 	this->lightColor = lightColor;
+}
+
+glm::vec3 GraphNode::GetPosition()
+{
+	return position;
 }
 
 void GraphNode::PrintMatrix(glm::mat4 M)

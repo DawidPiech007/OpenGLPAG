@@ -138,17 +138,17 @@ int main()
 
 
 
-    unsigned int amount = 400;                                                                    
+    unsigned int amount = 40000;                                                                    
     glm::mat4* modelMatrices;                                                                    
     modelMatrices = new glm::mat4[amount];                                                       
     float offset = 2.0f;       
     unsigned int index = 0;
-    for (unsigned int i = 0; i < 20; i++)                                                    
+    for (unsigned int i = 0; i < 200; i++)                                                    
     {
-        for (unsigned int j = 0; j < 20; j++)
+        for (unsigned int j = 0; j < 200; j++)
         {
             glm::mat4 model = glm::mat4(1.0f);                                                       
-            model = glm::translate(model, glm::vec3(offset*i, -5.0f, -offset*j));                          
+            model = glm::translate(model, glm::vec3(offset*i -200, -5.0f, offset*j -200));                          
                                                                                                  
             modelMatrices[index] = model;
             index++;
@@ -330,6 +330,8 @@ int main()
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
 
+        sceneRoot->SetLight(1, lightColor);
+
         sceneRoot->Update((float)glfwGetTime());
         sceneRoot->Draw(houseShader, lightShader);
 
@@ -345,6 +347,7 @@ int main()
         //houseShader.setVec3("ambientColor", ambientColor);
         houseShader.setVec3("ambientColor", lightColor);
         houseShader.setVec3("lightColor", lightColor);
+        lightPos = sceneRoot->GetPosition(1);
         houseShader.setVec3("lightPos", lightPos);
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());

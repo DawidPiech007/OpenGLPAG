@@ -23,6 +23,7 @@ public:
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+	void SetPositionOnCircle(float angle, float radius);
 
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
@@ -37,6 +38,8 @@ public:
 	void SrtOrbit(float r, float vertexN, glm::vec4 color);
 	void SetSphere(float r, float vertexN, glm::vec4 color);
 	void SetLight(glm::vec3 lightColor);
+
+	glm::vec3 GetPosition();
 
 private:
 	void PrintMatrix(glm::mat4 M);

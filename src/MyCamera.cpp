@@ -13,7 +13,7 @@ MyCamera::MyCamera(glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraU
     fov = 45.0f;
     mouseActive = false;
 
-    projection = glm::perspective(glm::radians(fov), scrWidth / scrHeight, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(fov), scrWidth / scrHeight, 0.1f, 600.0f);
 }
 
 glm::mat4 MyCamera::GetView()
@@ -34,7 +34,7 @@ glm::vec3 MyCamera::GetCameraPos()
 
 void MyCamera::InputKey(GLFWwindow* window, float deltaTime)
 {
-    float cameraSpeed = 2.0f * deltaTime; 
+    float cameraSpeed = 20.0f * deltaTime; 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -101,5 +101,5 @@ void MyCamera::InputScroll(float yoffset)
     if (fov >= 45.0f)
         fov = 45.0f;
 
-    projection = glm::perspective(glm::radians(fov), scrWidth / scrHeight, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(fov), scrWidth / scrHeight, 0.1f, 600.0f);
 }
