@@ -11,8 +11,7 @@ MyCamera::MyCamera(glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraU
     yaw = -90.0f;
     pitch = 0.0f;
     fov = 45.0f;
-    scrWidth = 1280;
-    scrHeight = 720;
+    mouseActive = false;
 
     projection = glm::perspective(glm::radians(fov), scrWidth / scrHeight, 0.1f, 100.0f);
 }
@@ -25,6 +24,11 @@ glm::mat4 MyCamera::GetView()
 glm::mat4 MyCamera::GetProjection()
 {
     return projection;
+}
+
+glm::vec3 MyCamera::GetCameraPos()
+{
+    return cameraPos;
 }
 
 
@@ -43,6 +47,16 @@ void MyCamera::InputKey(GLFWwindow* window, float deltaTime)
         cameraPos += cameraSpeed * cameraUp;
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         cameraPos -= cameraSpeed * cameraUp;
+    if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && mouseActive == false)
+    {
+        mouseActive = true;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); // Pokazanie kursora myski
+    }
+    if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && mouseActive == true)
+    {
+        mouseActive = false;
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
+    }
 }
 
 void MyCamera::InputMouse(float xpos, float ypos)

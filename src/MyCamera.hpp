@@ -13,6 +13,7 @@ public:
 
 	glm::mat4 GetView();
 	glm::mat4 GetProjection();
+	glm::vec3 GetCameraPos();
 
 	void InputKey(GLFWwindow* window, float deltaTime);
 	void InputMouse(float xpos, float ypos);
@@ -38,6 +39,8 @@ private:
 
 	float scrWidth;
 	float scrHeight;
+
+	bool mouseActive;
 };
 
 #endif

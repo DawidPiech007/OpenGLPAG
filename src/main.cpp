@@ -221,7 +221,11 @@ int main()
     //float yRotation = 30;
     //float xRotation = 20;
     //float zoom = 20;
-    int resolution = 4;
+    //int resolution = 4;
+
+    glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
+    glm::vec3 lightColor = glm::vec3(0.1f, 0.6f, 0.9f);
+    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 5.0f);
 
     // render loop
     // -----------
@@ -266,11 +270,11 @@ int main()
             }
             
 
-            ImGui::SliderInt("resolution", &resolution, 1, 5);
+            //ImGui::SliderInt("resolution", &resolution, 1, 5);
             //ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             //ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            //ImGui::ColorEdit3("texture color", (float*)&texture_color); // Edit 3 floats representing a color
+            ImGui::ColorEdit3("lightColor", (float*)&lightColor); // Edit 3 floats representing a color
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             //    counter++;
@@ -318,9 +322,7 @@ int main()
         //sceneRoot->Update((float)glfwGetTime());
         //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
-        glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
-        glm::vec3 lightColor = glm::vec3(0.1f, 0.6f, 0.9f);
-        glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, 5.0f);
+        
 
 
         houseShader.use();
@@ -331,9 +333,14 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
 
-        houseShader.setVec3("ambientColor", ambientColor);
+        //houseShader.setVec3("ambientColor", ambientColor);
+        houseShader.setVec3("ambientColor", lightColor);
         houseShader.setVec3("lightColor", lightColor);
         houseShader.setVec3("lightPos", lightPos);
+
+        houseShader.setVec3("viewPos", myCamera->GetCameraPos());
+
+
 
         glBindVertexArray(VAO);
         //glDrawElements(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
