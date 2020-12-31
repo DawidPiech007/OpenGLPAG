@@ -351,6 +351,7 @@ int main()
         //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
         
+
         
 
         //////////////////////////////////////////////////////////// shader dla domków i dachów
@@ -365,10 +366,21 @@ int main()
         glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
         //houseShader.setVec3("ambientColor", ambientColor);
-        houseShader.setVec3("ambientColor", lightColor);
-        houseShader.setVec3("lightColor", lightColor);
+        //houseShader.setVec3("ambientColor", lightColor);
+        //houseShader.setVec3("lightColor", lightColor);
+        //houseShader.setVec3("lightPos", lightPos);
+        
+        // struktura œwiat³a punktowego
         lightPos = sceneRoot->GetPosition(1);
-        houseShader.setVec3("lightPos", lightPos);
+        houseShader.setVec3("pointLight.position", lightPos);
+        houseShader.setVec3("pointLight.ambient", lightColor);
+        houseShader.setVec3("pointLight.diffuse", lightColor);
+        houseShader.setVec3("pointLight.specular", glm::vec3(1.0f));
+        houseShader.setFloat("pointLight.constant", 1.0f);
+        houseShader.setFloat("pointLight.linear", 0.0009f);
+        //houseShader.setFloat("pointLight.linear", 0.0f);
+        houseShader.setFloat("pointLight.quadratic", 0.00032f);
+        //houseShader.setFloat("pointLight.quadratic", 0.0f);
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
 

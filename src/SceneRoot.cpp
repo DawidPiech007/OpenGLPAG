@@ -95,6 +95,9 @@ void SceneRoot::CreateSolarSystem()
 	AddChild(NewObject(glm::vec3(0.0f, -5.5f, 0.0f), glm::vec3(0.0f), glm::vec3(450.0f, 0.00001f, 450.0f), "res/models/PodlozeReady/kostka.obj"));					// [02] podloze
 
 
+
+
+
 	graphNodes[1]->SetLight(glm::vec3(0.1f, 0.6f, 0.9f));
 
 	//AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));													// [00] S³oñce   
