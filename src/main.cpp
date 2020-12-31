@@ -361,6 +361,7 @@ int main()
         sceneRoot->Draw(houseShader, lightShader);
 
         //////////////////////////////////////////////////////////// shader dla domków
+        glBindVertexArray(house->meshes[0].VAO);
         houseShader.use();
         houseShader.setMat4("projection", projection);
         houseShader.setMat4("view", view);
@@ -378,6 +379,10 @@ int main()
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
 
         
+
+
+
+
 
 
 
