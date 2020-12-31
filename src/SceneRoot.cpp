@@ -34,6 +34,7 @@ void SceneRoot::Update(float time)
 
 	// obracanie œiê œwiat³a wokó³ œrodka
 	graphNodes[1]->SetPositionOnCircle(time * 0.4f, 260);
+	graphNodes[2]->SetPositionOnCircle(0, 0);
 
 	if (isDirty)
 	{
@@ -90,9 +91,9 @@ void SceneRoot::SetLight(int index, glm::vec3 lightColor)
 void SceneRoot::CreateSolarSystem()
 {
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [00] wszystkie Domki
-	AddChild(NewObject(glm::vec3(-5.0f, 10.0f, -15.0f), glm::vec3(0.0f), glm::vec3(8.0f), "res/models/kostkaReady/kostka.obj"));
-	//AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [01] oœ obrotu œwiat³a punktowego
-	//graphNodes[1]->AddChild(NewObject(glm::vec3(-5.0f, 5.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));	// [02] kr¹¿¹ce punktowe œwiat³o
+	AddChild(NewObject(glm::vec3(-5.0f, 10.0f, -15.0f), glm::vec3(0.0f), glm::vec3(8.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o
+	AddChild(NewObject(glm::vec3(0.0f, -5.5f, 0.0f), glm::vec3(0.0f), glm::vec3(450.0f, 0.00001f, 450.0f), "res/models/PodlozeReady/kostka.obj"));					// [02] podloze
+
 
 	graphNodes[1]->SetLight(glm::vec3(0.1f, 0.6f, 0.9f));
 

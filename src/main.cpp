@@ -122,6 +122,7 @@ int main()
     //Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader lightShader("res/shaders/source.vert", "res/shaders/source.frag");
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
+    Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_single_Frag.frag");
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
 
@@ -350,22 +351,15 @@ int main()
         //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
         
         
-        ///////////////////////////////////////////////////////////// shader dla Ÿróde³ œwiat³a
-        lightShader.use();
-        lightShader.setMat4("projection", projection);
-        lightShader.setMat4("view", view);
+        
 
-        sceneRoot->SetLight(1, lightColor);
-
-        sceneRoot->Update((float)glfwGetTime());
-        sceneRoot->Draw(houseShader, lightShader);
-
-        //////////////////////////////////////////////////////////// shader dla domków
+        //////////////////////////////////////////////////////////// shader dla domków i dachów
         glBindVertexArray(house->meshes[0].VAO);
         houseShader.use();
         houseShader.setMat4("projection", projection);
         houseShader.setMat4("view", view);
 
+        //Teraz rysujemy dachy
         houseShader.setInt("texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
@@ -378,13 +372,6 @@ int main()
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
 
-        
-
-
-
-
-
-
 
         glBindVertexArray(VAO2);
         glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
@@ -392,8 +379,8 @@ int main()
 
         glBindVertexArray(roof->meshes[0].VAO);
 
-        // Teraz rysujemy dachy
-        // Tekstura dachu
+        // Teraz rysujemy domki
+        // Tekstura domków
         houseShader.use();
         houseShader.setInt("texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
@@ -404,6 +391,29 @@ int main()
         glBindVertexArray(0);
 
         glBindVertexArray(house->meshes[0].VAO);
+
+        ////////////////////////////////////////////////////////////////// shader bez renderingu instancjonowanego
+        singleShader.use();
+        singleShader.setMat4("projection", projection);
+        singleShader.setMat4("view", view);
+
+        //houseShader.setVec3("ambientColor", ambientColor);
+        singleShader.setVec3("ambientColor", lightColor);
+        singleShader.setVec3("lightColor", lightColor);
+        singleShader.setVec3("lightPos", lightPos);
+
+        singleShader.setVec3("viewPos", myCamera->GetCameraPos());
+
+
+        ///////////////////////////////////////////////////////////// shader dla Ÿróde³ œwiat³a
+        lightShader.use();
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
+
+        sceneRoot->SetLight(1, lightColor);
+
+        sceneRoot->Update((float)glfwGetTime());
+        sceneRoot->Draw(singleShader, lightShader);
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

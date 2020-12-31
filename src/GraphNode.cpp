@@ -105,7 +105,10 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader)
 		}
 		else
 		{
-			// TODO rysowanie szejderem z oœwietleniem
+			// rysowanie szejderem z oœwietleniem
+			shader.use();
+			shader.setMat4("model", transform);
+			GraphNode::model->Draw(shader);
 		}
 	}
 
