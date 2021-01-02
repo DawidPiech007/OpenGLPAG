@@ -25,6 +25,12 @@ public:
 	void SetScale(float x, float y, float z);
 	void SetPositionOnCircle(float angle, float radius);
 
+	void UniformShader_PointLight(string lightName, Shader& shader);
+	void UniformShader_DirLight(string lightName, Shader& shader);
+	void UniformShader_SpotLight(string lightName, Shader& shader);
+
+	void ConfigLight(glm::vec3 color, glm::vec3 dir);
+
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
 	void Update(bool parentIsDirty, glm::mat4 parentTransform);

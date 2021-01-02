@@ -2,7 +2,7 @@
 
 out vec4 FragColor;
 
-in vec2 TexCoord;
+in vec2 TexCoords;
 in vec3 Normal;
 in vec3 FragPos; 
 
@@ -29,7 +29,7 @@ struct PointLight {
 struct SpotLight {
 	vec3 position;
 	vec3 direction;
-	float cut_off;
+	float cutOff;
 	float outerCutOff;
 
 	vec3 ambient;
@@ -82,36 +82,6 @@ void main()
 	result += CalcSpotLight(spotLight2, norm, FragPos, viewDir); 
 
 	FragColor = vec4(result, 1.0);
-
-// koniec
-
-	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(lightPos - FragPos); 
-
-	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = diff * pointLight.diffuse;
-
-
-
-	float specularStrength = 0.5;
-	vec3 viewDir = normalize(viewPos - FragPos);
-	vec3 reflectDir = reflect(-lightDir, norm);  
-
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64);
-	vec3 specular = specularStrength * spec * pointLight.specular;
-
-
-
-	float distance    = length(pointLight.position - FragPos);
-	float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + 
-    		    pointLight.quadratic * (distance * distance)); 
-
-	ambient  *= attenuation; 
-	diffuse  *= attenuation;
-	specular *= attenuation; 
-	
-
-	FragColor = texture(texture_diffuse1, TexCoord) * vec4(result, 1.0);
 }
 
 // calculates the color when using a directional light.

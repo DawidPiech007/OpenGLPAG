@@ -250,8 +250,17 @@ int main()
     //float zoom = 20;
     //int resolution = 4;
 
-    glm::vec3 ambientColor = glm::vec3(0.1f, 0.6f, 0.9f);
-    glm::vec3 lightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+
+    glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+    glm::vec3 dirLightColor = glm::vec3(0.4f, 0.4f, 0.7f);
+    glm::vec3 spot1LightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+    glm::vec3 spot2LightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+
+    glm::vec3 dirLightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+    glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
+    glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
+
+
     glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, -15.0f);
 
 
@@ -302,7 +311,10 @@ int main()
             //ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             //ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            ImGui::ColorEdit3("lightColor", (float*)&lightColor); // Edit 3 floats representing a color
+            ImGui::ColorEdit3("pointLightColor", (float*)&pointLightColor); // Edit 3 floats representing a color
+            ImGui::ColorEdit3("dirLightColor", (float*)&dirLightColor);
+            ImGui::ColorEdit3("spot1LightColor", (float*)&spot1LightColor);
+            ImGui::ColorEdit3("spot2LightColor", (float*)&spot2LightColor);
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             //    counter++;
@@ -361,7 +373,7 @@ int main()
         houseShader.setMat4("view", view);
 
         //Teraz rysujemy dachy
-        houseShader.setInt("texture_diffuse1", 0);
+        houseShader.setInt("material.texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
@@ -370,19 +382,33 @@ int main()
         //houseShader.setVec3("lightColor", lightColor);
         //houseShader.setVec3("lightPos", lightPos);
         
+
         // struktura œwiat³a punktowego
-        lightPos = sceneRoot->GetPosition(1);
-        houseShader.setVec3("pointLight.position", lightPos);
-        houseShader.setVec3("pointLight.ambient", lightColor);
-        houseShader.setVec3("pointLight.diffuse", lightColor);
-        houseShader.setVec3("pointLight.specular", glm::vec3(1.0f));
-        houseShader.setFloat("pointLight.constant", 1.0f);
-        houseShader.setFloat("pointLight.linear", 0.0009f);
+        //lightPos = sceneRoot->GetPosition(1);
+        //houseShader.setVec3("pointLight.position", lightPos);
+        //houseShader.setVec3("pointLight.ambient", lightColor);
+        //houseShader.setVec3("pointLight.diffuse", lightColor);
+        //houseShader.setVec3("pointLight.specular", glm::vec3(1.0f));
+        //houseShader.setFloat("pointLight.constant", 1.0f);
+        //houseShader.setFloat("pointLight.linear", 0.0009f);
         //houseShader.setFloat("pointLight.linear", 0.0f);
-        houseShader.setFloat("pointLight.quadratic", 0.00032f);
+        //houseShader.setFloat("pointLight.quadratic", 0.00032f);
         //houseShader.setFloat("pointLight.quadratic", 0.0f);
 
+        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, glm::vec3(0.0f));
+        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dirLightDir);
+        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, spot1LightDir);
+        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, spot2LightDir);
+
+
+        sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", houseShader);
+        sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
+        sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
+        sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
+
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
+        houseShader.setVec3("material.specular", glm::vec3(0.6f));
+        houseShader.setFloat("material.shininess", 1.0f);
 
 
         glBindVertexArray(VAO2);
@@ -394,7 +420,7 @@ int main()
         // Teraz rysujemy domki
         // Tekstura domków
         houseShader.use();
-        houseShader.setInt("texture_diffuse1", 0);
+        houseShader.setInt("material.texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
 
@@ -410,8 +436,8 @@ int main()
         singleShader.setMat4("view", view);
 
         //houseShader.setVec3("ambientColor", ambientColor);
-        singleShader.setVec3("ambientColor", lightColor);
-        singleShader.setVec3("lightColor", lightColor);
+        singleShader.setVec3("ambientColor", pointLightColor);
+        singleShader.setVec3("lightColor", pointLightColor);
         singleShader.setVec3("lightPos", lightPos);
 
         singleShader.setVec3("viewPos", myCamera->GetCameraPos());
@@ -422,7 +448,7 @@ int main()
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
 
-        sceneRoot->SetLight(1, lightColor);
+        sceneRoot->SetLight(1, pointLightColor);
 
         sceneRoot->Update((float)glfwGetTime());
         sceneRoot->Draw(singleShader, lightShader);

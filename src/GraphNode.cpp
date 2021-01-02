@@ -47,6 +47,47 @@ void GraphNode::SetPositionOnCircle(float angle, float radius)
 	isDirty = true;
 }
 
+void GraphNode::UniformShader_PointLight(string lightName, Shader& shader)
+{
+	shader.setVec3(lightName + ".position", position);
+	shader.setVec3(lightName + ".ambient", ambient);
+	shader.setVec3(lightName + ".diffuse", diffuse);
+	shader.setVec3(lightName + ".specular", specular);
+	shader.setFloat(lightName + ".constant", constant);
+	shader.setFloat(lightName + ".linear", linear);
+	shader.setFloat(lightName + ".quadratic", quadratic);
+}
+
+void GraphNode::UniformShader_DirLight(string lightName, Shader& shader)
+{
+	shader.setVec3(lightName + ".direction", lightDir);
+	shader.setVec3(lightName + ".ambient", ambient);
+	shader.setVec3(lightName + ".diffuse", diffuse);
+	shader.setVec3(lightName + ".specular", specular);
+}
+
+void GraphNode::UniformShader_SpotLight(string lightName, Shader& shader)
+{
+	shader.setVec3(lightName + ".position", position);
+	shader.setVec3(lightName + ".direction", lightDir);
+	shader.setVec3(lightName + ".ambient", ambient);
+	shader.setVec3(lightName + ".diffuse", diffuse);
+	shader.setVec3(lightName + ".specular", specular);
+	shader.setFloat(lightName + ".constant", constant);
+	shader.setFloat(lightName + ".linear", linear);
+	shader.setFloat(lightName + ".quadratic", quadratic);
+	shader.setFloat(lightName + ".cutOff", cutOff);
+	shader.setFloat(lightName + ".outerCutOff", outerCutOff);
+}
+
+void GraphNode::ConfigLight(glm::vec3 color, glm::vec3 dir)
+{
+	diffuse = color;
+	ambient = color / 10.0f;
+
+	lightDir = dir;
+}
+
 void GraphNode::AddChild(const std::shared_ptr<GraphNode>& child)
 {
 	children.push_back(child);
@@ -204,8 +245,8 @@ void GraphNode::SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specula
 	this->diffuse = diffuse;
 	this->specular = specular;
 	this->lightDir = lightDir;
-	this->cutOff = cutOff;
-	this->outerCutOff = outerCutOff;
+	this->cutOff = glm::cos(glm::radians(cutOff));
+	this->outerCutOff = glm::cos(glm::radians(outerCutOff));
 	this->constant = constant;
 	this->linear = linear;
 	this->quadratic = quadratic;

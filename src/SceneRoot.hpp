@@ -34,11 +34,11 @@ public:
 	void SetLight(int index, glm::vec3 lightColor);
 
 	// teraz publiczne ¿eby da³o siê pobieraæ dane z œwiate³ w scenie i wysy³aæ dane z maina do œwiate³ w scenie
+	std::vector<std::shared_ptr<GraphNode>> graphNodes;
 	std::vector<std::shared_ptr<GraphNode>> children;
 
 private:
 	void CreateSolarSystem();
-	void UpdateSolarSystem(float time);
 	shared_ptr<GraphNode> NewObject(const glm::vec3& position,
 		const glm::vec3& rotation,
 		const glm::vec3& scale, 
@@ -51,7 +51,6 @@ private:
 
 	bool isDirty;
 
-	std::vector<std::shared_ptr<GraphNode>> graphNodes;
 
 	std::vector<std::shared_ptr<Model>> models;
 };

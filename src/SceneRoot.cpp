@@ -30,11 +30,9 @@ void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
 
 void SceneRoot::Update(float time)
 {
-	//UpdateSolarSystem(time);
-
 	// obracanie œiê œwiat³a wokó³ œrodka
 	graphNodes[1]->SetPositionOnCircle(time * 0.4f, 260);
-	graphNodes[2]->SetPositionOnCircle(0, 0);
+	
 
 	if (isDirty)
 	{
@@ -133,48 +131,13 @@ void SceneRoot::CreateSolarSystem()
 		glm::vec3(1.0f, -1.0f, 0.0f), // light dir
 		10.0f, 15.0f, // cutOff i outherCutOff	
 		1.0f, 0.0009f, 0.00032f);// t³umienie
+				
+	
+	//graphNodes[2]->SetPositionOnCircle(0, 0);
 
-	//AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));													// [00] S³oñce   
-	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(45.0f, 0.0f, -10.0f), glm::vec3(1.0f), "none"));								// [01] Orbita1  
-	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(10.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));									// [02] Orbita2  
-	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(30.0f, 0.0f, 10.0f), glm::vec3(1.0f), "none"));								// [03] Orbita3  
-	//AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f, 0.0f, 20.0f), glm::vec3(1.0f), "none"));									// [04] Orbita4  
-	//																																  	
 	//graphNodes[1]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "none"));								// [05] Planeta1_Œcierzka
 	//graphNodes[5]->AddChild(NewObject(glm::vec3(2, 0, 0), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(1.0f), "none"));					// [06] Planeta1_Grupa
 	//graphNodes[6]->AddChild(NewObject(glm::vec3(0, 0, 0), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));	// [07] Planeta1 
-}
-
-
-
-void SceneRoot::UpdateSolarSystem(float time)
-{
-	// Prêdkoœæ obiegu planet wokó³ gwiazdy
-	graphNodes[5]->SetRotation(0, time * 100, 0);		// Orbita1
-	graphNodes[8]->SetRotation(0, time * 30, 0);		// Orbita2
-	graphNodes[13]->SetRotation(0, time * 30, 0);		// Orbita3
-	graphNodes[22]->SetRotation(0, time * 30, 0);		// Orbita4
-	// Prêdkoœæ obrotowa planety
-	graphNodes[7]->SetRotation(0, time * 200, 0);		// Planeta1
-	graphNodes[10]->SetRotation(0, time * 90, 0);		// Planeta2
-	graphNodes[15]->SetRotation(0, time * 130, 0);		// Planeta3
-	graphNodes[24]->SetRotation(0, time * 170, 0);		// Planeta4
-	// Prêdkoœci obiegowe ksiê¿yców wokó³ planet
-	graphNodes[11]->SetRotation(0, time * 280, 0);		// Planeta1_Orbita1
-	graphNodes[16]->SetRotation(0, time * 300, 0);		// Planeta3_Orbita1
-	graphNodes[18]->SetRotation(0, time * 200, 0);		// Planeta3_Orbita2
-	graphNodes[20]->SetRotation(0, time * 50, 0);		// Planeta3_Orbita3
-	graphNodes[25]->SetRotation(0, time * 310, 0);		// Planeta4_Orbita1
-	graphNodes[27]->SetRotation(0, time * 240, 0);		// Planeta4_Orbita2
-	graphNodes[29]->SetRotation(0, time * 10, 0);		// Planeta4_Orbita3
-	// Prêdkoœæ obrotowa ksiê¿yców
-	graphNodes[12]->SetRotation(0, time * 700, 0);		// Planeta1_Kœê¿yc1
-	graphNodes[17]->SetRotation(0, time * 500, 0);		// Planeta3_Orbita1
-	graphNodes[19]->SetRotation(0, time * 630, 0);		// Planeta3_Orbita2
-	graphNodes[21]->SetRotation(0, time * 190, 0);		// Planeta3_Orbita3
-	graphNodes[26]->SetRotation(0, time * 980, 0);		// Planeta4_Orbita1
-	graphNodes[28]->SetRotation(0, time * 660, 0);		// Planeta4_Orbita2
-	graphNodes[30]->SetRotation(0, time * 470, 0);		// Planeta4_Orbita3
 }
 
 shared_ptr<GraphNode> SceneRoot::NewObject(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale, const std::string& path)
