@@ -72,11 +72,11 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-//#ifdef __APPLE__ // Przed UI
-//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-//#endif
+    //#ifdef __APPLE__ // Przed UI
+    //    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    //#endif
 
-    // Decide GL+GLSL versions
+        // Decide GL+GLSL versions
 #if __APPLE__
     // GL 3.2 + GLSL 150
     const char* glsl_version = "#version 150";
@@ -122,7 +122,7 @@ int main()
     //Shader ourShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader lightShader("res/shaders/source.vert", "res/shaders/source.frag");
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
-    Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_single_Frag.frag");
+    Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_Frag.frag");
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
 
@@ -138,28 +138,28 @@ int main()
 
 
 
-    unsigned int amount = 40000;                                                                    
-    glm::mat4* modelMatrices;     
+    unsigned int amount = 40000;
+    glm::mat4* modelMatrices;
     glm::mat4* modelMatricesRoof;
-    modelMatrices = new glm::mat4[amount]; 
+    modelMatrices = new glm::mat4[amount];
     modelMatricesRoof = new glm::mat4[amount];
-    float offset = 2.0f;       
+    float offset = 2.0f;
     unsigned int index = 0;
-    for (unsigned int i = 0; i < 200; i++)                                                    
+    for (unsigned int i = 0; i < 200; i++)
     {
         for (unsigned int j = 0; j < 200; j++)
         {
-            glm::mat4 model = glm::mat4(1.0f);                                                       
-            model = glm::translate(model, glm::vec3(offset*i -200, -5.0f, offset*j -200));                          
-                                                                                                 
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(offset * i - 200, -5.0f, offset * j - 200));
+
             modelMatrices[index] = model;
             modelMatricesRoof[index] = model;
             index++;
         }
-    }                                                                                            
-    unsigned int buffer;                                                                         
-    glGenBuffers(1, &buffer);                                                                    
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);                                                       
+    }
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
 
     // set transformation matrices as an instance vertex attribute (with divisor 1)
@@ -213,13 +213,13 @@ int main()
 
 
     // Initialize OpenGL loader
-    #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
-        bool err = gl3wInit() != 0;
-    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
-        bool err = glewInit() != GLEW_OK;
-    #elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
-        bool err = !gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    #endif
+#if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
+    bool err = gl3wInit() != 0;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLEW)
+    bool err = glewInit() != GLEW_OK;
+#elif defined(IMGUI_IMPL_OPENGL_LOADER_GLAD)
+    bool err = !gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+#endif
     if (err)
     {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
@@ -252,16 +252,22 @@ int main()
 
 
     glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
-    glm::vec3 dirLightColor = glm::vec3(0.4f, 0.4f, 0.7f);
-    glm::vec3 spot1LightColor = glm::vec3(0.7f, 0.9f, 0.2f);
-    glm::vec3 spot2LightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+    glm::vec3 dirLightColor = glm::vec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 spot1LightColor = glm::vec3(0.0f, 1.0f, 0.5f);
+    glm::vec3 spot2LightColor = glm::vec3(1.0f, 0.0f, 0.5f);
 
-    glm::vec3 dirLightDir = glm::vec3(0.0f, -1.0f, 0.0f);
+    float dir_pointLight[3] = { 0.0f, 0.0f, 0.0f };
+    glm::vec3 dirLightDir = glm::vec3(0.2f, -1.0f, 0.4f);
+    float dir_dirLight[3] = {0.2f, -1.0f, 0.4f};
     glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
+    float dir_spot1Light[3] = { 1.0f, -1.0f, 0.0f };
     glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
+    float  dir_spot2Light[3] = { -1.0f, -1.0f, 0.0f };
 
-
-    glm::vec3 lightPos = glm::vec3(5.0f, 5.0f, -15.0f);
+    bool pointLightEnable = true;
+    bool dirLightEnable = true;
+    bool spot1LightEnable = true;
+    bool spot2LightEnable = true;
 
 
     // render loop
@@ -311,10 +317,22 @@ int main()
             //ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             //ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
+            ImGui::Checkbox("pointLightEnable", &pointLightEnable);
             ImGui::ColorEdit3("pointLightColor", (float*)&pointLightColor); // Edit 3 floats representing a color
+
+            ImGui::Checkbox("dirLightEnable", &dirLightEnable);
             ImGui::ColorEdit3("dirLightColor", (float*)&dirLightColor);
+            ImGui::SliderFloat3("dirLightDir", (float*)&dirLightDir, -1.0f, 1.0f);
+
+            ImGui::Checkbox("spot1LightEnable", &spot1LightEnable);
             ImGui::ColorEdit3("spot1LightColor", (float*)&spot1LightColor);
+            ImGui::SliderFloat3("dirLight2Dir", (float*)&spot1LightDir, -1.0f, 1.0f);
+
+            ImGui::Checkbox("spot2LightEnable", &spot2LightEnable);
             ImGui::ColorEdit3("spot2LightColor", (float*)&spot2LightColor);
+            ImGui::SliderFloat3("dirLight1Dir", (float*)&spot2LightDir, -1.0f, 1.0f);
+
+
 
             //if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
             //    counter++;
@@ -341,30 +359,7 @@ int main()
         // create transformations
         glm::mat4 view = myCamera->GetView(); 
         glm::mat4 projection = myCamera->GetProjection();
-        glm::mat4 model = glm::mat4(1.0f);
-
-        // pass transformation matrices to the shader
-        //ourShader.use();
-        //ourShader.setMat4("projection", projection); 
-        //ourShader.setMat4("view", view);
-        //ourShader.setMat4("model", model);
-        //
-        //orbitShader.use();
-        //orbitShader.setMat4("projection", projection);
-        //orbitShader.setMat4("view", view);
-        //orbitShader.setMat4("model", model);
-        //
-        //sphereShader.use();
-        //sphereShader.setMat4("projection", projection);
-        //sphereShader.setMat4("view", view);
-        //sphereShader.setMat4("model", model);
-        //
-        //sceneRoot->Update((float)glfwGetTime());
-        //sceneRoot->Draw(ourShader, orbitShader, sphereShader, resolution);
-        
-        
-
-        
+        glm::mat4 model = glm::mat4(1.0f); 
 
         //////////////////////////////////////////////////////////// shader dla domków i dachów
         glBindVertexArray(house->meshes[0].VAO);
@@ -377,29 +372,10 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
-        //houseShader.setVec3("ambientColor", ambientColor);
-        //houseShader.setVec3("ambientColor", lightColor);
-        //houseShader.setVec3("lightColor", lightColor);
-        //houseShader.setVec3("lightPos", lightPos);
-        
-
-        // struktura œwiat³a punktowego
-        //lightPos = sceneRoot->GetPosition(1);
-        //houseShader.setVec3("pointLight.position", lightPos);
-        //houseShader.setVec3("pointLight.ambient", lightColor);
-        //houseShader.setVec3("pointLight.diffuse", lightColor);
-        //houseShader.setVec3("pointLight.specular", glm::vec3(1.0f));
-        //houseShader.setFloat("pointLight.constant", 1.0f);
-        //houseShader.setFloat("pointLight.linear", 0.0009f);
-        //houseShader.setFloat("pointLight.linear", 0.0f);
-        //houseShader.setFloat("pointLight.quadratic", 0.00032f);
-        //houseShader.setFloat("pointLight.quadratic", 0.0f);
-
-        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, glm::vec3(0.0f));
-        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dirLightDir);
-        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, spot1LightDir);
-        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, spot2LightDir);
-
+        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, dir_pointLight, pointLightEnable);
+        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dir_dirLight, dirLightEnable);
+        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, dir_spot1Light, spot1LightEnable);
+        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, dir_spot2Light, spot2LightEnable);
 
         sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", houseShader);
         sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
@@ -407,8 +383,9 @@ int main()
         sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
-        houseShader.setVec3("material.specular", glm::vec3(0.6f));
-        houseShader.setFloat("material.shininess", 1.0f);
+        houseShader.setVec3("material.specular", glm::vec3(0.3f));
+        houseShader.setFloat("material.shininess", 32.0f);
+
 
 
         glBindVertexArray(VAO2);
@@ -435,20 +412,20 @@ int main()
         singleShader.setMat4("projection", projection);
         singleShader.setMat4("view", view);
 
-        //houseShader.setVec3("ambientColor", ambientColor);
-        singleShader.setVec3("ambientColor", pointLightColor);
-        singleShader.setVec3("lightColor", pointLightColor);
-        singleShader.setVec3("lightPos", lightPos);
+        sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", singleShader);
+        sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", singleShader);
+        sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", singleShader);
+        sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", singleShader);
 
         singleShader.setVec3("viewPos", myCamera->GetCameraPos());
+        singleShader.setVec3("material.specular", glm::vec3(0.3f));
+        singleShader.setFloat("material.shininess", 0.5f);
 
 
         ///////////////////////////////////////////////////////////// shader dla Ÿróde³ œwiat³a
         lightShader.use();
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
-
-        sceneRoot->SetLight(1, pointLightColor);
 
         sceneRoot->Update((float)glfwGetTime());
         sceneRoot->Draw(singleShader, lightShader);

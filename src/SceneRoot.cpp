@@ -111,7 +111,7 @@ void SceneRoot::CreateSolarSystem()
 	// œwiat³o kierunkowe
 	graphNodes[3]->SetLight(glm::vec3(0.05f), // ambient
 		glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
-		glm::vec3(1.0f), // specular
+		glm::vec3(0.5f), // specular
 		glm::vec3(0.0f, -1.0f, 0.0f), // light dir
 		0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
 		0.0f, 0.0f, 0.0f);// t³umienie			(zbêdne)

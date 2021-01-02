@@ -7,6 +7,7 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	orbit = false;
 	sphere = false;
 	light = false;
+	enable = true;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -49,6 +50,7 @@ void GraphNode::SetPositionOnCircle(float angle, float radius)
 
 void GraphNode::UniformShader_PointLight(string lightName, Shader& shader)
 {
+	shader.setBool(lightName + ".enable", enable);
 	shader.setVec3(lightName + ".position", position);
 	shader.setVec3(lightName + ".ambient", ambient);
 	shader.setVec3(lightName + ".diffuse", diffuse);
@@ -60,6 +62,7 @@ void GraphNode::UniformShader_PointLight(string lightName, Shader& shader)
 
 void GraphNode::UniformShader_DirLight(string lightName, Shader& shader)
 {
+	shader.setBool(lightName + ".enable", enable);
 	shader.setVec3(lightName + ".direction", lightDir);
 	shader.setVec3(lightName + ".ambient", ambient);
 	shader.setVec3(lightName + ".diffuse", diffuse);
@@ -68,6 +71,7 @@ void GraphNode::UniformShader_DirLight(string lightName, Shader& shader)
 
 void GraphNode::UniformShader_SpotLight(string lightName, Shader& shader)
 {
+	shader.setBool(lightName + ".enable", enable);
 	shader.setVec3(lightName + ".position", position);
 	shader.setVec3(lightName + ".direction", lightDir);
 	shader.setVec3(lightName + ".ambient", ambient);
@@ -80,12 +84,13 @@ void GraphNode::UniformShader_SpotLight(string lightName, Shader& shader)
 	shader.setFloat(lightName + ".outerCutOff", outerCutOff);
 }
 
-void GraphNode::ConfigLight(glm::vec3 color, glm::vec3 dir)
+void GraphNode::ConfigLight(glm::vec3 color, float dir[3], bool enable)
 {
 	diffuse = color;
 	ambient = color / 10.0f;
 
-	lightDir = dir;
+	lightDir = glm::vec3(dir[0], dir[1], dir[2]);
+	this->enable = enable;
 }
 
 void GraphNode::AddChild(const std::shared_ptr<GraphNode>& child)

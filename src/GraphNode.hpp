@@ -29,7 +29,9 @@ public:
 	void UniformShader_DirLight(string lightName, Shader& shader);
 	void UniformShader_SpotLight(string lightName, Shader& shader);
 
-	void ConfigLight(glm::vec3 color, glm::vec3 dir);
+	void ConfigLight(glm::vec3 color, float dir[3], bool enable);
+
+	void ConfigLight(glm::vec3 color, glm::vec3 dir, bool enable);
 
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
@@ -63,6 +65,7 @@ private:
 	bool sphere;
 
 	bool light;
+	bool enable;
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
 	glm::vec3 specular;
