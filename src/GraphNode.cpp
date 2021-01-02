@@ -100,7 +100,7 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader)
 			// sejder do rysowania krzta³tów Ÿróde³ œwiat³a
 			lightShader.use();
 			lightShader.setMat4("model", transform);
-			lightShader.setVec3("lightColor", lightColor);
+			lightShader.setVec3("lightColor", diffuse);
 			GraphNode::model->Draw(lightShader);
 		}
 		else
@@ -197,10 +197,18 @@ void GraphNode::SetSphere(float r, float vertexN, glm::vec4 color)
 	this->color = color;
 }
 
-void GraphNode::SetLight(glm::vec3 lightColor)
+void GraphNode::SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 lightDir, float cutOff, float outerCutOff, float constant, float linear, float quadratic)
 {
 	light = true;
-	this->lightColor = lightColor;
+	this->ambient = ambient;
+	this->diffuse = diffuse;
+	this->specular = specular;
+	this->lightDir = lightDir;
+	this->cutOff = cutOff;
+	this->outerCutOff = outerCutOff;
+	this->constant = constant;
+	this->linear = linear;
+	this->quadratic = quadratic;
 }
 
 glm::vec3 GraphNode::GetPosition()

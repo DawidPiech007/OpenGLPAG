@@ -37,7 +37,7 @@ public:
 	void SetModel(const std::shared_ptr<Model>& newModel);
 	void SrtOrbit(float r, float vertexN, glm::vec4 color);
 	void SetSphere(float r, float vertexN, glm::vec4 color);
-	void SetLight(glm::vec3 lightColor);
+	void SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,	glm::vec3 lightDir, float cutOff, float outerCutOff, float constant, float linear, float quadratic);
 
 	glm::vec3 GetPosition();
 
@@ -55,9 +55,17 @@ private:
 
 	bool orbit;
 	bool sphere;
-	bool light;
 
-	glm::vec3 lightColor;
+	bool light;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	glm::vec3 lightDir;
+	float cutOff;
+	float outerCutOff;
+	float constant;
+	float linear;
+	float quadratic;
 
 	float r;
 	float vertexN;
