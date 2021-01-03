@@ -31,6 +31,13 @@ void GraphNode::SetRotation(float x, float y, float z)
 				glm::angleAxis(glm::radians(y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 				glm::angleAxis(glm::radians(z), glm::vec3(0.0f, 0.0f, 1.0f));
 	isDirty = true;
+
+}
+
+void GraphNode::SetRotationDir(glm::vec3 dir)
+{
+	rotation = glm::quatLookAt(dir, glm::vec3(0.0f, 1.0f, 0.0f));
+	isDirty = true;
 }
 
 void GraphNode::SetScale(float x, float y, float z)
@@ -84,12 +91,15 @@ void GraphNode::UniformShader_SpotLight(string lightName, Shader& shader)
 	shader.setFloat(lightName + ".outerCutOff", outerCutOff);
 }
 
-void GraphNode::ConfigLight(glm::vec3 color, float dir[3], bool enable)
+void GraphNode::ConfigLight(glm::vec3 color, glm::vec3 dir, bool enable)
 {
 	diffuse = color;
 	ambient = color / 10.0f;
 
-	lightDir = glm::vec3(dir[0], dir[1], dir[2]);
+	dir = glm::normalize(dir);
+	lightDir = dir;
+	//SetRotation(dir.x * 180.0f, dir.y * 180.0f, dir.z * 180.f);
+	SetRotationDir(dir);
 	this->enable = enable;
 }
 

@@ -252,17 +252,13 @@ int main()
 
 
     glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
-    glm::vec3 dirLightColor = glm::vec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 dirLightColor = glm::vec3(0.2f, 0.2f, 0.4f);
     glm::vec3 spot1LightColor = glm::vec3(0.0f, 1.0f, 0.5f);
     glm::vec3 spot2LightColor = glm::vec3(1.0f, 0.0f, 0.5f);
 
-    float dir_pointLight[3] = { 0.0f, 0.0f, 0.0f };
     glm::vec3 dirLightDir = glm::vec3(0.2f, -1.0f, 0.4f);
-    float dir_dirLight[3] = {0.2f, -1.0f, 0.4f};
     glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
-    float dir_spot1Light[3] = { 1.0f, -1.0f, 0.0f };
     glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
-    float  dir_spot2Light[3] = { -1.0f, -1.0f, 0.0f };
 
     bool pointLightEnable = true;
     bool dirLightEnable = true;
@@ -326,11 +322,11 @@ int main()
 
             ImGui::Checkbox("spot1LightEnable", &spot1LightEnable);
             ImGui::ColorEdit3("spot1LightColor", (float*)&spot1LightColor);
-            ImGui::SliderFloat3("dirLight2Dir", (float*)&spot1LightDir, -1.0f, 1.0f);
+            ImGui::SliderFloat3("spotLight1Dir", (float*)&spot1LightDir, -1.0f, 1.0f);
 
             ImGui::Checkbox("spot2LightEnable", &spot2LightEnable);
             ImGui::ColorEdit3("spot2LightColor", (float*)&spot2LightColor);
-            ImGui::SliderFloat3("dirLight1Dir", (float*)&spot2LightDir, -1.0f, 1.0f);
+            ImGui::SliderFloat3("spotLight2Dir", (float*)&spot2LightDir, -1.0f, 1.0f);
 
 
 
@@ -372,10 +368,10 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
-        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, dir_pointLight, pointLightEnable);
-        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dir_dirLight, dirLightEnable);
-        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, dir_spot1Light, spot1LightEnable);
-        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, dir_spot2Light, spot2LightEnable);
+        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, glm::vec3(1.0f), pointLightEnable);
+        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dirLightDir, dirLightEnable);
+        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, spot1LightDir, spot1LightEnable);
+        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, spot2LightDir, spot2LightEnable);
 
         sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", houseShader);
         sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
@@ -383,7 +379,7 @@ int main()
         sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
-        houseShader.setVec3("material.specular", glm::vec3(0.3f));
+        houseShader.setVec3("material.specular", glm::vec3(0.1f));
         houseShader.setFloat("material.shininess", 32.0f);
 
 
@@ -418,8 +414,8 @@ int main()
         sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", singleShader);
 
         singleShader.setVec3("viewPos", myCamera->GetCameraPos());
-        singleShader.setVec3("material.specular", glm::vec3(0.3f));
-        singleShader.setFloat("material.shininess", 0.5f);
+        singleShader.setVec3("material.specular", glm::vec3(0.05f));
+        singleShader.setFloat("material.shininess", 32.0f);
 
 
         ///////////////////////////////////////////////////////////// shader dla Ÿróde³ œwiat³a

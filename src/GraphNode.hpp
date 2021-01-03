@@ -22,14 +22,13 @@ public:
 
 	void SetPosition(float x, float y, float z);
 	void SetRotation(float x, float y, float z);
+	void SetRotationDir(glm::vec3 dir);
 	void SetScale(float x, float y, float z);
 	void SetPositionOnCircle(float angle, float radius);
 
 	void UniformShader_PointLight(string lightName, Shader& shader);
 	void UniformShader_DirLight(string lightName, Shader& shader);
 	void UniformShader_SpotLight(string lightName, Shader& shader);
-
-	void ConfigLight(glm::vec3 color, float dir[3], bool enable);
 
 	void ConfigLight(glm::vec3 color, glm::vec3 dir, bool enable);
 
