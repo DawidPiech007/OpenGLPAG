@@ -160,7 +160,9 @@ int main()
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+    //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
 
     // set transformation matrices as an instance vertex attribute (with divisor 1)
     // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
@@ -190,7 +192,12 @@ int main()
     unsigned int bufferRoof;
     glGenBuffers(1, &bufferRoof);
     glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
+
+    // Próba przesuniêcia 1 dachu
+    glm::mat4 test = glm::mat4(1.0f);
+    test = glm::translate(test, glm::vec3(0, -2.0f, 0));
+    glBufferSubData(GL_ARRAY_BUFFER, 3 * sizeof(glm::mat4), sizeof(glm::mat4), &test);
 
     unsigned int VAO2 = roof->meshes[0].VAO;
     glBindVertexArray(VAO2);
@@ -211,6 +218,14 @@ int main()
 
     glBindVertexArray(0);
 
+    // Próba przesuniêcia 2 dachu
+    glm::mat4 test2 = glm::mat4(1.0f);
+    test2 = glm::translate(test2, glm::vec3(-198.0f, -2.0f, -200.0f));
+    glBufferSubData(GL_ARRAY_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::mat4), &test2);
+
+    // Próba przesuniêcia domku 
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferSubData(GL_ARRAY_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::mat4), &test2);
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -252,11 +267,11 @@ int main()
 
 
     glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
-    glm::vec3 dirLightColor = glm::vec3(0.2f, 0.2f, 0.4f);
+    glm::vec3 dirLightColor = glm::vec3(0.4f, 0.4f, 0.6f);
     glm::vec3 spot1LightColor = glm::vec3(0.0f, 1.0f, 0.5f);
     glm::vec3 spot2LightColor = glm::vec3(1.0f, 0.0f, 0.5f);
 
-    glm::vec3 dirLightDir = glm::vec3(0.2f, -1.0f, 0.4f);
+    glm::vec3 dirLightDir = glm::vec3(0.2f, -0.6f, -0.4f);
     glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
     glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
 
@@ -396,6 +411,12 @@ int main()
         houseShader.setInt("material.texture_diffuse1", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
+
+        // Próba przesuniêcia domku 
+        glm::mat4 test3 = glm::mat4(1.0f);
+        test3 = glm::translate(test3, glm::vec3(0.0f, (float)glfwGetTime()/3, -10.0f));
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferSubData(GL_ARRAY_BUFFER, 20100 * sizeof(glm::mat4), sizeof(glm::mat4), &test3);
 
         glBindVertexArray(VAO);
         glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
