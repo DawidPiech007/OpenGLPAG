@@ -7,9 +7,41 @@ SceneRoot::SceneRoot(const glm::vec3& position, const glm::vec3& rotation, const
 	isDirty = false;
 	nodeTransform = glm::mat4(1.0f);
 
-	CreateSolarSystem();
+	CreateBaseScene();
 }
 
+void SceneRoot::CreateAllHouse(int n, int m)
+{
+	unsigned int amount = n * m;
+	//modelMatricesHouse = new glm::mat4[amount];
+	float offset = 2.0f;
+	//unsigned int index = 0;
+	for (unsigned int i = 0; i < n; i++)
+	{
+		for (unsigned int j = 0; j < m; j++)
+		{
+			glm::vec3 position = glm::vec3(offset * i - 200, -5.0f, offset * j - 200);
+			graphNodes[0]->AddChild(NewObject(position, glm::vec3(0.0f), glm::vec3(1.0f), "none"));
+		}
+	}
+}
+
+void SceneRoot::CreateAllRoof(int n, int m)
+{
+	unsigned int amount = n * m;
+	//modelMatricesRoof = new glm::mat4[amount];
+	float offset = 2.0f;
+	unsigned int index = 0;
+	for (unsigned int i = 0; i < n; i++)
+	{
+		for (unsigned int j = 0; j < m; j++)
+		{
+			glm::vec3 position = glm::vec3(offset * i - 200, -5.0f, offset * j - 200);
+			// index + 6 to odpowiedni domek
+			graphNodes[index+6]->AddChild(NewObject(position, glm::vec3(0.0f), glm::vec3(1.0f), "none"));
+		}
+	}
+}
 
 void SceneRoot::SetPosition(float x, float y, float z)
 {
@@ -91,7 +123,7 @@ void SceneRoot::SetLight(int index, glm::vec3 lightColor)
 }
 
 
-void SceneRoot::CreateSolarSystem()
+void SceneRoot::CreateBaseScene()
 {
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [00] wszystkie Domki
 	AddChild(NewObject(glm::vec3(-5.0f, 1.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o

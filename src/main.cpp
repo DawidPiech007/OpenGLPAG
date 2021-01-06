@@ -151,7 +151,7 @@ int main()
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, glm::vec3(offset * i - 200, -5.0f, offset * j - 200));
-
+    
             modelMatrices[index] = model;
             modelMatricesRoof[index] = model;
             index++;
@@ -163,6 +163,10 @@ int main()
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
+    sceneRoot->CreateAllHouse(200, 200);
+
+    
+
 
     // set transformation matrices as an instance vertex attribute (with divisor 1)
     // note: we're cheating a little by taking the, now publicly declared, VAO of the model's mesh(es) and adding new vertexAttribPointers
@@ -193,6 +197,7 @@ int main()
     glGenBuffers(1, &bufferRoof);
     glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
+    sceneRoot->CreateAllRoof(200, 200);
 
     // Próba przesuniêcia 1 dachu
     glm::mat4 test = glm::mat4(1.0f);
@@ -226,6 +231,7 @@ int main()
     // Próba przesuniêcia domku 
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferSubData(GL_ARRAY_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::mat4), &test2);
+
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -400,7 +406,7 @@ int main()
 
 
         glBindVertexArray(VAO2);
-        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
+        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, 40000);
         glBindVertexArray(0);
 
         glBindVertexArray(roof->meshes[0].VAO);
@@ -419,7 +425,7 @@ int main()
         glBufferSubData(GL_ARRAY_BUFFER, 20100 * sizeof(glm::mat4), sizeof(glm::mat4), &test3);
 
         glBindVertexArray(VAO);
-        glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, amount);
+        glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, 40000);
         glBindVertexArray(0);
 
         glBindVertexArray(house->meshes[0].VAO);

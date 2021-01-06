@@ -8,6 +8,7 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	sphere = false;
 	light = false;
 	enable = true;
+	first = true;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -119,11 +120,16 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 		glm::mat4 S = glm::scale(glm::mat4(1.0f), scale);
 
 		nodeTransform = P * R * S;
+		transform = parentTransform * nodeTransform;
 
 		isDirty = false;
 	}
 
-	transform = parentTransform * nodeTransform;
+	if (first)
+	{
+		transform = parentTransform * nodeTransform;
+		first = false;
+	}
 
 	for (auto& child : children)
 	{

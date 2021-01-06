@@ -59,6 +59,7 @@ private:
 	glm::mat4 nodeTransform;
 
 	bool isDirty;
+	bool first;
 
 	bool orbit;
 	bool sphere;
