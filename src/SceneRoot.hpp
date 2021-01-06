@@ -26,7 +26,7 @@ public:
 
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
-	void Update(float time);
+	void Update(float time, unsigned int houseBuffer, unsigned int roofBuffer);
 
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void Draw(Shader& shader, Shader& lightShader);

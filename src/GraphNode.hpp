@@ -34,7 +34,7 @@ public:
 
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
-	void Update(bool parentIsDirty, glm::mat4 parentTransform);
+	void Update(bool parentIsDirty, glm::mat4 parentTransform, unsigned int houseBuffer, unsigned int roofBuffer);
 
 	void Draw(Shader& shader);
 	void Draw(Shader& shader, Shader& lightShader);
@@ -45,8 +45,14 @@ public:
 	void SrtOrbit(float r, float vertexN, glm::vec4 color);
 	void SetSphere(float r, float vertexN, glm::vec4 color);
 	void SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,	glm::vec3 lightDir, float cutOff, float outerCutOff, float constant, float linear, float quadratic);
+	void SetHouse(int index);
+	void SetRoof(int index);
 
 	glm::vec3 GetPosition();
+
+	// publiczne do debugowania
+	std::vector<std::shared_ptr<GraphNode>> children;
+	int index;
 
 private:
 	void PrintMatrix(glm::mat4 M);
@@ -60,6 +66,9 @@ private:
 
 	bool isDirty;
 	bool first;
+
+	bool house;
+	bool roof;
 
 	bool orbit;
 	bool sphere;
@@ -80,7 +89,6 @@ private:
 	float vertexN;
 	glm::vec4 color;
 
-	std::vector<std::shared_ptr<GraphNode>> children;
 
 	std::shared_ptr<Model> model;
 };

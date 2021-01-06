@@ -15,13 +15,17 @@ void SceneRoot::CreateAllHouse(int n, int m)
 	unsigned int amount = n * m;
 	//modelMatricesHouse = new glm::mat4[amount];
 	float offset = 2.0f;
-	//unsigned int index = 0;
+	unsigned int index = 0;
 	for (unsigned int i = 0; i < n; i++)
 	{
 		for (unsigned int j = 0; j < m; j++)
 		{
 			glm::vec3 position = glm::vec3(offset * i - 200, -5.0f, offset * j - 200);
 			graphNodes[0]->AddChild(NewObject(position, glm::vec3(0.0f), glm::vec3(1.0f), "none"));
+
+			graphNodes[6+index]->SetHouse(index);
+
+			index++;
 		}
 	}
 }
@@ -36,9 +40,16 @@ void SceneRoot::CreateAllRoof(int n, int m)
 	{
 		for (unsigned int j = 0; j < m; j++)
 		{
-			glm::vec3 position = glm::vec3(offset * i - 200, -5.0f, offset * j - 200);
+			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 			// index + 6 to odpowiedni domek
 			graphNodes[index+6]->AddChild(NewObject(position, glm::vec3(0.0f), glm::vec3(1.0f), "none"));
+			graphNodes[6+amount + index]->SetRoof(index);
+
+
+			//std::cout << " index:" << graphNodes[index + 6]->children[0]->index << endl;
+			//std::cout << " index:" << graphNodes[index + 6]->index << " " << graphNodes[6 + amount + index]->index << endl;
+			index++;
+			//std::cout << " index:" << index << endl;
 		}
 	}
 }
@@ -60,7 +71,7 @@ void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
 	children.push_back(child);
 }
 
-void SceneRoot::Update(float time)
+void SceneRoot::Update(float time, unsigned int houseBuffer, unsigned int roofBuffer)
 {
 	// obracanie œiê œwiat³a wokó³ œrodka
 	graphNodes[1]->SetPositionOnCircle(time * 0.4f, 30);
@@ -79,7 +90,7 @@ void SceneRoot::Update(float time)
 
 	for (auto& child : children)
 	{
-		child->Update(isDirty, nodeTransform);
+		child->Update(isDirty, nodeTransform, houseBuffer, roofBuffer);
 	}
 }
 

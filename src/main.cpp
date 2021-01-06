@@ -2,6 +2,7 @@
 // If you are new to dear imgui, see examples/README.txt and documentation at the top of imgui.cpp.
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
 
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -53,6 +54,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow* window);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+void ChangeBuffer(int index, glm::mat4 newModel, bool house);
+
 // settings
 const unsigned int SCR_WIDTH = 1280;
 const unsigned int SCR_HEIGHT = 720;
@@ -61,6 +64,9 @@ GLfloat deltaTime = 0.0f; // Czas pomiêdzy obecn¹ i poprzedni¹ klatk¹
 GLfloat lastFrame = 0.0f; // Czas ostatniej ramki
 
 MyCamera* myCamera;
+
+unsigned int bufferRoof;
+unsigned int buffer;
 
 
 int main()
@@ -157,7 +163,7 @@ int main()
             index++;
         }
     }
-    unsigned int buffer;
+    //unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
@@ -193,16 +199,11 @@ int main()
 
 
     // Teraz Dach 
-    unsigned int bufferRoof;
+    //unsigned int bufferRoof;
     glGenBuffers(1, &bufferRoof);
     glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
     glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
     sceneRoot->CreateAllRoof(200, 200);
-
-    // Próba przesuniêcia 1 dachu
-    glm::mat4 test = glm::mat4(1.0f);
-    test = glm::translate(test, glm::vec3(0, -2.0f, 0));
-    glBufferSubData(GL_ARRAY_BUFFER, 3 * sizeof(glm::mat4), sizeof(glm::mat4), &test);
 
     unsigned int VAO2 = roof->meshes[0].VAO;
     glBindVertexArray(VAO2);
@@ -222,16 +223,6 @@ int main()
     glVertexAttribDivisor(6, 1);
 
     glBindVertexArray(0);
-
-    // Próba przesuniêcia 2 dachu
-    glm::mat4 test2 = glm::mat4(1.0f);
-    test2 = glm::translate(test2, glm::vec3(-198.0f, -2.0f, -200.0f));
-    glBufferSubData(GL_ARRAY_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::mat4), &test2);
-
-    // Próba przesuniêcia domku 
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferSubData(GL_ARRAY_BUFFER, 2 * sizeof(glm::mat4), sizeof(glm::mat4), &test2);
-
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -418,11 +409,10 @@ int main()
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, house->textures_loaded[0].id);
 
-        // Próba przesuniêcia domku 
-        glm::mat4 test3 = glm::mat4(1.0f);
-        test3 = glm::translate(test3, glm::vec3(0.0f, (float)glfwGetTime()/3, -10.0f));
-        glBindBuffer(GL_ARRAY_BUFFER, buffer);
-        glBufferSubData(GL_ARRAY_BUFFER, 20100 * sizeof(glm::mat4), sizeof(glm::mat4), &test3);
+
+        // Próba przesuniêcia domku z grafem sceny
+        sceneRoot->graphNodes[20107]->SetPosition(2.0f, (float)glfwGetTime() / 2, -10.0f);
+
 
         glBindVertexArray(VAO);
         glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, 40000);
@@ -450,7 +440,7 @@ int main()
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
 
-        sceneRoot->Update((float)glfwGetTime());
+        sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
         sceneRoot->Draw(singleShader, lightShader);
 
 
@@ -508,3 +498,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
+
+static void ChangeBuffer(int index, glm::mat4 newModel, bool house)
+{
+    if (house == true)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, buffer);
+        glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &newModel);
+    }
+    else
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
+        glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &newModel);
+    }
+}
+
+

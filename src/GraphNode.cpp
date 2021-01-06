@@ -9,6 +9,8 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	light = false;
 	enable = true;
 	first = true;
+	house = false;
+	roof = false;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -109,12 +111,13 @@ void GraphNode::AddChild(const std::shared_ptr<GraphNode>& child)
 	children.push_back(child);
 }
 
-void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
+void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform, unsigned int houseBuffer, unsigned int roofBuffer)
 {
 	isDirty = isDirty | parentIsDirty;
 
 	if (isDirty)
 	{
+		
 		glm::mat4 P = glm::translate(glm::mat4(1.0f), position);
 		glm::mat4 R = glm::mat4_cast(rotation);
 		glm::mat4 S = glm::scale(glm::mat4(1.0f), scale);
@@ -122,7 +125,24 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 		nodeTransform = P * R * S;
 		transform = parentTransform * nodeTransform;
 
-		isDirty = false;
+		if (house)
+		{
+			//std::cout <<" dom:" << index;
+			//std::cout << " jegoDach:" << children[0]->index << endl;
+			glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
+			glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &transform);
+		}
+		else if (roof)
+		{
+			//std::cout << " dach:" << index;
+			glBindBuffer(GL_ARRAY_BUFFER, roofBuffer);
+			glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &transform);
+			
+		}
+		else
+		{
+			//std::cout << " inne";
+		}
 	}
 
 	if (first)
@@ -133,8 +153,9 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform)
 
 	for (auto& child : children)
 	{
-		child->Update(isDirty, transform);
+		child->Update(isDirty, transform, houseBuffer, roofBuffer);
 	}
+	isDirty = false;
 }
 
 void GraphNode::Draw(Shader& shader)
@@ -271,6 +292,18 @@ void GraphNode::SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specula
 	this->constant = constant;
 	this->linear = linear;
 	this->quadratic = quadratic;
+}
+
+void GraphNode::SetHouse(int index)
+{
+	house = true;
+	this->index = index;
+}
+
+void GraphNode::SetRoof(int index)
+{
+	roof = true;
+	this->index = index;
 }
 
 glm::vec3 GraphNode::GetPosition()
