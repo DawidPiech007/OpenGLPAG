@@ -133,6 +133,54 @@ int main()
     Shader skyboxShader("res/shaders/skyBox_vert.vert", "res/shaders/skyBox_frag.frag");
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
+    const int mapLen = 900;
+    int map[mapLen] = {1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 2,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                                                                                      
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,3,1,1,1,
+                       1,1,3,1,1, 1,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,2,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,2,0,0,0, 0,0,0,0,1,
+                                                                                      
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
+                                                                                      
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,1,1,3,1, 1,1,1,1,1, 1,1,1,1,1,
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,1,1,1,3, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                                                                                      
+                       1,0,0,0,0, 0,0,0,0,2, 0,0,0,0,0, 2,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,2,0,0, 0,0,0,0,1,
+                                                                                      
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 2,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
+                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1};
+    // 0 pod³oga
+    // 1 œciana
+    // 2 przejœcie poziome
+    // 3 przejœcie pionowe
+    int wallSize = 0;
+
+    for (int i = 0; i < mapLen; i++)
+    {
+        if (map[i] == 1)
+            wallSize++;
+    }
+
 
     // Tworzenie grafu sceny
     // ---------------------
@@ -146,23 +194,26 @@ int main()
 
 
 
-    unsigned int amount = 40000;
+    //unsigned int amount = 40000;
     glm::mat4* modelMatrices;
     glm::mat4* modelMatricesRoof;
-    modelMatrices = new glm::mat4[amount];
-    modelMatricesRoof = new glm::mat4[amount];
-    float offset = 2.0f;
+    modelMatrices = new glm::mat4[wallSize];
+    modelMatricesRoof = new glm::mat4[wallSize];
+    float offset = 1.0f;
     unsigned int index = 0;
-    for (unsigned int i = 0; i < 200; i++)
+    for (unsigned int i = 0; i < 30; i++)
     {
-        for (unsigned int j = 0; j < 200; j++)
+        for (unsigned int j = 0; j < 30; j++)
         {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(offset * i - 200, -5.0f, offset * j - 200));
-    
-            modelMatrices[index] = model;
-            modelMatricesRoof[index] = model;
-            index++;
+            if (map[i * 30 + j] == 1)
+            {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, glm::vec3(offset * i - 10, -5.0f, offset * j - 10));
+
+                modelMatrices[index] = model;
+                modelMatricesRoof[index] = model;
+                index++;
+            }
         }
     }
     //unsigned int buffer;
@@ -170,7 +221,7 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, wallSize * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
     sceneRoot->CreateAllHouse(200, 200);
 
     
@@ -204,7 +255,7 @@ int main()
     //unsigned int bufferRoof;
     glGenBuffers(1, &bufferRoof);
     glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, wallSize * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
     sceneRoot->CreateAllRoof(200, 200);
 
     unsigned int VAO2 = roof->meshes[0].VAO;
@@ -473,7 +524,7 @@ int main()
 
 
         glBindVertexArray(VAO2);
-        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, 40000);
+        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, wallSize);
         glBindVertexArray(0);
 
         glBindVertexArray(roof->meshes[0].VAO);
@@ -491,7 +542,7 @@ int main()
 
 
         glBindVertexArray(VAO);
-        glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, 40000);
+        glDrawElementsInstanced(GL_TRIANGLES, house->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, wallSize);
         glBindVertexArray(0);
 
         glBindVertexArray(house->meshes[0].VAO);
