@@ -24,6 +24,7 @@ public:
 	void SetRotation(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 
+	void AddLight(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
 	void Update(float time, unsigned int houseBuffer, unsigned int roofBuffer);

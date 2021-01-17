@@ -66,6 +66,20 @@ void SceneRoot::SetScale(float x, float y, float z)
 {
 }
 
+void SceneRoot::AddLight(glm::vec3 position, glm::vec3 scale, glm::vec3 color)
+{
+	shared_ptr<GraphNode> light = NewObject(position, glm::vec3(0.0f), scale, "res/models/kostkaReady/kostka.obj");
+
+	graphNodes[1]->AddChild(light);
+
+	light->SetLight(glm::vec3(0.05f), // ambient
+		color, // difiuse
+		glm::vec3(1.0f), // specular
+		glm::vec3(0.0f, 0.0f, 0.0f), // light dir	(zbêdne)
+		0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
+		1.0f, 0.9f, 0.32f);// t³umienie
+}
+
 void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
 {
 	children.push_back(child);
@@ -74,7 +88,7 @@ void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
 void SceneRoot::Update(float time, unsigned int houseBuffer, unsigned int roofBuffer)
 {
 	// obracanie œiê œwiat³a wokó³ œrodka
-	graphNodes[1]->SetPositionOnCircle(time * 0.4f, 30);
+	//graphNodes[1]->SetPositionOnCircle(time * 0.4f, 30);
 	
 
 	if (isDirty)
@@ -134,46 +148,49 @@ void SceneRoot::SetLight(int index, glm::vec3 lightColor)
 }
 
 
+
 void SceneRoot::CreateBaseScene()
 {
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [00] wszystkie Domki
-	AddChild(NewObject(glm::vec3(-5.0f, 1.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o
-	AddChild(NewObject(glm::vec3(0.0f, -6.0f, 0.0f), glm::vec3(0.0f), glm::vec3(450.0f, 1.0f, 450.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
-	AddChild(NewObject(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f), glm::vec3(3.0f), "res/models/Refrektor/kostka.obj"));					// [03] œwiat³o kierunkowe
-	AddChild(NewObject(glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [04] œwiat³o refretorowe 1
-	AddChild(NewObject(glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [05] œwiat³o refretorowe 2
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [01] wszystkie œwiat³a
+	AddChild(NewObject(glm::vec3(0.0f, -6.0f, 0.0f), glm::vec3(0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
+	AddChild(NewObject(glm::vec3(0.0f, -4.0f, 0.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [03] sufit
+	//AddChild(NewObject(glm::vec3(-5.0f, 1.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o
+	//AddChild(NewObject(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f), glm::vec3(3.0f), "res/models/Refrektor/kostka.obj"));					// [03] œwiat³o kierunkowe
+	//AddChild(NewObject(glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [04] œwiat³o refretorowe 1
+	//AddChild(NewObject(glm::vec3(-5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [05] œwiat³o refretorowe 2
 
-	// œwiat³o punktowe
-	graphNodes[1]->SetLight(glm::vec3(0.05f), // ambient
-		glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
-		glm::vec3(1.0f), // specular
-		glm::vec3(0.0f,0.0f,0.0f), // light dir	(zbêdne)
-		0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
-		1.0f, 0.0009f, 0.032f);// t³umienie
-
-	// œwiat³o kierunkowe
-	graphNodes[3]->SetLight(glm::vec3(0.05f), // ambient
-		glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
-		glm::vec3(0.5f), // specular
-		glm::vec3(0.0f, -1.0f, 0.0f), // light dir
-		0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
-		0.0f, 0.0f, 0.0f);// t³umienie			(zbêdne)
-
-	// œwiat³o kierunkowe refretorowe 1
-	graphNodes[4]->SetLight(glm::vec3(0.05f), // ambient
-		glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
-		glm::vec3(1.0f), // specular
-		glm::vec3(1.0f, -1.0f, 0.0f), // light dir
-		10.0f, 15.0f, // cutOff i outherCutOff	
-		1.0f, 0.0009f, 0.032f);// t³umienie
-
-	// œwiat³o kierunkowe refretorowe 2
-	graphNodes[5]->SetLight(glm::vec3(0.05f), // ambient
-		glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
-		glm::vec3(1.0f), // specular
-		glm::vec3(1.0f, -1.0f, 0.0f), // light dir
-		10.0f, 15.0f, // cutOff i outherCutOff	
-		1.0f, 0.0009f, 0.032f);// t³umienie
+	//// œwiat³o punktowe
+	//graphNodes[1]->SetLight(glm::vec3(0.05f), // ambient
+	//	glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
+	//	glm::vec3(1.0f), // specular
+	//	glm::vec3(0.0f,0.0f,0.0f), // light dir	(zbêdne)
+	//	0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
+	//	1.0f, 0.0009f, 0.032f);// t³umienie
+	//
+	//// œwiat³o kierunkowe
+	//graphNodes[3]->SetLight(glm::vec3(0.05f), // ambient
+	//	glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
+	//	glm::vec3(0.5f), // specular
+	//	glm::vec3(0.0f, -1.0f, 0.0f), // light dir
+	//	0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
+	//	0.0f, 0.0f, 0.0f);// t³umienie			(zbêdne)
+	//
+	//// œwiat³o kierunkowe refretorowe 1
+	//graphNodes[4]->SetLight(glm::vec3(0.05f), // ambient
+	//	glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
+	//	glm::vec3(1.0f), // specular
+	//	glm::vec3(1.0f, -1.0f, 0.0f), // light dir
+	//	10.0f, 15.0f, // cutOff i outherCutOff	
+	//	1.0f, 0.0009f, 0.032f);// t³umienie
+	//
+	//// œwiat³o kierunkowe refretorowe 2
+	//graphNodes[5]->SetLight(glm::vec3(0.05f), // ambient
+	//	glm::vec3(0.1f, 0.6f, 0.9f), // difiuse
+	//	glm::vec3(1.0f), // specular
+	//	glm::vec3(1.0f, -1.0f, 0.0f), // light dir
+	//	10.0f, 15.0f, // cutOff i outherCutOff	
+	//	1.0f, 0.0009f, 0.032f);// t³umienie
 				
 	
 	//graphNodes[2]->SetPositionOnCircle(0, 0);

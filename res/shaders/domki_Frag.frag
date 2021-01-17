@@ -53,10 +53,12 @@ struct Material {
     float     shininess;
 }; 
 
-uniform PointLight pointLight;
-uniform DirLight dirLight;
-uniform SpotLight spotLight1;
-uniform SpotLight spotLight2;
+#define NR_POINT_LIGHTS 20
+
+uniform PointLight pointLights[NR_POINT_LIGHTS];
+//uniform DirLight dirLight;
+//uniform SpotLight spotLight1;
+//uniform SpotLight spotLight2;
 
 uniform vec3 viewPos; 
 uniform Material material;
@@ -78,14 +80,16 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
 
 	// Efekt światła kierunkowego
-	vec3 result = CalcDirLight(dirLight, norm, viewDir);
+	//vec3 result = CalcDirLight(dirLight, norm, viewDir);
 
 	// Efekt światła punktowego
-	result += CalcPointLight(pointLight, norm, FragPos, viewDir); 
+	vec3 result = CalcPointLight(pointLights[0], norm, FragPos, viewDir); 
+    for(int i = 1; i < NR_POINT_LIGHTS; i++)
+        result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);  
 
 	// Efekt światła refretorowego
-	result += CalcSpotLight(spotLight1, norm, FragPos, viewDir); 
-	result += CalcSpotLight(spotLight2, norm, FragPos, viewDir); 
+	//result += CalcSpotLight(spotLight1, norm, FragPos, viewDir); 
+	//result += CalcSpotLight(spotLight2, norm, FragPos, viewDir); 
 
 	FragColor = vec4(result, 1.0);
 }

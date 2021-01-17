@@ -134,45 +134,47 @@ int main()
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
     const int mapLen = 900;
-    int map[mapLen] = {1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 2,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                                                                                      
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,3,1,1,1,
-                       1,1,3,1,1, 1,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,2,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,2,0,0,0, 0,0,0,0,1,
-                                                                                      
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1,
-                                                                                      
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,1,1,3,1, 1,1,1,1,1, 1,1,1,1,1,
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,1,1,1,3, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                                                                                      
-                       1,0,0,0,0, 0,0,0,0,2, 0,0,0,0,0, 2,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,2,0,0, 0,0,0,0,1,
-                                                                                      
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 2,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1,
-                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1};
+                     //0 1 2 3 4  5 6 7 8 9 10 1 2 3 4  5 6 7 8 9 20 1 2 3 4  5 6 7 8 9
+    int map[mapLen] = {1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, // 0
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 1
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 2
+                       1,0,0,0,0, 0,1,0,0,0, 4,0,0,0,0, 2,0,0,4,0, 0,0,4,0,0, 0,4,0,0,1, // 3
+                       1,0,0,4,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 4
+                                                                                         // 
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 5
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,3,1,1,1, // 6
+                       1,1,3,1,1, 1,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 7
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 8
+                       1,0,0,0,0, 0,2,0,0,0, 4,0,0,0,0, 1,0,0,4,0, 0,2,0,0,0, 0,0,0,0,1, // 9
+                                                                                         // 
+                       1,0,0,4,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 4,0,0,0,1, // 10
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 11
+                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,4,0, 0,1,0,0,0, 0,0,0,0,1, // 12
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 13
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 14
+                                                                                         // 
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,4,0, 1,1,1,3,1, 1,1,1,1,1, 1,1,1,1,1, // 15
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 16
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,4,0, 0,0,0,0,0, 0,4,0,0,1, // 17
+                       1,1,1,1,3, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 18
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 19
+                                                                                         // 
+                       1,0,0,0,0, 0,0,0,0,2, 0,0,0,0,0, 2,0,0,4,0, 0,0,0,0,0, 0,4,0,0,1, // 20
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 21
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, // 22
+                       1,0,0,4,0, 0,4,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1, // 23
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,2,0,0, 0,0,0,0,1, // 24
+                                                                                         // 
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,4,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,4,0,0,1, // 25
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,4, 0,0,1,0,0, 0,0,0,0,1, // 26
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 2,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1, // 27
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1, // 28
+                       1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1};// 29
     // 0 pod³oga
     // 1 œciana
     // 2 przejœcie poziome
     // 3 przejœcie pionowe
+    // 4 œwiat³o punktowe
     int wallSize = 0;
 
     for (int i = 0; i < mapLen; i++)
@@ -186,10 +188,10 @@ int main()
     // ---------------------
     SceneRoot* sceneRoot = new SceneRoot();
 
-    myCamera = new MyCamera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
+    myCamera = new MyCamera(glm::vec3(0.0f, -5.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
-    Model* house = new Model("res/models/Domek/kostka.obj");
+    Model* house = new Model("res/models/Sciana/kostka.obj");
     Model* roof = new Model("res/models/DachReady/Dach5Ready.obj");
 
 
@@ -213,6 +215,10 @@ int main()
                 modelMatrices[index] = model;
                 modelMatricesRoof[index] = model;
                 index++;
+            }
+            else if (map[i * 30 + j] == 4)
+            {
+                sceneRoot->AddLight(glm::vec3(offset* i - 10, -4.6f, offset* j - 10), glm::vec3(0.2f), glm::vec3(1.0f, 0.8f, 0.3f));
             }
         }
     }
@@ -351,6 +357,23 @@ int main()
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
+    
+    for (int i = 0; i < 20; i++)
+    {
+        string name = "pointLights[";
+        name += to_string(i);
+        name += "]";
+
+        houseShader.use();
+        sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, houseShader);
+        singleShader.use();
+        sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, singleShader);
+    }
+    
+    sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
+    sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
+    sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
+
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
     bool err = gl3wInit() != 0;
@@ -452,20 +475,20 @@ int main()
             //ImGui::SliderFloat("zoom", &zoom, 5, 100);                // moje
             //ImGui::SliderFloat("y rotation", &yRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
             //ImGui::SliderFloat("x rotation", &xRotation, -360.0f, 360.0f);            // Edit 1 float using a slider from -360.0f to 360.0f
-            ImGui::Checkbox("pointLightEnable", &pointLightEnable);
-            ImGui::ColorEdit3("pointLightColor", (float*)&pointLightColor); // Edit 3 floats representing a color
-
-            ImGui::Checkbox("dirLightEnable", &dirLightEnable);
-            ImGui::ColorEdit3("dirLightColor", (float*)&dirLightColor);
-            ImGui::SliderFloat3("dirLightDir", (float*)&dirLightDir, -1.0f, 1.0f);
-
-            ImGui::Checkbox("spot1LightEnable", &spot1LightEnable);
-            ImGui::ColorEdit3("spot1LightColor", (float*)&spot1LightColor);
-            ImGui::SliderFloat3("spotLight1Dir", (float*)&spot1LightDir, -1.0f, 1.0f);
-
-            ImGui::Checkbox("spot2LightEnable", &spot2LightEnable);
-            ImGui::ColorEdit3("spot2LightColor", (float*)&spot2LightColor);
-            ImGui::SliderFloat3("spotLight2Dir", (float*)&spot2LightDir, -1.0f, 1.0f);
+            //ImGui::Checkbox("pointLightEnable", &pointLightEnable);
+            //ImGui::ColorEdit3("pointLightColor", (float*)&pointLightColor); // Edit 3 floats representing a color
+            //
+            //ImGui::Checkbox("dirLightEnable", &dirLightEnable);
+            //ImGui::ColorEdit3("dirLightColor", (float*)&dirLightColor);
+            //ImGui::SliderFloat3("dirLightDir", (float*)&dirLightDir, -1.0f, 1.0f);
+            //
+            //ImGui::Checkbox("spot1LightEnable", &spot1LightEnable);
+            //ImGui::ColorEdit3("spot1LightColor", (float*)&spot1LightColor);
+            //ImGui::SliderFloat3("spotLight1Dir", (float*)&spot1LightDir, -1.0f, 1.0f);
+            //
+            //ImGui::Checkbox("spot2LightEnable", &spot2LightEnable);
+            //ImGui::ColorEdit3("spot2LightColor", (float*)&spot2LightColor);
+            //ImGui::SliderFloat3("spotLight2Dir", (float*)&spot2LightDir, -1.0f, 1.0f);
 
 
 
@@ -503,19 +526,18 @@ int main()
         houseShader.setMat4("view", view);
 
         //Teraz rysujemy dachy
-        houseShader.setInt("material.texture_diffuse1", 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, roof->textures_loaded[0].id);
 
-        sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, glm::vec3(1.0f), pointLightEnable);
-        sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dirLightDir, dirLightEnable);
-        sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, spot1LightDir, spot1LightEnable);
-        sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, spot2LightDir, spot2LightEnable);
+        // Przekazywanie danych z gui do grfu sceny
+        //sceneRoot->graphNodes[1]->ConfigLight(pointLightColor, glm::vec3(1.0f), pointLightEnable);
+        //sceneRoot->graphNodes[3]->ConfigLight(dirLightColor, dirLightDir, dirLightEnable);
+        //sceneRoot->graphNodes[4]->ConfigLight(spot1LightColor, spot1LightDir, spot1LightEnable);
+        //sceneRoot->graphNodes[5]->ConfigLight(spot2LightColor, spot2LightDir, spot2LightEnable);
 
-        sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", houseShader);
-        sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
-        sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
-        sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
+        // przekazywanie danych z grafu sceny do shadera 
+        //sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", houseShader);
+        //sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
+        //sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
+        //sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
 
         houseShader.setVec3("viewPos", myCamera->GetCameraPos());
         houseShader.setVec3("material.specular", glm::vec3(0.1f));
@@ -523,11 +545,11 @@ int main()
 
 
 
-        glBindVertexArray(VAO2);
-        glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, wallSize);
-        glBindVertexArray(0);
-
-        glBindVertexArray(roof->meshes[0].VAO);
+        //glBindVertexArray(VAO2);
+        //glDrawElementsInstanced(GL_TRIANGLES, roof->meshes[0].indices.size(), GL_UNSIGNED_INT, 0, wallSize);
+        //glBindVertexArray(0);
+        //
+        //glBindVertexArray(roof->meshes[0].VAO);
 
         // Teraz rysujemy domki
         // Tekstura domków
@@ -538,7 +560,7 @@ int main()
 
 
         // Próba przesuniêcia domku z grafem sceny
-        sceneRoot->graphNodes[20107]->SetPosition(2.0f, (float)glfwGetTime() / 2, -10.0f);
+        //sceneRoot->graphNodes[20107]->SetPosition(2.0f, (float)glfwGetTime() / 2, -10.0f);
 
 
         glBindVertexArray(VAO);
@@ -552,10 +574,11 @@ int main()
         singleShader.setMat4("projection", projection);
         singleShader.setMat4("view", view);
 
-        sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", singleShader);
-        sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", singleShader);
-        sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", singleShader);
-        sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", singleShader);
+        // Przekazywanie danych z grafu sceny do shadera
+        //sceneRoot->graphNodes[1]->UniformShader_PointLight("pointLight", singleShader);
+        //sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", singleShader);
+        //sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", singleShader);
+        //sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", singleShader);
 
         singleShader.setVec3("viewPos", myCamera->GetCameraPos());
         singleShader.setVec3("material.specular", glm::vec3(0.05f));

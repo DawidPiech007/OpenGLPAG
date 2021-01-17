@@ -43,10 +43,10 @@ void MyCamera::InputKey(GLFWwindow* window, float deltaTime)
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraUp;
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraUp;
+    //if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    //    cameraPos += cameraSpeed * cameraUp;
+    //if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    //    cameraPos -= cameraSpeed * cameraUp;
     if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && mouseActive == false)
     {
         mouseActive = true;
@@ -87,7 +87,8 @@ void MyCamera::InputMouse(float xpos, float ypos)
 
     glm::vec3 front;
     front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
+    //front.y = sin(glm::radians(pitch));
+    front.y = sin(glm::radians(0.0f));
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(front);
 }
