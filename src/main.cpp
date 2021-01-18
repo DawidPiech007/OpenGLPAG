@@ -199,8 +199,8 @@ int main()
     myCamera = new MyCamera(glm::vec3(0.0f, -5.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
-    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 1, 1, sceneRoot->graphNodes[7], 1);
-    wewaponManager->AddWeapon(sceneRoot->graphNodes[9], 1, 1);
+    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.2f, 100, sceneRoot->graphNodes[7], 0.05f);
+    wewaponManager->AddWeapon(sceneRoot->graphNodes[9], 1.0f, 20);
 
     Model* house = new Model("res/models/Sciana/kostka.obj");
     Model* roof = new Model("res/models/DachReady/Dach5Ready.obj");
@@ -532,7 +532,8 @@ int main()
         // -----
         processInput(window);
         myCamera->InputKey(window, deltaTime);
-        wewaponManager->InputKey(window, deltaTime);
+        wewaponManager->InputKey(window, deltaTime, (float)glfwGetTime());
+        wewaponManager->Update((float)glfwGetTime());
         glfwSetCursorPosCallback(window, mouse_callback);
         glfwSetScrollCallback(window, scroll_callback);
 

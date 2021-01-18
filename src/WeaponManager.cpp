@@ -20,7 +20,6 @@ WeaponManager::WeaponManager(std::shared_ptr<GraphNode> firstWeapon, float weapo
 
     shootTime = 0;
     curentDelay = 0;
-    WeaponManager::effectDiuration = 0;
 
     effectActive = false;
     shootReady = true;
@@ -37,14 +36,40 @@ void WeaponManager::AddWeapon(std::shared_ptr<GraphNode> weaponModel, float weap
 
 void WeaponManager::Update(float time)
 {
+    if (shootReady == false)
+    {
+        curentDelay = time - shootTime;
+
+        std::cout << "curentDelay = "<< curentDelay << std::endl;
+
+        if (curentDelay >= weaponDelays[weaponSelected])
+        {
+            shootReady = true;
+        }
+
+        if (effectActive == true)
+        {
+            if (curentDelay >= effectDiuration)
+            {
+                HideEffect();
+            }
+        }
+    }
 }
 
-void WeaponManager::InputKey(GLFWwindow* window, float deltaTime)
+void WeaponManager::InputKey(GLFWwindow* window, float deltaTime, float time)
 {
-    float cameraSpeed = 2.0f * deltaTime; 
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
-        std::cout << "strza;" << std::endl;
+        if (bullets[weaponSelected] > 0)
+        {
+            if (shootReady == true)
+            {
+                shootTime = time;
+                Shoot();
+                //std::cout << "strzal" << std::endl;
+            }
+        }
     } 
 }
 
@@ -65,6 +90,8 @@ void WeaponManager::InputScroll(float yoffset)
 
 void WeaponManager::ShowWeapon(int index)
 {
+    shootReady = true;
+    HideEffect();
     weaponModels[index]->SetPosition(0.1f, -0.15f, -0.5f);
 }
 
@@ -73,6 +100,27 @@ void WeaponManager::HideWeapon(int index)
     weaponModels[index]->SetPosition(0.1f, -2.15f, -0.5f);
 }
 
+void WeaponManager::ShowEffect()
+{
+    std::cout << "           effekt jest widoczny" << std::endl;
+    effectActive = true;
+    shootEffect->SetPosition(0.1f, -0.15f, -1.3f);
+}
+
+void WeaponManager::HideEffect()
+{
+    std::cout << "           effekt jest ukryty" << std::endl;
+    effectActive = false;
+    shootEffect->SetPosition(0.1f, -2.15f, -1.3f);
+}
+
 void WeaponManager::Shoot()
 {
+    curentDelay = 0;
+
+    ShowEffect();
+    
+    shootReady = false;
+
+    bullets[weaponSelected] --;
 }

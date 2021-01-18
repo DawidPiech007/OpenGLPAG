@@ -17,12 +17,14 @@ public:
 
 	void Update(float time);
 
-	void InputKey(GLFWwindow* window, float deltaTime);
+	void InputKey(GLFWwindow* window, float deltaTime, float time);
 	void InputScroll(float yoffset);
 
 private:
 	void ShowWeapon(int index);
 	void HideWeapon(int index);
+	void ShowEffect();
+	void HideEffect();
 	void Shoot();
 
 	std::vector<std::shared_ptr<GraphNode>> weaponModels;
