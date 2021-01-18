@@ -203,7 +203,7 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader)
 	}
 }
 
-void GraphNode::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+void GraphNode::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
 {
 	if (model != nullptr)
 	{
@@ -237,6 +237,14 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, 
 			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 			glDrawArrays(GL_TRIANGLES, 0, model->meshes[0].indices.size());
 		}
+		else if (weapon == true)
+		{
+			// sejder do rysowania krzta³tów Ÿróde³ œwiat³a
+			colorShader.use();
+			colorShader.setMat4("model", transform);
+			colorShader.setVec3("material.color", diffuse);
+			GraphNode::model->Draw(colorShader);
+		}
 		else
 		{
 			// rysowanie szejderem z oœwietleniem
@@ -248,7 +256,7 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, 
 
 	for (auto& child : children)
 	{
-		child->Draw(shader, lightShader, mirrorShader, glassShader, cubemapTexture);
+		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
 	}
 }
 
@@ -365,6 +373,12 @@ void GraphNode::SetMirror()
 void GraphNode::SetGlass()
 {
 	glass = true;
+}
+
+void GraphNode::SetWeapon(glm::vec3 color)
+{
+	weapon = true;
+	diffuse = color;
 }
 
 glm::vec3 GraphNode::GetPosition()

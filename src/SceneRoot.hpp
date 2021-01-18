@@ -31,7 +31,7 @@ public:
 
 	void Update(float time, unsigned int houseBuffer, unsigned int roofBuffer);
 
-	void Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
+	void Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void Draw(Shader& shader, Shader& lightShader);
 	void Draw(Shader& shader);

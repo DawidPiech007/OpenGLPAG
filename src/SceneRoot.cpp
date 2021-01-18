@@ -128,11 +128,11 @@ void SceneRoot::Update(float time, unsigned int houseBuffer, unsigned int roofBu
 	}
 }
 
-void SceneRoot::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+void SceneRoot::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
 {
 	for (auto& child : children)
 	{
-		child->Draw(shader, lightShader, mirrorShader, glassShader, cubemapTexture);
+		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
 	}
 }
 
@@ -190,6 +190,7 @@ void SceneRoot::CreateBaseScene()
 	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/ak47/AK.fbx"));					// [07] Broñ 1  (ak47)
 	//graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/snajperka/CartoonySVD.fbx"));	// [08] Broñ 2  (akSnajperka)
 
+	graphNodes[7]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
 
 	//// œwiat³o punktowe
 	//graphNodes[1]->SetLight(glm::vec3(0.05f), // ambient

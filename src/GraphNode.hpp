@@ -38,7 +38,7 @@ public:
 
 	void Draw(Shader& shader);
 	void Draw(Shader& shader, Shader& lightShader);
-	void Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
+	void Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void DrawByGeometryShader(Shader& geometryShader, int resolution);
 
@@ -50,6 +50,7 @@ public:
 	void SetRoof(int index);
 	void SetMirror();
 	void SetGlass();
+	void SetWeapon(glm::vec3 color);
 
 	glm::vec3 GetPosition();
 
@@ -75,6 +76,7 @@ private:
 
 	bool mirror;
 	bool glass;
+	bool weapon;
 
 	bool orbit;
 	bool sphere;

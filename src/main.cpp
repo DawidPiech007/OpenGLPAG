@@ -130,6 +130,7 @@ int main()
     Shader lightShader("res/shaders/source.vert", "res/shaders/source.frag");
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
     Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_Frag.frag");
+    Shader singleColorShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_color_frag.frag");
     Shader skyboxShader("res/shaders/skyBox_vert.vert", "res/shaders/skyBox_frag.frag");
     Shader mirrorShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
     Shader glassShader("res/shaders/szyba_vert.vert", "res/shaders/szyba_frag.frag");
@@ -387,6 +388,8 @@ int main()
         sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, houseShader);
         singleShader.use();
         sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, singleShader);
+        singleColorShader.use();
+        sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, singleColorShader);
     }
     
     //sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
@@ -619,11 +622,17 @@ int main()
         glassShader.setMat4("view", view);
         glassShader.setVec3("cameraPos", myCamera->GetCameraPos());
 
+        singleColorShader.use();
+        singleColorShader.setMat4("projection", projection);
+        singleColorShader.setMat4("view", view);
+        singleColorShader.setVec3("material.specular", glm::vec3(0.05f));
+        singleColorShader.setFloat("material.shininess", 32.0f);
+
         sceneRoot->graphNodes[5]->SetPosition(myCamera->GetCameraPos().x, myCamera->GetCameraPos().y, myCamera->GetCameraPos().z);
         sceneRoot->graphNodes[5]->SetRotation(0.0f, -90-myCamera->GetRotationY(), 0.0f);
 
         sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
-        sceneRoot->Draw(singleShader, lightShader, mirrorShader, glassShader, cubemapTexture);
+        sceneRoot->Draw(singleShader, singleColorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
 
 
 
