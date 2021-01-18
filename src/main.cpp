@@ -237,7 +237,7 @@ int main()
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
     //glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STREAM_DRAW);
     glBufferData(GL_ARRAY_BUFFER, wallSize * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
-    sceneRoot->CreateAllHouse(200, 200);
+    //sceneRoot->CreateAllHouse(200, 200);
 
     
 
@@ -271,7 +271,7 @@ int main()
     glGenBuffers(1, &bufferRoof);
     glBindBuffer(GL_ARRAY_BUFFER, bufferRoof);
     glBufferData(GL_ARRAY_BUFFER, wallSize * sizeof(glm::mat4), &modelMatricesRoof[0], GL_DYNAMIC_DRAW);
-    sceneRoot->CreateAllRoof(200, 200);
+    //sceneRoot->CreateAllRoof(200, 200);
 
     unsigned int VAO2 = roof->meshes[0].VAO;
     glBindVertexArray(VAO2);
@@ -605,6 +605,9 @@ int main()
         mirrorShader.setMat4("projection", projection);
         mirrorShader.setMat4("view", view);
         mirrorShader.setVec3("cameraPos", myCamera->GetCameraPos());
+
+        sceneRoot->graphNodes[5]->SetPosition(myCamera->GetCameraPos().x, myCamera->GetCameraPos().y, myCamera->GetCameraPos().z);
+        sceneRoot->graphNodes[5]->SetRotation(0.0f, -90-myCamera->GetRotationY(), 0.0f);
 
         sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
         sceneRoot->Draw(singleShader, lightShader, mirrorShader, glassShader, cubemapTexture);

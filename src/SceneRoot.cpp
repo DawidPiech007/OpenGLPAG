@@ -173,6 +173,9 @@ void SceneRoot::CreateBaseScene()
 	AddChild(NewObject(glm::vec3(0.0f, -6.0f, 0.0f), glm::vec3(0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
 	AddChild(NewObject(glm::vec3(0.0f, -4.0f, 0.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [03] sufit
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [04] wszystkie lustra
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [05] Kamera
+	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/ak47/AK.fbx"));					// [06] Broñ 1  (ak47)
+	//graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/snajperka/CartoonySVD.fbx"));	// [07] Broñ 2  (akSnajperka)
 	//AddChild(NewObject(glm::vec3(-5.0f, 1.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o
 	//AddChild(NewObject(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f), glm::vec3(3.0f), "res/models/Refrektor/kostka.obj"));					// [03] œwiat³o kierunkowe
 	//AddChild(NewObject(glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [04] œwiat³o refretorowe 1

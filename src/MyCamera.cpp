@@ -3,6 +3,7 @@
 #include <glm\ext\matrix_transform.hpp>
 #include <glad\glad.h>
 #include <glm\ext\matrix_clip_space.hpp>
+#include <iostream>
 
 MyCamera::MyCamera(glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, float scrWidth, float scrHeight):
 	cameraPos(cameraPos), cameraFront(cameraFront), cameraUp(cameraUp), scrWidth(scrWidth), scrHeight(scrHeight)
@@ -29,6 +30,12 @@ glm::mat4 MyCamera::GetProjection()
 glm::vec3 MyCamera::GetCameraPos()
 {
     return cameraPos;
+}
+
+float MyCamera::GetRotationY()
+{
+    //std::cout << "y = " <<yaw << std::endl;
+    return yaw;
 }
 
 
