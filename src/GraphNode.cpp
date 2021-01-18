@@ -224,8 +224,10 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, 
 			glBindVertexArray(model->meshes[0].VAO);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-			glDrawElements(GL_TRIANGLES, model->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+			//glDrawElements(GL_TRIANGLES, model->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+			glDrawArrays(GL_TRIANGLES, 0, model->meshes[0].indices.size());
 			
+
 			//GraphNode::model->Draw(mirrorShader);
 		}
 		else if (glass == true)

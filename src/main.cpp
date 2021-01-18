@@ -357,14 +357,17 @@ int main()
         //FileSystem::getPath("resources/textures/skybox/bottom.jpg"),
         //FileSystem::getPath("resources/textures/skybox/front.jpg"),
         //FileSystem::getPath("resources/textures/skybox/back.jpg")
-        "res/textures/skybox/right.jpg",
-        "res/textures/skybox/left.jpg",
-        "res/textures/skybox/top.jpg",
-        "res/textures/skybox/bottom.jpg",
-        "res/textures/skybox/front.jpg",
-        "res/textures/skybox/back.jpg"
+        "res/textures/skyboxMap/right.jpg",
+        "res/textures/skyboxMap/left.jpg",
+        "res/textures/skyboxMap/top.jpg",
+        "res/textures/skyboxMap/bottom.jpg",
+        "res/textures/skyboxMap/front.jpg",
+        "res/textures/skyboxMap/back.jpg"
     };
     unsigned int cubemapTexture = loadCubemap(faces);
+
+
+    mirrorShader.setInt("skybox", 0);
     
     for (int i = 0; i < 20; i++)
     {
@@ -601,10 +604,11 @@ int main()
         mirrorShader.use();
         mirrorShader.setMat4("projection", projection);
         mirrorShader.setMat4("view", view);
-        mirrorShader.setVec3("viewPos", myCamera->GetCameraPos());
+        mirrorShader.setVec3("cameraPos", myCamera->GetCameraPos());
 
         sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
         sceneRoot->Draw(singleShader, lightShader, mirrorShader, glassShader, cubemapTexture);
+
 
 
         // draw skybox as last
