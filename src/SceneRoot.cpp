@@ -77,7 +77,16 @@ void SceneRoot::AddLight(glm::vec3 position, glm::vec3 scale, glm::vec3 color)
 		glm::vec3(1.0f), // specular
 		glm::vec3(0.0f, 0.0f, 0.0f), // light dir	(zbêdne)
 		0.0f, 0.0f, // cutOff i outherCutOff	(zbêdne)
-		1.0f, 0.9f, 0.32f);// t³umienie
+		1.0f, 0.9f, 0.032f);// t³umienie
+}
+
+void SceneRoot::AddMirror(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+{
+	shared_ptr<GraphNode> mirror = NewObject(position, rotation, scale, "res/models/kostkaReady/kostka.obj");
+
+	mirror->SetMirror();
+
+	graphNodes[4]->AddChild(mirror);
 }
 
 void SceneRoot::AddChild(const std::shared_ptr<GraphNode>& child)
@@ -105,6 +114,14 @@ void SceneRoot::Update(float time, unsigned int houseBuffer, unsigned int roofBu
 	for (auto& child : children)
 	{
 		child->Update(isDirty, nodeTransform, houseBuffer, roofBuffer);
+	}
+}
+
+void SceneRoot::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+{
+	for (auto& child : children)
+	{
+		child->Draw(shader, lightShader, mirrorShader, glassShader, cubemapTexture);
 	}
 }
 
@@ -151,10 +168,11 @@ void SceneRoot::SetLight(int index, glm::vec3 lightColor)
 
 void SceneRoot::CreateBaseScene()
 {
-	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [00] wszystkie Domki
-	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));																// [01] wszystkie œwiat³a
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));	// [00] wszystkie Domki
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));	// [01] wszystkie œwiat³a
 	AddChild(NewObject(glm::vec3(0.0f, -6.0f, 0.0f), glm::vec3(0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
 	AddChild(NewObject(glm::vec3(0.0f, -4.0f, 0.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [03] sufit
+	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [04] wszystkie lustra
 	//AddChild(NewObject(glm::vec3(-5.0f, 1.0f, -15.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/kostkaReady/kostka.obj"));				// [01] kr¹¿¹ce punktowe œwiat³o
 	//AddChild(NewObject(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f), glm::vec3(3.0f), "res/models/Refrektor/kostka.obj"));					// [03] œwiat³o kierunkowe
 	//AddChild(NewObject(glm::vec3(5.0f, 1.0f, 0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "res/models/Refrektor/kostka.obj"));					// [04] œwiat³o refretorowe 1

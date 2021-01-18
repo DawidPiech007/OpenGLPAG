@@ -131,6 +131,9 @@ int main()
     Shader houseShader("res/shaders/domki_Vert.vert", "res/shaders/domki_Frag.frag");
     Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_Frag.frag");
     Shader skyboxShader("res/shaders/skyBox_vert.vert", "res/shaders/skyBox_frag.frag");
+    Shader mirrorShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
+    Shader glassShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
+
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
     const int mapLen = 900;
@@ -144,7 +147,7 @@ int main()
                        1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 5
                        1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,3,1,1,1, // 6
                        1,1,3,1,1, 1,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 7
-                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 8
+                       1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,0, 5,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 8
                        1,0,0,0,0, 0,2,0,0,0, 4,0,0,0,0, 1,0,0,4,0, 0,2,0,0,0, 0,0,0,0,1, // 9
                                                                                          // 
                        1,0,0,4,0, 0,1,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 4,0,0,0,1, // 10
@@ -154,8 +157,8 @@ int main()
                        1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,1,0,0,0, 0,0,0,0,1, // 14
                                                                                          // 
                        1,0,0,0,0, 0,0,0,0,0, 0,0,0,4,0, 1,1,1,3,1, 1,1,1,1,1, 1,1,1,1,1, // 15
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 16
-                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 1,0,0,4,0, 0,0,0,0,0, 0,4,0,0,1, // 17
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 5,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 16
+                       1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 5,0,0,4,0, 0,0,0,0,0, 0,4,0,0,1, // 17
                        1,1,1,1,3, 1,1,1,1,1, 1,1,1,1,1, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 18
                        1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 19
                                                                                          // 
@@ -163,7 +166,7 @@ int main()
                        1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,0,0,0, 0,0,0,0,1, // 21
                        1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,1,1,1,1, 1,1,1,1,1, 1,1,1,1,1, // 22
                        1,0,0,4,0, 0,4,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,0,0,0,1, // 23
-                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,0, 0,0,2,0,0, 0,0,0,0,1, // 24
+                       1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 5,0,0,0,0, 0,0,2,0,0, 0,0,0,0,1, // 24
                                                                                          // 
                        1,0,0,0,0, 0,0,0,0,1, 0,0,4,0,0, 1,0,0,0,0, 0,0,1,0,0, 0,4,0,0,1, // 25
                        1,0,0,0,0, 0,0,0,0,1, 0,0,0,0,0, 1,0,0,0,4, 0,0,1,0,0, 0,0,0,0,1, // 26
@@ -175,6 +178,7 @@ int main()
     // 2 przejœcie poziome
     // 3 przejœcie pionowe
     // 4 œwiat³o punktowe
+    // 5 lustra
     int wallSize = 0;
 
     for (int i = 0; i < mapLen; i++)
@@ -182,6 +186,7 @@ int main()
         if (map[i] == 1)
             wallSize++;
     }
+
 
 
     // Tworzenie grafu sceny
@@ -207,7 +212,7 @@ int main()
     {
         for (unsigned int j = 0; j < 30; j++)
         {
-            if (map[i * 30 + j] == 1)
+            if (map[i * 30 + j] == 1)  // œciana
             {
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(offset * i - 10, -5.0f, offset * j - 10));
@@ -216,9 +221,13 @@ int main()
                 modelMatricesRoof[index] = model;
                 index++;
             }
-            else if (map[i * 30 + j] == 4)
+            else if (map[i * 30 + j] == 4) // œwiat³o
             {
                 sceneRoot->AddLight(glm::vec3(offset* i - 10, -4.6f, offset* j - 10), glm::vec3(0.2f), glm::vec3(1.0f, 0.8f, 0.3f));
+            }
+            else if (map[i * 30 + j] == 5) // lustro
+            {
+                sceneRoot->AddMirror(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f), glm::vec3(1.0f));
             }
         }
     }
@@ -356,7 +365,6 @@ int main()
         "res/textures/skybox/back.jpg"
     };
     unsigned int cubemapTexture = loadCubemap(faces);
-
     
     for (int i = 0; i < 20; i++)
     {
@@ -370,9 +378,9 @@ int main()
         sceneRoot->graphNodes[1]->children[i]->UniformShader_PointLight(name, singleShader);
     }
     
-    sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
-    sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
-    sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
+    //sceneRoot->graphNodes[3]->UniformShader_DirLight("dirLight", houseShader);
+    //sceneRoot->graphNodes[4]->UniformShader_SpotLight("spotLight1", houseShader);
+    //sceneRoot->graphNodes[5]->UniformShader_SpotLight("spotLight2", houseShader);
 
     // Initialize OpenGL loader
 #if defined(IMGUI_IMPL_OPENGL_LOADER_GL3W)
@@ -459,16 +467,16 @@ int main()
 
             //ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             //ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("line Visible", &lineVisible);
+            //ImGui::Checkbox("line Visible", &lineVisible);
 
-            if (lineVisible == true)
-            {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            }
-            else
-            {
-                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            }
+            //if (lineVisible == true)
+            //{
+            //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            //}
+            //else
+            //{
+            //    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            //}
             
 
             //ImGui::SliderInt("resolution", &resolution, 1, 5);
@@ -590,8 +598,13 @@ int main()
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
 
+        mirrorShader.use();
+        mirrorShader.setMat4("projection", projection);
+        mirrorShader.setMat4("view", view);
+        mirrorShader.setVec3("viewPos", myCamera->GetCameraPos());
+
         sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
-        sceneRoot->Draw(singleShader, lightShader);
+        sceneRoot->Draw(singleShader, lightShader, mirrorShader, glassShader, cubemapTexture);
 
 
         // draw skybox as last

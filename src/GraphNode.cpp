@@ -11,6 +11,8 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	first = true;
 	house = false;
 	roof = false;
+	mirror = false;
+	glass = false;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -201,6 +203,59 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader)
 	}
 }
 
+void GraphNode::Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+{
+	if (model != nullptr)
+	{
+		if (light == true)
+		{
+			// sejder do rysowania krzta³tów Ÿróde³ œwiat³a
+			lightShader.use();
+			lightShader.setMat4("model", transform);
+			lightShader.setVec3("lightColor", diffuse);
+			GraphNode::model->Draw(lightShader);
+		}
+		else if (mirror == true)
+		{
+			// rysowanie szejderem dla luster
+			mirrorShader.use();
+			mirrorShader.setMat4("model", transform);
+
+			glBindVertexArray(model->meshes[0].VAO);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+			glDrawElements(GL_TRIANGLES, model->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+			
+			//GraphNode::model->Draw(mirrorShader);
+		}
+		else if (glass == true)
+		{
+			// rysowanie szejderem dla szyb
+			glassShader.use();
+			glassShader.setMat4("model", transform);
+
+			glBindVertexArray(model->meshes[0].VAO);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+			glDrawElements(GL_TRIANGLES, model->meshes[0].indices.size(), GL_UNSIGNED_INT, 0);
+
+			//GraphNode::model->Draw(glassShader);
+		}
+		else
+		{
+			// rysowanie szejderem z oœwietleniem
+			shader.use();
+			shader.setMat4("model", transform);
+			GraphNode::model->Draw(shader);
+		}
+	}
+
+	for (auto& child : children)
+	{
+		child->Draw(shader, lightShader, mirrorShader, glassShader, cubemapTexture);
+	}
+}
+
 void GraphNode::Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution)
 {
 	if (model != nullptr)
@@ -304,6 +359,16 @@ void GraphNode::SetRoof(int index)
 {
 	roof = true;
 	this->index = index;
+}
+
+void GraphNode::SetMirror()
+{
+	mirror = true;
+}
+
+void GraphNode::SetGlass()
+{
+	glass = true;
 }
 
 glm::vec3 GraphNode::GetPosition()

@@ -38,6 +38,7 @@ public:
 
 	void Draw(Shader& shader);
 	void Draw(Shader& shader, Shader& lightShader);
+	void Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void DrawByGeometryShader(Shader& geometryShader, int resolution);
 
@@ -47,6 +48,8 @@ public:
 	void SetLight(glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular,	glm::vec3 lightDir, float cutOff, float outerCutOff, float constant, float linear, float quadratic);
 	void SetHouse(int index);
 	void SetRoof(int index);
+	void SetMirror();
+	void SetGlass();
 
 	glm::vec3 GetPosition();
 
@@ -69,6 +72,9 @@ private:
 
 	bool house;
 	bool roof;
+
+	bool mirror;
+	bool glass;
 
 	bool orbit;
 	bool sphere;

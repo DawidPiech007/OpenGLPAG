@@ -25,10 +25,12 @@ public:
 	void SetScale(float x, float y, float z);
 
 	void AddLight(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
+	void AddMirror(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
 	void Update(float time, unsigned int houseBuffer, unsigned int roofBuffer);
 
+	void Draw(Shader& shader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void Draw(Shader& shader, Shader& lightShader);
 	void Draw(Shader& shader);
