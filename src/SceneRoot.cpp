@@ -187,12 +187,12 @@ void SceneRoot::CreateBaseScene()
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [05] Kamera
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [06] wszystkie bramy
 
-	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/ak47/AK.fbx"));					// [07] Broñ 1  (ak47)
-	graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/snajperka/snajperka.fbx"));	// [08] Broñ 2  (akSnajperka)
-	graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -1.3f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(0.3f), "res/models/Strzal/kostka.obj"));							// [09] wystrza³
+	graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -1.3f), glm::vec3(-90.0f, 0.0f, 0.0f), glm::vec3(0.3f), "res/models/Strzal/kostka.obj"));				// [07] wystrza³
+	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/ak47/AK.fbx"));				// [08] Broñ 1  (ak47)
+	graphNodes[5]->AddChild(NewObject(glm::vec3(-0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/snajperka/snajperka.fbx"));	// [09] Broñ 2  (akSnajperka)
 
-	graphNodes[7]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
 	graphNodes[8]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
+	graphNodes[9]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
 
 	//// œwiat³o punktowe
 	//graphNodes[1]->SetLight(glm::vec3(0.05f), // ambient

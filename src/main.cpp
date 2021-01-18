@@ -45,6 +45,7 @@
 //#include "mesh_s.h"
 #include <SceneRoot.hpp>
 #include <MyCamera.hpp>
+#include <WeaponManager.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -65,6 +66,7 @@ GLfloat deltaTime = 0.0f; // Czas pomiêdzy obecn¹ i poprzedni¹ klatk¹
 GLfloat lastFrame = 0.0f; // Czas ostatniej ramki
 
 MyCamera* myCamera;
+WeaponManager* wewaponManager;
 
 unsigned int bufferRoof;
 unsigned int buffer;
@@ -196,6 +198,9 @@ int main()
 
     myCamera = new MyCamera(glm::vec3(0.0f, -5.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
+
+    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 1, 1, sceneRoot->graphNodes[7], 1);
+    wewaponManager->AddWeapon(sceneRoot->graphNodes[9], 1, 1);
 
     Model* house = new Model("res/models/Sciana/kostka.obj");
     Model* roof = new Model("res/models/DachReady/Dach5Ready.obj");
@@ -527,6 +532,7 @@ int main()
         // -----
         processInput(window);
         myCamera->InputKey(window, deltaTime);
+        wewaponManager->InputKey(window, deltaTime);
         glfwSetCursorPosCallback(window, mouse_callback);
         glfwSetScrollCallback(window, scroll_callback);
 
@@ -694,7 +700,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    myCamera->InputScroll(yoffset);
+    //myCamera->InputScroll(yoffset);
+    wewaponManager->InputScroll(yoffset);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
