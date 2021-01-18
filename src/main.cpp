@@ -132,7 +132,7 @@ int main()
     Shader singleShader("res/shaders/domki_single_Vert.vert", "res/shaders/domki_Frag.frag");
     Shader skyboxShader("res/shaders/skyBox_vert.vert", "res/shaders/skyBox_frag.frag");
     Shader mirrorShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
-    Shader glassShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
+    Shader glassShader("res/shaders/szyba_vert.vert", "res/shaders/szyba_frag.frag");
 
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
     //Shader sphereShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/sphere.gs");
@@ -220,6 +220,14 @@ int main()
                 modelMatrices[index] = model;
                 modelMatricesRoof[index] = model;
                 index++;
+            }
+            else if (map[i * 30 + j] == 2) // brama pozioma
+            {
+                sceneRoot->AddGlass(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
+            }
+            else if (map[i * 30 + j] == 3) // brama pionowa
+            {
+                sceneRoot->AddGlass(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
             }
             else if (map[i * 30 + j] == 4) // œwiat³o
             {
@@ -605,6 +613,11 @@ int main()
         mirrorShader.setMat4("projection", projection);
         mirrorShader.setMat4("view", view);
         mirrorShader.setVec3("cameraPos", myCamera->GetCameraPos());
+
+        glassShader.use();
+        glassShader.setMat4("projection", projection);
+        glassShader.setMat4("view", view);
+        glassShader.setVec3("cameraPos", myCamera->GetCameraPos());
 
         sceneRoot->graphNodes[5]->SetPosition(myCamera->GetCameraPos().x, myCamera->GetCameraPos().y, myCamera->GetCameraPos().z);
         sceneRoot->graphNodes[5]->SetRotation(0.0f, -90-myCamera->GetRotationY(), 0.0f);

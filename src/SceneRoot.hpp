@@ -26,6 +26,7 @@ public:
 
 	void AddLight(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
 	void AddMirror(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
+	void AddGlass(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
 	void Update(float time, unsigned int houseBuffer, unsigned int roofBuffer);
