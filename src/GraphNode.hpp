@@ -35,10 +35,11 @@ public:
 	void AddChild(const std::shared_ptr<GraphNode>& child);
 
 	void Update(bool parentIsDirty, glm::mat4 parentTransform, unsigned int houseBuffer, unsigned int roofBuffer);
+	void UpdateGate(float deltaTime, glm::vec3 playerPos);
 
 	void Draw(Shader& shader);
 	void Draw(Shader& shader, Shader& lightShader);
-	void Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture);
+	void Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, Shader& spriteShader, unsigned int cubemapTexture);
 	void Draw(Shader& shader, Shader& orbitShader, Shader& sphereShader, int resolution);
 	void DrawByGeometryShader(Shader& geometryShader, int resolution);
 
@@ -51,6 +52,8 @@ public:
 	void SetMirror();
 	void SetGlass();
 	void SetWeapon(glm::vec3 color);
+	void SetSprite();
+	void SetGate(glm::vec3 targetGatePos);
 
 	glm::vec3 GetPosition();
 
@@ -77,6 +80,10 @@ private:
 	bool mirror;
 	bool glass;
 	bool weapon;
+	bool sprite;
+	bool gate;
+	bool gateOpen;
+	glm::vec3 targetGatePos;
 
 	bool orbit;
 	bool sphere;

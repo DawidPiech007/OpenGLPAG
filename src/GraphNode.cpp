@@ -13,6 +13,9 @@ GraphNode::GraphNode(const glm::vec3& position, const glm::vec3& rotation, const
 	roof = false;
 	mirror = false;
 	glass = false;
+	sprite = false;
+	gate = false;
+	gateOpen = false;
 	this->rotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::angleAxis(glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -160,6 +163,37 @@ void GraphNode::Update(bool parentIsDirty, glm::mat4 parentTransform, unsigned i
 	isDirty = false;
 }
 
+void GraphNode::UpdateGate(float deltaTime, glm::vec3 playerPos)
+{
+	if (gate)
+	{
+		if (gateOpen == false)
+		{
+			if (glm::distance(position, playerPos) < 1.2f)
+			{
+				gateOpen = true;
+				std::cout << "brama otwarta"<<endl;
+			}
+		}
+		
+		if (gateOpen == true)
+		{
+			if (glm::distance(position, targetGatePos) > 0.1f)
+			{
+				float speed = 1.0f * deltaTime;
+				glm::vec3 dir = glm::vec3(targetGatePos.x - position.x, targetGatePos.y - position.y, targetGatePos.z - position.z);
+				dir = glm::normalize(dir);
+				SetPosition(position.x + dir.x * speed, position.y + dir.y * speed, position.z + dir.z * speed);
+			}
+		}
+	}
+
+	for (auto& child : children)
+	{
+		child->UpdateGate(deltaTime,playerPos);
+	}
+}
+
 void GraphNode::Draw(Shader& shader)
 {
 	if (model != nullptr)
@@ -203,7 +237,7 @@ void GraphNode::Draw(Shader& shader, Shader& lightShader)
 	}
 }
 
-void GraphNode::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+void GraphNode::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, Shader& spriteShader, unsigned int cubemapTexture)
 {
 	if (model != nullptr)
 	{
@@ -245,6 +279,16 @@ void GraphNode::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, S
 			colorShader.setVec3("material.color", diffuse);
 			GraphNode::model->Draw(colorShader);
 		}
+		else if (sprite == true)
+		{
+			// rysowanie szejderem dla spritów 2D
+			spriteShader.use();
+			spriteShader.setMat4("model", transform);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			GraphNode::model->Draw(shader);
+			glDisable(GL_BLEND);
+		}
 		else
 		{
 			// rysowanie szejderem z oœwietleniem
@@ -256,7 +300,7 @@ void GraphNode::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, S
 
 	for (auto& child : children)
 	{
-		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
+		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, spriteShader, cubemapTexture);
 	}
 }
 
@@ -379,6 +423,17 @@ void GraphNode::SetWeapon(glm::vec3 color)
 {
 	weapon = true;
 	diffuse = color;
+}
+
+void GraphNode::SetSprite()
+{
+	sprite = true;
+}
+
+void GraphNode::SetGate(glm::vec3 targetGatePos)
+{
+	gate = true;
+	GraphNode::targetGatePos = targetGatePos;
 }
 
 glm::vec3 GraphNode::GetPosition()

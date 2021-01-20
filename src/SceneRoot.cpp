@@ -95,6 +95,15 @@ void SceneRoot::AddGlass(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale
 	shared_ptr<GraphNode> glass = NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f,1.0f,10.0f), "res/models/szyba/szyba.obj");
 	
 	glass->SetGlass();
+	if (rotation.y < 0.1f && rotation.y > -0.1f) //rotation.y blisko 0
+	{
+		gate->SetGate(position + glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+	else // rotation.y blisko 90
+	{
+		gate->SetGate(position + glm::vec3(0.0f, 0.0f, 1.0f));
+	}
+	
 	
 	graphNodes[6]->AddChild(gate);
 	gate->AddChild(glass);
@@ -128,11 +137,11 @@ void SceneRoot::Update(float time, unsigned int houseBuffer, unsigned int roofBu
 	}
 }
 
-void SceneRoot::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, unsigned int cubemapTexture)
+void SceneRoot::Draw(Shader& shader, Shader& colorShader, Shader& lightShader, Shader& mirrorShader, Shader& glassShader, Shader& spriteShader, unsigned int cubemapTexture)
 {
 	for (auto& child : children)
 	{
-		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
+		child->Draw(shader, colorShader, lightShader, mirrorShader, glassShader, spriteShader, cubemapTexture);
 	}
 }
 
@@ -191,8 +200,10 @@ void SceneRoot::CreateBaseScene()
 	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -0.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/ak47/AK.fbx"));				// [08] Broñ 1  (ak47)
 	graphNodes[5]->AddChild(NewObject(glm::vec3(0.1f, -2.15f, -0.5f),		glm::vec3(-90.0f, 0.0f, 0.0f),	glm::vec3(0.7f), "res/models/snajperka/snajperka.fbx"));	// [09] Broñ 2  (akSnajperka)
 
+	graphNodes[7]->SetSprite();
 	graphNodes[8]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
 	graphNodes[9]->SetWeapon(glm::vec3(0.2f, 0.2f, 0.4f));
+
 
 	//// œwiat³o punktowe
 	//graphNodes[1]->SetLight(glm::vec3(0.05f), // ambient

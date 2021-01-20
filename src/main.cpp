@@ -140,6 +140,7 @@ int main()
     Shader mirrorShader("res/shaders/lustro_vert.vert", "res/shaders/lustro_frag.frag");
     Shader glassShader("res/shaders/szyba_vert.vert", "res/shaders/szyba_frag.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
+    Shader spriteShader("res/shaders/sprite.vert", "res/shaders/sprite.frag");
 
     glm::mat4 textProjection = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
     textShader.use();                                               
@@ -242,7 +243,7 @@ int main()
     myCamera = new MyCamera(glm::vec3(5.0f, -5.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
-    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.1f, 99, sceneRoot->graphNodes[7], 0.02f);
+    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.2f, 99, sceneRoot->graphNodes[7], 0.05f);
     wewaponManager->AddWeapon(sceneRoot->graphNodes[9], 1.0f, 20);
 
     Model* house = new Model("res/models/Sciana/kostka.obj");
@@ -485,20 +486,19 @@ int main()
     //int resolution = 4;
 
 
-    glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
-    glm::vec3 dirLightColor = glm::vec3(0.4f, 0.4f, 0.6f);
-    glm::vec3 spot1LightColor = glm::vec3(0.0f, 1.0f, 0.5f);
-    glm::vec3 spot2LightColor = glm::vec3(1.0f, 0.0f, 0.5f);
-
-    glm::vec3 dirLightDir = glm::vec3(0.2f, -0.6f, -0.4f);
-    glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
-    glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
-
-    bool pointLightEnable = true;
-    bool dirLightEnable = true;
-    bool spot1LightEnable = true;
-    bool spot2LightEnable = true;
-
+    //glm::vec3 pointLightColor = glm::vec3(0.7f, 0.9f, 0.2f);
+    //glm::vec3 dirLightColor = glm::vec3(0.4f, 0.4f, 0.6f);
+    //glm::vec3 spot1LightColor = glm::vec3(0.0f, 1.0f, 0.5f);
+    //glm::vec3 spot2LightColor = glm::vec3(1.0f, 0.0f, 0.5f);
+    //
+    //glm::vec3 dirLightDir = glm::vec3(0.2f, -0.6f, -0.4f);
+    //glm::vec3 spot1LightDir = glm::vec3(1.0f, -1.0f, 0.0f);
+    //glm::vec3 spot2LightDir = glm::vec3(-1.0f, -1.0f, 0.0f);
+    //
+    //bool pointLightEnable = true;
+    //bool dirLightEnable = true;
+    //bool spot1LightEnable = true;
+    //bool spot2LightEnable = true;
 
     // render loop
     // -----------
@@ -665,6 +665,10 @@ int main()
         lightShader.setMat4("projection", projection);
         lightShader.setMat4("view", view);
 
+        spriteShader.use();
+        spriteShader.setMat4("projection", projection);
+        spriteShader.setMat4("view", view);
+
         mirrorShader.use();
         mirrorShader.setMat4("projection", projection);
         mirrorShader.setMat4("view", view);
@@ -685,7 +689,8 @@ int main()
         sceneRoot->graphNodes[5]->SetRotation(0.0f, -90-myCamera->GetRotationY(), 0.0f);
 
         sceneRoot->Update((float)glfwGetTime(), buffer, bufferRoof);
-        sceneRoot->Draw(singleShader, singleColorShader, lightShader, mirrorShader, glassShader, cubemapTexture);
+        sceneRoot->graphNodes[6]->UpdateGate(deltaTime, myCamera->GetCameraPos());
+        sceneRoot->Draw(singleShader, singleColorShader, lightShader, mirrorShader, glassShader, spriteShader, cubemapTexture);
 
 
 
