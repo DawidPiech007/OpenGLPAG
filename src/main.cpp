@@ -239,7 +239,7 @@ int main()
     // ---------------------
     SceneRoot* sceneRoot = new SceneRoot();
 
-    myCamera = new MyCamera(glm::vec3(0.0f, -5.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
+    myCamera = new MyCamera(glm::vec3(5.0f, -5.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
     wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.2f, 100, sceneRoot->graphNodes[7], 0.05f);
@@ -264,7 +264,7 @@ int main()
             if (map[i * 30 + j] == 1)  // œciana
             {
                 glm::mat4 model = glm::mat4(1.0f);
-                model = glm::translate(model, glm::vec3(offset * i - 10, -5.0f, offset * j - 10));
+                model = glm::translate(model, glm::vec3(offset * i, -5.0f, offset * j));
 
                 modelMatrices[index] = model;
                 modelMatricesRoof[index] = model;
@@ -272,22 +272,24 @@ int main()
             }
             else if (map[i * 30 + j] == 2) // brama pozioma
             {
-                sceneRoot->AddGlass(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
+                sceneRoot->AddGlass(glm::vec3(offset * i, -5.0f, offset * j), glm::vec3(0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
             }
             else if (map[i * 30 + j] == 3) // brama pionowa
             {
-                sceneRoot->AddGlass(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
+                sceneRoot->AddGlass(glm::vec3(offset * i, -5.0f, offset * j), glm::vec3(0.0f, 90.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.1f));
             }
             else if (map[i * 30 + j] == 4) // œwiat³o
             {
-                sceneRoot->AddLight(glm::vec3(offset* i - 10, -4.6f, offset* j - 10), glm::vec3(0.2f), glm::vec3(1.0f, 0.8f, 0.3f));
+                sceneRoot->AddLight(glm::vec3(offset* i, -4.6f, offset* j), glm::vec3(0.2f), glm::vec3(1.0f, 0.8f, 0.3f));
             }
             else if (map[i * 30 + j] == 5) // lustro
             {
-                sceneRoot->AddMirror(glm::vec3(offset * i - 10, -5.0f, offset * j - 10), glm::vec3(0.0f), glm::vec3(1.0f));
+                sceneRoot->AddMirror(glm::vec3(offset * i, -5.0f, offset * j), glm::vec3(0.0f), glm::vec3(1.0f));
             }
         }
     }
+
+
     //unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -414,12 +416,12 @@ int main()
         //FileSystem::getPath("resources/textures/skybox/bottom.jpg"),
         //FileSystem::getPath("resources/textures/skybox/front.jpg"),
         //FileSystem::getPath("resources/textures/skybox/back.jpg")
-        "res/textures/skyboxMap/right.jpg",
-        "res/textures/skyboxMap/left.jpg",
-        "res/textures/skyboxMap/top.jpg",
-        "res/textures/skyboxMap/bottom.jpg",
-        "res/textures/skyboxMap/front.jpg",
-        "res/textures/skyboxMap/back.jpg"
+        "res/textures/skyboxMap2/right.jpg",
+        "res/textures/skyboxMap2/left.jpg",
+        "res/textures/skyboxMap2/top.jpg",
+        "res/textures/skyboxMap2/bottom.jpg",
+        "res/textures/skyboxMap2/front.jpg",
+        "res/textures/skyboxMap2/back.jpg"
     };
     unsigned int cubemapTexture = loadCubemap(faces);
 
@@ -525,6 +527,7 @@ int main()
             static float f = 0.0f;
             static int counter = 0;
 
+            // POKARZ UI
             ImGui::Begin("Setings");                          // Create a window called "Hello, world!" and append into it.
 
             //ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)

@@ -181,8 +181,8 @@ void SceneRoot::CreateBaseScene()
 {
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));	// [00] wszystkie Domki
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none"));	// [01] wszystkie œwiat³a
-	AddChild(NewObject(glm::vec3(0.0f, -6.0f, 0.0f), glm::vec3(0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
-	AddChild(NewObject(glm::vec3(0.0f, -4.0f, 0.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(100.0f, 1.0f, 100.0f), "res/models/PodlozeReady/kostka.obj"));	// [03] sufit
+	AddChild(NewObject(glm::vec3(15.0f, -6.0f, 15.0f), glm::vec3(0.0f), glm::vec3(30.0f, 1.0f, 30.0f), "res/models/PodlozeReady/kostka.obj"));	// [02] podloze
+	AddChild(NewObject(glm::vec3(15.0f, -4.0f, 15.0f), glm::vec3(180.0f, 0.0f, 0.0f), glm::vec3(30.0f, 1.0f, 30.0f), "res/models/PodlozeReady/kostka.obj"));	// [03] sufit
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [04] wszystkie lustra
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [05] Kamera
 	AddChild(NewObject(glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(1.0f), "none")); // [06] wszystkie bramy
