@@ -20,6 +20,9 @@ public:
 	void InputKey(GLFWwindow* window, float deltaTime, float time);
 	void InputScroll(float yoffset);
 
+	int GetAmmo1();
+	int GetAmmo2();
+
 private:
 	void ShowWeapon(int index);
 	void HideWeapon(int index);

@@ -88,6 +88,19 @@ void WeaponManager::InputScroll(float yoffset)
     }
 }
 
+int WeaponManager::GetAmmo1()
+{
+    if (bullets[weaponSelected] < 10)
+        return 10;
+
+    return bullets[weaponSelected] / 10 - 1;
+}
+
+int WeaponManager::GetAmmo2()
+{
+    return (bullets[weaponSelected] + 9) % 10;
+}
+
 void WeaponManager::ShowWeapon(int index)
 {
     shootReady = true;

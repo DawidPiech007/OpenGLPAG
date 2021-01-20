@@ -242,7 +242,7 @@ int main()
     myCamera = new MyCamera(glm::vec3(5.0f, -5.0f, 10.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f), SCR_WIDTH, SCR_HEIGHT);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Ukrycie kursora myski
 
-    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.2f, 100, sceneRoot->graphNodes[7], 0.05f);
+    wewaponManager = new WeaponManager(sceneRoot->graphNodes[8], 0.1f, 99, sceneRoot->graphNodes[7], 0.02f);
     wewaponManager->AddWeapon(sceneRoot->graphNodes[9], 1.0f, 20);
 
     Model* house = new Model("res/models/Sciana/kostka.obj");
@@ -706,7 +706,7 @@ int main()
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        RenderText(textShader, 2, 3, 25.0f, 25.0f, 100.0f, glm::vec3(0.5, 0.8f, 0.2f));
+        RenderText(textShader, wewaponManager->GetAmmo1(), wewaponManager->GetAmmo2(), 25.0f, 25.0f, 100.0f, glm::vec3(0.5, 0.8f, 0.2f));
         glDisable(GL_BLEND);
 
 
