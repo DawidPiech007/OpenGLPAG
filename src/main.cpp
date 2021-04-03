@@ -55,6 +55,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow* window);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void RenderText(Shader& shader, int text1, int text2, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+void RenderSprite(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+void RenderSpriteAnimation(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 unsigned int loadCubemap(vector<std::string> faces);
 
 void ChangeBuffer(int index, glm::mat4 newModel, bool house);
@@ -73,7 +75,11 @@ unsigned int bufferRoof;
 unsigned int buffer;
 
 GLuint VAO_text, VBO_text;
+GLuint VAO_sprite, VBO_sprite;
+GLuint VAO_box, VBO_box;
 GLuint textTextureID;
+GLuint textTextureID2;
+GLuint textTextureID3;
 
 int main()
 {
@@ -179,6 +185,62 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+
+    // Configure VAO/VBO for sprite quads
+    glGenVertexArrays(1, &VAO_sprite);
+    glGenBuffers(1, &VBO_sprite);
+    glBindVertexArray(VAO_sprite);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_sprite);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+
+    glGenTextures(1, &textTextureID2);
+    // load image, create texture and generate mipmaps
+    glBindTexture(GL_TEXTURE_2D, textTextureID2);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the texture
+    int width2, height2, nrChannels2;
+    unsigned char* data2 = stbi_load("res/textures/awesomeface.png", &width2, &height2, &nrChannels2, 0);
+    if (data2)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width2, height2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data2);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data2);
+
+    glGenTextures(1, &textTextureID3);
+    // load image, create texture and generate mipmaps
+    glBindTexture(GL_TEXTURE_2D, textTextureID3);
+    // set the texture wrapping/filtering options (on the currently bound texture object)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load and generate the texture
+    int width3, height3, nrChannels3;
+    unsigned char* data3 = stbi_load("res/textures/awesomeface.png", &width3, &height3, &nrChannels3, 0);
+    if (data3)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width3, height3, 0, GL_RGBA, GL_UNSIGNED_BYTE, data3);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data3);
 
 
     //Shader orbitShader("res/shaders/forGeometry.vert", "res/shaders/forGeometry.frag", "res/shaders/orbit.gs");
@@ -712,6 +774,10 @@ int main()
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         RenderText(textShader, wewaponManager->GetAmmo1(), wewaponManager->GetAmmo2(), 25.0f, 25.0f, 100.0f, glm::vec3(0.5, 0.8f, 0.2f));
+        RenderSprite(textShader, 800.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
+        RenderSprite(textShader, 950.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
+        RenderSprite(textShader, 1100.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
+        RenderSpriteAnimation(textShader, 1100.0f, 300.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
         glDisable(GL_BLEND);
 
 
@@ -869,6 +935,84 @@ void RenderText(Shader& shader, int text1, int text2, GLfloat x, GLfloat y, GLfl
 
 
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void RenderSprite(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
+{
+    // Activate corresponding render state	
+    shader.use();
+    //glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
+    shader.setVec3("textColor", color);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(VAO_sprite);
+
+    GLfloat xpos = x;
+    GLfloat ypos = y;
+
+    GLfloat w = 1.0f * scale;
+    GLfloat h = 1.0f * scale;
+    // Update VBO for each character
+    GLfloat vertices[6][4] = {
+        { xpos,     ypos + h,   0.0, 0.0 },
+        { xpos,     ypos,       0.0, 1.0 },
+        { xpos + w, ypos,       1.0, 1.0 },
+
+        { xpos,     ypos + h,   0.0, 0.0 },
+        { xpos + w, ypos,       1.0, 1.0 },
+        { xpos + w, ypos + h,   1.0, 0.0 }
+    };
+    // Render glyph texture over quad
+    glBindTexture(GL_TEXTURE_2D, textTextureID2);
+    // Update content of VBO memory
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_sprite);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // Render quad
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void RenderSpriteAnimation(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
+{
+    // Activate corresponding render state	
+    shader.use();
+    //glUniform3f(glGetUniformLocation(shader.Program, "textColor"), color.x, color.y, color.z);
+    shader.setVec3("textColor", color);
+    glActiveTexture(GL_TEXTURE0);
+    glBindVertexArray(VAO_sprite);
+
+    GLfloat xpos = x;
+    GLfloat ypos = y;
+
+    GLfloat w = 1.0f * scale;
+    GLfloat h = 1.0f * scale;
+
+    GLfloat xLeft = (float)glfwGetTime();
+    GLfloat xRight = xLeft + 0.5;
+
+    // Update VBO for each character
+    GLfloat vertices[6][4] = {
+        { xpos,     ypos + h,   xLeft, 0.0 },
+        { xpos,     ypos,       xLeft, 1.0 },
+        { xpos + w, ypos,       xRight, 1.0 },
+
+        { xpos,     ypos + h,   xLeft, 0.0 },
+        { xpos + w, ypos,       xRight, 1.0 },
+        { xpos + w, ypos + h,   xRight, 0.0 }
+    };
+    // Render glyph texture over quad
+    glBindTexture(GL_TEXTURE_2D, textTextureID3);
+    // Update content of VBO memory
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_sprite);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // Render quad
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
