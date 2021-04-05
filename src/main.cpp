@@ -56,7 +56,7 @@ void processInput(GLFWwindow* window);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void RenderText(Shader& shader, int text1, int text2, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 void RenderSprite(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
-void RenderSpriteAnimation(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
+void RenderSpriteAnimation(Shader& shader, unsigned int compassIndex, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 unsigned int loadCubemap(vector<std::string> faces);
 
 void ChangeBuffer(int index, glm::mat4 newModel, bool house);
@@ -73,6 +73,8 @@ WeaponManager* wewaponManager;
 
 unsigned int bufferRoof;
 unsigned int buffer;
+
+unsigned int compassIndex = 0;
 
 GLuint VAO_text, VBO_text;
 GLuint VAO_sprite, VBO_sprite;
@@ -230,7 +232,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
     int width3, height3, nrChannels3;
-    unsigned char* data3 = stbi_load("res/textures/awesomeface.png", &width3, &height3, &nrChannels3, 0);
+    unsigned char* data3 = stbi_load("res/textures/compass.png", &width3, &height3, &nrChannels3, 0);
     if (data3)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width3, height3, 0, GL_RGBA, GL_UNSIGNED_BYTE, data3);
@@ -777,7 +779,8 @@ int main()
         RenderSprite(textShader, 800.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
         RenderSprite(textShader, 950.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
         RenderSprite(textShader, 1100.0f, 25.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
-        RenderSpriteAnimation(textShader, 1100.0f, 300.0f, 150.0f, glm::vec3(1.0, 1.0f, 1.0f));
+        RenderSpriteAnimation(textShader, compassIndex, 1050.0f, 500.0f, 200.0f, glm::vec3(0.0, 1.0f, 0.0f));
+        compassIndex++;
         glDisable(GL_BLEND);
 
 
@@ -975,7 +978,7 @@ void RenderSprite(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void RenderSpriteAnimation(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
+void RenderSpriteAnimation(Shader& shader, unsigned int compassIndex, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
     // Activate corresponding render state	
     shader.use();
@@ -990,8 +993,8 @@ void RenderSpriteAnimation(Shader& shader, GLfloat x, GLfloat y, GLfloat scale, 
     GLfloat w = 1.0f * scale;
     GLfloat h = 1.0f * scale;
 
-    GLfloat xLeft = (float)glfwGetTime();
-    GLfloat xRight = xLeft + 0.5;
+    GLfloat xLeft = (float)compassIndex / 32.0f;
+    GLfloat xRight = xLeft + 1.0f / 32.0f;
 
     // Update VBO for each character
     GLfloat vertices[6][4] = {
